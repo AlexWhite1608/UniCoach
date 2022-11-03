@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Model",
+			"name": "Diagrams",
 			"ownedElements": [
 				{
 					"_type": "UMLClassDiagram",
@@ -49,7 +49,7 @@
 			]
 		}
 	],
-	"author": "Alessandro Bianco",
-	"copyright": "Alessandro Bianco",
+	"author": "Alessandro Bianco, Riccardo Becciolini",
+	"copyright": "Alessandro Bianco, Riccardo Becciolini",
 	"version": "0.1"
 }
