@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/UniCoach.iml" filepath="$PROJECT_DIR$/.idea/UniCoach.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code/data_access/data_access.iml" filepath="$PROJECT_DIR$/Code/data_access/data_access.iml" />
     </modules>
   </component>
 </project>
