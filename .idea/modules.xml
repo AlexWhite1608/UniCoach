@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/UniCoach.iml" filepath="$PROJECT_DIR$/.idea/UniCoach.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SWE.iml" filepath="$PROJECT_DIR$/SWE.iml" />
       <module fileurl="file://$PROJECT_DIR$/Code/data_access/data_access.iml" filepath="$PROJECT_DIR$/Code/data_access/data_access.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code/domain_model/domain_model.iml" filepath="$PROJECT_DIR$/Code/domain_model/domain_model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code/manager_implementation/manager_implementation.iml" filepath="$PROJECT_DIR$/Code/manager_implementation/manager_implementation.iml" />
     </modules>
   </component>
 </project>
