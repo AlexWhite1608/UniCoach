@@ -160,7 +160,7 @@
 											"top": 357,
 											"width": 60.68994140625,
 											"height": 13,
-											"text": "Student"
+											"text": "domain_model.Student"
 										},
 										{
 											"_type": "LabelView",
@@ -340,7 +340,7 @@
 											"top": 365,
 											"width": 60.68994140625,
 											"height": 13,
-											"text": "Professor"
+											"text": "domain_model.Professor"
 										},
 										{
 											"_type": "LabelView",
@@ -8331,7 +8331,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Student",
+					"name": "domain_model.Student",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -8530,7 +8530,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Professor",
+					"name": "domain_model.Professor",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -9311,7 +9311,7 @@
 											"top": 340,
 											"width": 63.2353515625,
 											"height": 13,
-											"text": "User"
+											"text": "domain_model.User"
 										},
 										{
 											"_type": "LabelView",
@@ -9557,7 +9557,7 @@
 											"top": 511,
 											"width": 94.28173828125,
 											"height": 13,
-											"text": "Professor"
+											"text": "domain_model.Professor"
 										},
 										{
 											"_type": "LabelView",
@@ -10378,7 +10378,7 @@
 											"top": 719,
 											"width": 159.31982421875,
 											"height": 13,
-											"text": "GradesManager"
+											"text": "manager_implementation.GradesManager"
 										},
 										{
 											"_type": "LabelView",
@@ -10465,7 +10465,7 @@
 											"top": 752,
 											"width": 159.31982421875,
 											"height": 13,
-											"text": "+getAverage(UniTranscript)",
+											"text": "+getAverage(domain_model.UniTranscript)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10483,7 +10483,7 @@
 											"top": 783,
 											"width": 159.31982421875,
 											"height": 13,
-											"text": "+getAllAverage(Exam)",
+											"text": "+getAllAverage(domain_model.Exam)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -11240,7 +11240,7 @@
 											"top": 183,
 											"width": 74.05810546875,
 											"height": 13,
-											"text": "Course"
+											"text": "domain_model.Course"
 										},
 										{
 											"_type": "LabelView",
@@ -11473,7 +11473,7 @@
 											"top": 815,
 											"width": 151.60107421875,
 											"height": 13,
-											"text": "StudyTimeManager"
+											"text": "manager_implementation.StudyTimeManager"
 										},
 										{
 											"_type": "LabelView",
@@ -11560,7 +11560,7 @@
 											"top": 848,
 											"width": 151.60107421875,
 											"height": 13,
-											"text": "+fillStudyTime(StudyType)",
+											"text": "+fillStudyTime(manager_implementation.StudyType)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12238,7 +12238,7 @@
 											"top": 183,
 											"width": 63.2353515625,
 											"height": 13,
-											"text": "Exam"
+											"text": "domain_model.Exam"
 										},
 										{
 											"_type": "LabelView",
@@ -12743,7 +12743,7 @@
 											"top": 383,
 											"width": 83.79541015625,
 											"height": 13,
-											"text": "UniTranscript"
+											"text": "domain_model.UniTranscript"
 										},
 										{
 											"_type": "LabelView",
@@ -14262,7 +14262,7 @@
 											"top": 703,
 											"width": 109.4716796875,
 											"height": 13,
-											"text": "CoursesManager"
+											"text": "manager_implementation.CoursesManager"
 										},
 										{
 											"_type": "LabelView",
@@ -14460,7 +14460,7 @@
 											"top": 487,
 											"width": 87,
 											"height": 13,
-											"text": "Student"
+											"text": "domain_model.Student"
 										},
 										{
 											"_type": "LabelView",
@@ -15186,7 +15186,7 @@
 											"top": 831,
 											"width": 111,
 											"height": 13,
-											"text": "Calendar"
+											"text": "manager_implementation.Calendar"
 										},
 										{
 											"_type": "LabelView",
@@ -15385,7 +15385,7 @@
 											"top": 820,
 											"width": 66.21875,
 											"height": 13,
-											"text": "StudyType"
+											"text": "manager_implementation.StudyType"
 										},
 										{
 											"_type": "LabelView",
@@ -19519,7 +19519,7 @@
 											"top": 612,
 											"width": 113.064453125,
 											"height": 13,
-											"text": "Subject"
+											"text": "domain_model.Subject"
 										},
 										{
 											"_type": "LabelView",
@@ -19810,7 +19810,7 @@
 											"top": 612,
 											"width": 100.70263671875,
 											"height": 13,
-											"text": "Observer"
+											"text": "domain_model.Observer"
 										},
 										{
 											"_type": "LabelView",
@@ -20100,7 +20100,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7DKg3xOr9Pw="
 							},
-							"name": "GradesManager",
+							"name": "manager_implementation.GradesManager",
 							"ownedElements": [
 								{
 									"_type": "UMLGeneralization",
@@ -20187,7 +20187,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGEZy3XnTID5qA="
 											},
-											"name": "UniTranscript",
+											"name": "domain_model.UniTranscript",
 											"type": ""
 										}
 									]
@@ -20206,7 +20206,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGE7Q+57Ur2HEI="
 											},
-											"name": "Exam",
+											"name": "domain_model.Exam",
 											"type": ""
 										}
 									]
@@ -20355,7 +20355,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7DKg3xOr9Pw="
 							},
-							"name": "StudyTimeManager",
+							"name": "manager_implementation.StudyTimeManager",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -20401,7 +20401,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGE7TGnVH/FVLg="
 											},
-											"name": "StudyType",
+											"name": "manager_implementation.StudyType",
 											"type": ""
 										}
 									]
@@ -20422,7 +20422,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7DKg3xOr9Pw="
 							},
-							"name": "CoursesManager",
+							"name": "manager_implementation.CoursesManager",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -20472,7 +20472,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7DKg3xOr9Pw="
 							},
-							"name": "Calendar",
+							"name": "manager_implementation.Calendar",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -20533,7 +20533,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7DKg3xOr9Pw="
 							},
-							"name": "StudyType",
+							"name": "manager_implementation.StudyType",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -20859,7 +20859,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "Course",
+							"name": "domain_model.Course",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -20987,7 +20987,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "Exam",
+							"name": "domain_model.Exam",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -21113,7 +21113,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "UniTranscript",
+							"name": "domain_model.UniTranscript",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -21207,7 +21207,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "Student",
+							"name": "domain_model.Student",
 							"ownedElements": [
 								{
 									"_type": "UMLGeneralization",
@@ -21297,7 +21297,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "Subject",
+							"name": "domain_model.Subject",
 							"ownedElements": [
 								{
 									"_type": "UMLAssociation",
@@ -21396,7 +21396,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGE7EK57hTaLw4="
 							},
-							"name": "Observer",
+							"name": "domain_model.Observer",
 							"stereotype": "interface",
 							"operations": [
 								{
@@ -21426,7 +21426,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGEQ1ZgzcK2/UM="
 					},
-					"name": "User",
+					"name": "domain_model.User",
 					"stereotype": "abstract",
 					"attributes": [
 						{
@@ -21478,7 +21478,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGEQ1ZgzcK2/UM="
 					},
-					"name": "Professor",
+					"name": "domain_model.Professor",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
