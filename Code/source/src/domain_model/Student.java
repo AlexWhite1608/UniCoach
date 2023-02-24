@@ -1,9 +1,14 @@
 package domain_model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Student extends User implements Observer{
     public Student(int id, String name, String surname) {
         super(id, name, surname);
+
         uniTranscript = new UniTranscript();
+        courses = new ArrayList<>();
     }
 
     public void displayUniTranscript(){
@@ -30,5 +35,6 @@ public class Student extends User implements Observer{
     }
 
     private UniTranscript uniTranscript;
+    private List<Course> courses;
 
 }
