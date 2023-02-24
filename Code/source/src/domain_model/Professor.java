@@ -3,6 +3,8 @@ package domain_model;
 import data_access.Gateway;
 import data_access.ProfessorGateway;
 
+import java.util.List;
+
 public class Professor extends User implements Subject, ProfessorGateway {
     public Professor(int id, String name, String surname) {
         super(id, name, surname);
@@ -23,17 +25,26 @@ public class Professor extends User implements Subject, ProfessorGateway {
     }
 
     @Override
-    public void unsubscribe(Observer o) {
+    public void unsubscribe(Observer o) {}
 
-    }
+    @Override
+    public void getGrade(Student student){}
 
-    public int getGrade(Student student){
-        return 0;
-    }
+    @Override
+    public void getGrade(List<Student> students){}
 
-    public void setExamDate(){
+    @Override
+    public void getGrade(Course course){}
 
-    }
+    @Override
+    public void setExamDate(Exam exam, String date){}
+
+    @Override
+    public void getAverage(Student student){}
+    @Override
+    public void getAverage(List<Student> students){}
+    @Override
+    public void getAverage(Course course){}
 
 
 }
