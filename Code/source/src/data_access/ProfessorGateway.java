@@ -1,4 +1,4 @@
 package data_access;
 
-public class ProfessorGateway {
+public interface ProfessorGateway {
 }
