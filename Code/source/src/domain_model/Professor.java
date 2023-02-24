@@ -1,6 +1,9 @@
 package domain_model;
 
-public class Professor extends User implements Subject{
+import data_access.Gateway;
+import data_access.ProfessorGateway;
+
+public class Professor extends User implements Subject, ProfessorGateway {
     public Professor(int id, String name, String surname) {
         super(id, name, surname);
     }

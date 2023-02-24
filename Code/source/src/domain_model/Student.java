@@ -1,9 +1,11 @@
 package domain_model;
 
+import data_access.StudentGateway;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends User implements Observer{
+public class Student extends User implements Observer, StudentGateway {
     public Student(int id, String name, String surname) {
         super(id, name, surname);
 
