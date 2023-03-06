@@ -5,9 +5,6 @@ import domain_model.*;
 
 public class Gateway {
 
-
-
-    @Resource
     private Student student;
 
     @Resource
