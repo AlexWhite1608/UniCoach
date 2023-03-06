@@ -27,6 +27,10 @@ public class Course {
         return CFU;
     }
 
+    public Professor getProfessor() {
+        return professor;
+    }
+
     private String name;
     private int CFU;
     private Professor professor;

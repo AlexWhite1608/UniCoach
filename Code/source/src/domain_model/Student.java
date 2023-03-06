@@ -43,6 +43,6 @@ public class Student extends User implements Observer, StudentGateway {
     }
 
     private UniTranscript uniTranscript;
-    private List<Course> courses;
+    private List<Subject> subjects;
 
 }
