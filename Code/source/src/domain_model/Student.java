@@ -10,7 +10,7 @@ public class Student extends User implements Observer, StudentGateway {
         super(id, name, surname);
 
         uniTranscript = new UniTranscript();
-        courses = new ArrayList<>();
+        subjects = new ArrayList<>();
     }
 
     public void displayUniTranscript(){
@@ -27,13 +27,19 @@ public class Student extends User implements Observer, StudentGateway {
     }
 
     @Override
-    public void attach() {
+    public void attach(Course course) {
+        Professor professor = course.getProfessor();
 
+        subjects.add(professor);
+        professor.subscribe(this);
     }
 
     @Override
-    public void detach() {
+    public void detach(Course course) {
+        Professor professor = course.getProfessor();
 
+        subjects.remove(professor);
+        professor.unsubscribe(this);
     }
 
     private UniTranscript uniTranscript;

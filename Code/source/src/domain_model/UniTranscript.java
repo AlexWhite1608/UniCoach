@@ -12,13 +12,6 @@ public class UniTranscript {
             System.out.println("L'esame è già presente nel libretto");
     }
 
-    public void removeExam(Exam e){
-        if(examList.contains(e))
-            examList.remove(e);
-        else
-            System.out.println("L'esame non è presente nel libretto");
-    }
-
     public Exam getExam(String examName){
         return null;
     }

@@ -3,8 +3,8 @@ package domain_model;
 public interface Observer {
     void update();
 
-    void attach();
+    void attach(Course course);
 
-    void detach();
+    void detach(Course course);
 
 }

@@ -1,7 +1,7 @@
 package domain_model;
 
 public interface Subject {
-    void notifyObservers();
+    void notifyObservers(String msg);
 
     void subscribe(Observer o);
 
