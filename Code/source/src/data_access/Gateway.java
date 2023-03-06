@@ -7,6 +7,5 @@ public class Gateway {
 
     private Student student;
 
-    @Resource
     private Professor professor;
 }
