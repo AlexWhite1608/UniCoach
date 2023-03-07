@@ -1,3 +1,4 @@
+import data_access.DBConnection;
 import domain_model.*;
 
 public class Main {
@@ -14,6 +15,8 @@ public class Main {
         transcript.addExam(new Exam("Prova"));
 
         student.displayUniTranscript();
+
+        DBConnection.createConnection("jdbc:sqlite:Code/database/unicoachdb.db");
     }
 
 }
