@@ -5,13 +5,14 @@ import java.sql.*;
 public class DBConnection {
 
     private static Connection conn;
+    private static final String dbPath = "Code/database/unicoachdb.db";
 
-    public static void connect(String dbPath) {
+    public static Connection connect() {
 
         try {
             // Verifica se la connessione esiste già
             if (conn != null && !conn.isClosed()) {
-                return;
+                return conn;
             }
 
             // Carica il driver JDBC per SQLite
@@ -30,22 +31,25 @@ public class DBConnection {
             e.printStackTrace();
 
         }
+        return conn;
     }
 
-    // Metodo statico per disconnettersi dal database
-    public static void disconnect() {
+    public static Connection disconnect() {
 
         try {
             // Verifica se la connessione esiste e chiude la connessione
             if (conn != null && !conn.isClosed()) {
                 conn.close();
                 System.out.println("Disconnected from database");
+                return conn;
             }
 
         } catch (SQLException e) {
             System.out.println("Failed to disconnect from database");
             e.printStackTrace();
         }
+
+        return conn;
     }
 }
 

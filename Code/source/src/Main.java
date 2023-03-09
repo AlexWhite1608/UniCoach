@@ -1,8 +1,11 @@
 import data_access.DBConnection;
 import domain_model.*;
+import user_login.LoginManager;
+
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("Hello world!");
 
         Student student = new Student(7033449, "Alessandro", "Bianco");
@@ -16,8 +19,15 @@ public class Main {
 
         student.displayUniTranscript();
 
-        DBConnection.connect("Code/database/unicoachdb.db");
-        DBConnection.disconnect();
+        // Test login manager
+        LoginManager loginManager = new LoginManager();
+        loginManager.addUser(student);
+        loginManager.addUser(professor);
+
+        loginManager.login(student);
+        loginManager.login(professor);
+        loginManager.logout(student);
+        loginManager.logout(professor);
     }
 
 }

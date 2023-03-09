@@ -24,6 +24,18 @@ public class User {
         System.out.println("Email: " + email);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     private int id = 0;
     private String name = "";
     private String surname = "";
