@@ -26,6 +26,9 @@ public class Main {
 
         loginManager.login(student);
         loginManager.login(professor);
+
+        loginManager.getAllUsers();
+
         loginManager.logout(student);
         loginManager.logout(professor);
     }

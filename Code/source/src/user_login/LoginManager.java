@@ -13,7 +13,7 @@ public class LoginManager {
     public void addUser(User user) throws SQLException{
         connection = DBConnection.connect();
 
-        String sql = "INSERT INTO Utente (Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT OR IGNORE INTO Utente (Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?)"; //FIXME: IGNORE dovrebbe togliere i duplicati ma non funziona
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getName());
         statement.setString(2, user.getSurname());
@@ -44,6 +44,25 @@ public class LoginManager {
         statement.close();
 
         return loggedIn;
+    }
+
+    public void getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM Utente";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()){
+            System.out.println("----- Utente -----");
+            System.out.println("Nome: " + rs.getString("Nome"));
+            System.out.println("Cognome: " + rs.getString("Cognome"));
+            System.out.println("Email: " + rs.getString("Email"));
+            System.out.println("Password: " + rs.getString("Password"));
+            System.out.println("Tipologia:" + rs.getString("Tipologia"));
+            System.out.println("---------");
+        }
+
+        rs.close();
+        statement.close();
     }
 
     public void logout(User user) {
