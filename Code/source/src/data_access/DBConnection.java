@@ -1,28 +1,51 @@
 package data_access;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBConnection {
 
-    // Instaura direttamente la connessione al DB dal costruttore
-    static public void createConnection(String path){
-        try (Connection conn = DriverManager.getConnection(path)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("A new database has been created.");
+    private static Connection conn;
+
+    public static void connect(String dbPath) {
+
+        try {
+            // Verifica se la connessione esiste già
+            if (conn != null && !conn.isClosed()) {
+                return;
             }
 
+            // Carica il driver JDBC per SQLite
+            Class.forName("org.sqlite.JDBC");
+
+            // Apre la connessione al database SQLite
+            conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+            System.out.println("Connected to database");
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC driver not found");
+            e.printStackTrace();
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Failed to connect to database");
+            e.printStackTrace();
+
         }
     }
 
-    static public void disconnect(){
-        //Controlla che prima ci sia la connessione
-    }
+    // Metodo statico per disconnettersi dal database
+    public static void disconnect() {
 
+        try {
+            // Verifica se la connessione esiste e chiude la connessione
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+                System.out.println("Disconnected from database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Failed to disconnect from database");
+            e.printStackTrace();
+        }
+    }
 }
+

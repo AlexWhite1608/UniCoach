@@ -16,7 +16,8 @@ public class Main {
 
         student.displayUniTranscript();
 
-        DBConnection.createConnection("jdbc:sqlite:Code/database/unicoachdb.db");
+        DBConnection.connect("Code/database/unicoachdb.db");
+        DBConnection.disconnect();
     }
 
 }
