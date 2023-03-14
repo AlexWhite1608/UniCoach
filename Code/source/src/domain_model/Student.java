@@ -5,7 +5,7 @@ import data_access.StudentGateway;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends User implements Observer, StudentGateway {
+public class Student extends User implements Observer {
     public Student(int id, String name, String surname) {
         super(id, name, surname);
 
@@ -44,5 +44,7 @@ public class Student extends User implements Observer, StudentGateway {
 
     private UniTranscript uniTranscript;
     private List<Subject> subjects;
+
+    private StudentGateway studentGateway = new StudentGateway();
 
 }

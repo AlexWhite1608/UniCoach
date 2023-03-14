@@ -29,8 +29,11 @@ public class Main {
 
         loginManager.getAllUsers();
 
+        professor.getGrade(student);
+
         loginManager.logout(student);
         loginManager.logout(professor);
+
     }
 
 }

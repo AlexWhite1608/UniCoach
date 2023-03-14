@@ -3,10 +3,11 @@ package domain_model;
 import data_access.Gateway;
 import data_access.ProfessorGateway;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Professor extends User implements Subject, ProfessorGateway {
+public class Professor extends User implements Subject{
     public Professor(int id, String name, String surname) {
         super(id, name, surname);
 
@@ -15,6 +16,10 @@ public class Professor extends User implements Subject, ProfessorGateway {
 
     public void setGrade(Student student){
 
+    }
+
+    public void getGrade(Student student) throws SQLException {
+        professorGateway.getGrade(student, this);
     }
 
     @Override
@@ -32,30 +37,6 @@ public class Professor extends User implements Subject, ProfessorGateway {
         observers.remove(o);
     }
 
-    @Override
-    public void getGrade(Student student){}
-
-    @Override
-    public void getGrade(List<Student> students){}
-
-    @Override
-    public void getGrade(Course course){}
-
-    @Override
-    public void setExamDate(Exam exam, String date){}
-
-    @Override
-    public void getAverage(Student student){}
-
-    @Override
-    public void getAverage(List<Student> students){}
-
-    @Override
-    public void getAverage(Course course){}
-
-    public void setExamDate(){
-
-    }
-
     private List<Observer> observers;
+    private ProfessorGateway professorGateway = new ProfessorGateway();
 }
