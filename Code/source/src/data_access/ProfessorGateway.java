@@ -17,6 +17,19 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect();
     }
 
+    public void addProfessor(Professor professor) throws SQLException {
+        String sql = "INSERT OR IGNORE INTO Docente (Matricola, Nome, Cognome, Email) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, professor.getId());
+        statement.setString(2, professor.getName());
+        statement.setString(3, professor.getSurname());
+        statement.setString(4, professor.getEmail());
+
+        statement.executeUpdate();
+        statement.close();
+    }
+
     public void getGrade(Student student, Professor professor) throws SQLException {
 
         //SQL per ottenere il corso del professore
@@ -27,22 +40,20 @@ public class ProfessorGateway implements Gateway{
         docStatement.setInt(1, professor.getId());
         ResultSet docRs = docStatement.executeQuery();
 
-
         courseName = docRs.getString("Nome");
-
 
         docRs.close();
         docStatement.close();
 
         int grade = 0;
 
+        //SQL per ottenere il voto dello studente fornito
         String gradeSQL = """
             SELECT esame.voto\s
             FROM Studente\s
             JOIN Libretto ON Studente.matricola = Libretto.studente\s
             JOIN Esame ON Libretto.codice = Esame.codice\s
             WHERE Studente.nome = ?""";
-
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
         gradeStatement.setString(1, student.getName());

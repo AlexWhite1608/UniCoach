@@ -14,7 +14,7 @@ public class User {
         this.name = n;
         this.surname = s;
 
-        this.email = n + "." + s + "@stud.unifi.it"; //FIXME: gestire omonimi
+        this.email = n + "." + s + "@unifi.it"; //FIXME: gestire omonimi
     }
 
     public void displayAttributes() {

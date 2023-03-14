@@ -2,17 +2,18 @@ package domain_model;
 
 import data_access.StudentGateway;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User implements Observer {
-    public Student(int id, String name, String surname) {
+    public Student(int id, String name, String surname) throws SQLException {
         super(id, name, surname);
 
         uniTranscript = new UniTranscript();
         subjects = new ArrayList<>();
 
-        //TODO: quando viene creato lo studente devo essere inserito nel DB tramite gateway
+        studentGateway.addStudent(this);
     }
 
     public void displayUniTranscript(){

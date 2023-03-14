@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Professor extends User implements Subject{
-    public Professor(int id, String name, String surname) {
+    public Professor(int id, String name, String surname) throws SQLException {
         super(id, name, surname);
 
         observers = new ArrayList<>();
 
-        //TODO: quando viene creato il professore devo essere inserito nel DB tramite gateway
+        professorGateway.addProfessor(this);
 
     }
 
