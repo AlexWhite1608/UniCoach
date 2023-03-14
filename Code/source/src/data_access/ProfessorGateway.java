@@ -34,7 +34,7 @@ public class ProfessorGateway implements Gateway{
         docRs.close();
         docStatement.close();
 
-        int grade = 23;
+        int grade = 0;
 
         String gradeSQL = """
             SELECT esame.voto\s

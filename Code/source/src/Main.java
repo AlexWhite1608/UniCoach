@@ -9,7 +9,7 @@ public class Main {
         System.out.println("Hello world!");
 
         Student student = new Student(7033449, "Alessandro", "Bianco");
-        Professor professor = new Professor(456321, "Enrico", "Vicario");
+        Professor professor = new Professor(382156, "Enrico", "Vicario");
 
         student.displayAttributes();
         professor.displayAttributes();
@@ -21,8 +21,8 @@ public class Main {
 
         // Test login manager
         LoginManager loginManager = new LoginManager();
-        loginManager.addUser(student);
-        loginManager.addUser(professor);
+//        loginManager.addUser(student);
+//        loginManager.addUser(professor);
 
         loginManager.login(student);
         loginManager.login(professor);
