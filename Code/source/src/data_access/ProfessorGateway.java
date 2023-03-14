@@ -58,16 +58,18 @@ public class ProfessorGateway implements Gateway{
         //FIXME: deve ritornare un oggetto di tipo Exam?
     }
 
-    void getGrade(List<Student> students);
+    void getGrade(List<Student> students){}
 
-    void getGrade(Course course);
+    void getGrade(Course course){}
 
-    void setExamDate(Exam exam, String date);
+    void setExamDate(Exam exam, String date){}
 
-    void getAverage(Student student);
+    void getAverage(Student student){}
 
-    void getAverage(List<Student> students);
+    void getAverage(List<Student> students){}
 
-    void getAverage(Course course);
+    void getAverage(Course course){}
+
+    private Connection connection = null;
 
 }
