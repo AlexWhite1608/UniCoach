@@ -13,17 +13,17 @@ public class LoginManager {
     public void addUser(User user) throws SQLException{
         connection = DBConnection.connect();
 
-        //TODO: controlla che email non siano uguali per non avere utenti multipli
-        String sql = "INSERT OR IGNORE INTO Utente (Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO Utente (Id, Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, user.getName());
-        statement.setString(2, user.getSurname());
-        statement.setString(3, user.getEmail());
-        statement.setString(4, "12345"); //FIXME: bisogna implementare le password
+        statement.setInt(1, user.getId());
+        statement.setString(2, user.getName());
+        statement.setString(3, user.getSurname());
+        statement.setString(4, user.getEmail());
+        statement.setString(5, "12345"); //FIXME: bisogna implementare le password
         if (user instanceof Student)
-            statement.setString(5, "Studente");
+            statement.setString(6, "Studente");
         else if (user instanceof Professor)
-            statement.setString(5, "Docente");
+            statement.setString(6, "Docente");
 
         statement.executeUpdate();
         statement.close();
