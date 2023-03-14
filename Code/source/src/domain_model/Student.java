@@ -11,6 +11,8 @@ public class Student extends User implements Observer {
 
         uniTranscript = new UniTranscript();
         subjects = new ArrayList<>();
+
+        //TODO: quando viene creato lo studente devo essere inserito nel DB tramite gateway
     }
 
     public void displayUniTranscript(){

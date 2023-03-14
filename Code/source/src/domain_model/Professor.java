@@ -12,6 +12,9 @@ public class Professor extends User implements Subject{
         super(id, name, surname);
 
         observers = new ArrayList<>();
+
+        //TODO: quando viene creato il professore devo essere inserito nel DB tramite gateway
+
     }
 
     public void setGrade(Student student){

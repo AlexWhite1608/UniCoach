@@ -21,8 +21,9 @@ public class Main {
 
         // Test login manager
         LoginManager loginManager = new LoginManager();
-//        loginManager.addUser(student);
-//        loginManager.addUser(professor);
+
+        //loginManager.addUser(student);
+        //loginManager.addUser(professor);
 
         loginManager.login(student);
         loginManager.login(professor);
