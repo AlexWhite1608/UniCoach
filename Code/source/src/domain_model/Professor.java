@@ -22,7 +22,7 @@ public class Professor extends User implements Subject{
     }
 
     public void getGrade(Student student) throws SQLException {
-        professorGateway.getGrade(student, this);
+        professorGateway.getGrade(student);
     }
 
     @Override
@@ -41,5 +41,5 @@ public class Professor extends User implements Subject{
     }
 
     private List<Observer> observers;
-    private ProfessorGateway professorGateway = new ProfessorGateway();
+    private ProfessorGateway professorGateway = new ProfessorGateway(this);
 }

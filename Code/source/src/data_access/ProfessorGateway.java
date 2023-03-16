@@ -13,8 +13,23 @@ import java.util.List;
 
 public class ProfessorGateway implements Gateway{
 
-    public ProfessorGateway() {
+    public ProfessorGateway(Professor professor) throws SQLException {
         connection = DBConnection.connect();
+
+        getCourse(professor);
+    }
+
+    private void getCourse(Professor professor) throws SQLException {
+        //SQL per ottenere il corso del professore
+        String docSql = "SELECT Corso.Nome FROM Corso JOIN Docente ON Corso.Docente = Docente.Matricola WHERE Docente.Matricola = ?";
+        PreparedStatement docStatement = connection.prepareStatement(docSql);
+        docStatement.setInt(1, professor.getId());
+        ResultSet docRs = docStatement.executeQuery();
+
+        this.courseName = docRs.getString("Nome");
+
+        docRs.close();
+        docStatement.close();
     }
 
     public void addProfessor(Professor professor) throws SQLException {
@@ -30,20 +45,7 @@ public class ProfessorGateway implements Gateway{
         statement.close();
     }
 
-    public void getGrade(Student student, Professor professor) throws SQLException {
-
-        //SQL per ottenere il corso del professore
-        String courseName = "";
-
-        String docSql = "SELECT Corso.Nome FROM Corso JOIN Docente ON Corso.Docente = Docente.Matricola WHERE Docente.Matricola = ?";
-        PreparedStatement docStatement = connection.prepareStatement(docSql);
-        docStatement.setInt(1, professor.getId());
-        ResultSet docRs = docStatement.executeQuery();
-
-        courseName = docRs.getString("Nome");
-
-        docRs.close();
-        docStatement.close();
+    public void getGrade(Student student) throws SQLException {
 
         int grade = 0;
 
@@ -64,12 +66,15 @@ public class ProfessorGateway implements Gateway{
         gradeRs.close();
         gradeStatement.close();
 
-        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame di " + courseName);
+        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame di " + this.courseName);
 
         //FIXME: deve ritornare un oggetto di tipo Exam?
     }
 
-    void getGrade(List<Student> students){}
+    // Ritorna il voto di ciascuno studente fornito
+    void getGrade(List<Student> students){
+
+    }
 
     void getGrade(Course course){}
 
@@ -82,5 +87,6 @@ public class ProfessorGateway implements Gateway{
     void getAverage(Course course){}
 
     private Connection connection = null;
+    private String courseName;
 
 }
