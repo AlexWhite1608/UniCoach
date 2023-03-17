@@ -1,14 +1,8 @@
 package domain_model;
 
-enum ExamType {
-    PROJECT,
-    ORAL_EXAMINATION,
-    WRITTEN_TEST,
-    WRITTEN_AND_ORAL_TEST
-}
-
 public class Course {
     public Course(String name, int CFU, Professor professor, ExamType examType) {
+        this.id = RandomStringGenerator.generateRandomString(8);
         this.name = name;
         this.CFU = CFU;
         this.professor = professor;
@@ -31,6 +25,11 @@ public class Course {
         return professor;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    private String id;
     private String name;
     private int CFU;
     private Professor professor;

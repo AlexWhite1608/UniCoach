@@ -15,7 +15,7 @@ public class LoginManager {
 
         String sql = "INSERT OR IGNORE INTO Utente (Id, Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, user.getId());
+        statement.setString(1, user.getId());
         statement.setString(2, user.getName());
         statement.setString(3, user.getSurname());
         statement.setString(4, user.getEmail());

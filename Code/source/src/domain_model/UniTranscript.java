@@ -1,15 +1,24 @@
 package domain_model;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UniTranscript {
+
+    public UniTranscript() {
+        this.id = RandomStringGenerator.generateRandomString(8);
+    }
 
     public void addExam(Exam e){
         if(!examList.contains(e))
             examList.add(e);
         else
             System.out.println("L'esame è già presente nel libretto");
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Exam getExam(String examName){
@@ -27,5 +36,6 @@ public class UniTranscript {
     }
 
     private List<Exam> examList = new ArrayList<Exam>();
+    private String id;
 
 }

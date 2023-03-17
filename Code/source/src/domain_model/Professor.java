@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Professor extends User implements Subject{
-    public Professor(int id, String name, String surname) throws SQLException {
+    public Professor(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
 
         observers = new ArrayList<>();
@@ -23,6 +23,10 @@ public class Professor extends User implements Subject{
 
     public void getGrade(Student student) throws SQLException {
         professorGateway.getGrade(student);
+    }
+
+    public void getGrade(ArrayList<Student> students) throws SQLException{
+        professorGateway.getGrade(students);
     }
 
     @Override

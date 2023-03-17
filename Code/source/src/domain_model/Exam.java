@@ -2,15 +2,18 @@ package domain_model;
 
 public class Exam{
 
-    public Exam(String n) {
-        this.name = n;
-    }
-
-    public Exam(Course course) {
+    public Exam(Course course, String date, int grade) {
+        this.id = RandomStringGenerator.generateRandomString(8);
         this.course = course;
         this.name = course.getName();
         this.CFU = course.getCFU();
         this.examType = course.getExamType();
+        this.grade = grade;
+        this.date = date;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -33,6 +36,19 @@ public class Exam{
         return isPassed;
     }
 
+    public int getCFU() {
+        return CFU;
+    }
+
+    public String getExamType() {
+        return examType.getDisplayName();
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    private String id;
     private String name;
     private int grade = 0;
     private boolean praise = false;

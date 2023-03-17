@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorGateway implements Gateway{
@@ -21,12 +22,12 @@ public class ProfessorGateway implements Gateway{
 
     private void getCourse(Professor professor) throws SQLException {
         //SQL per ottenere il corso del professore
-        String docSql = "SELECT Corso.Nome FROM Corso JOIN Docente ON Corso.Docente = Docente.Matricola WHERE Docente.Matricola = ?";
+        String docSql = "SELECT codice FROM Corso WHERE docente = ?";
         PreparedStatement docStatement = connection.prepareStatement(docSql);
-        docStatement.setInt(1, professor.getId());
+        docStatement.setString(1, professor.getId());
         ResultSet docRs = docStatement.executeQuery();
 
-        this.courseName = docRs.getString("Nome");
+        this.courseID = docRs.getString("Codice");
 
         docRs.close();
         docStatement.close();
@@ -36,7 +37,7 @@ public class ProfessorGateway implements Gateway{
         String sql = "INSERT OR IGNORE INTO Docente (Matricola, Nome, Cognome, Email) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, professor.getId());
+        statement.setString(1, professor.getId());
         statement.setString(2, professor.getName());
         statement.setString(3, professor.getSurname());
         statement.setString(4, professor.getEmail());
@@ -51,14 +52,13 @@ public class ProfessorGateway implements Gateway{
 
         //SQL per ottenere il voto dello studente fornito
         String gradeSQL = """
-            SELECT esame.voto\s
-            FROM Studente\s
-            JOIN Libretto ON Studente.matricola = Libretto.studente\s
-            JOIN Esame ON Libretto.codice = Esame.codice\s
-            WHERE Studente.nome = ?""";
+                SELECT esame.voto\s
+                FROM Esame\s
+                WHERE Studente.matricola = ? AND Corso = ?""";
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
-        gradeStatement.setString(1, student.getName());
+        gradeStatement.setString(1, student.getId());
+        gradeStatement.setString(2, this.courseID);
         ResultSet gradeRs = gradeStatement.executeQuery();
 
         grade = gradeRs.getInt("voto");
@@ -66,27 +66,61 @@ public class ProfessorGateway implements Gateway{
         gradeRs.close();
         gradeStatement.close();
 
-        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame di " + this.courseName);
+        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame di " + this.courseID);
 
         //FIXME: deve ritornare un oggetto di tipo Exam?
     }
 
     // Ritorna il voto di ciascuno studente fornito
-    void getGrade(List<Student> students){
+    public void getGrade(ArrayList<Student> students) throws SQLException {
 
+        int grade = 0;
+
+        //SQL per ottenere il voto dello studente fornito
+        String gradeSQL = """
+                SELECT esame.voto\s
+                FROM Esame\s
+                WHERE Corso = ? AND Studente.matricola IN (?)""";
+
+        PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
+
+        // Otteniamo la matricola di tutti gli studenti forniti in input
+        List<String> studentsId = new ArrayList<>(students.size());
+
+        for (Student s: students ) {
+            studentsId.add(s.getId());
+        }
+
+        gradeStatement.setString(1, this.courseID);
+        gradeStatement.setString(2, String.join(",", studentsId));
+        ResultSet gradeRs = gradeStatement.executeQuery();
+
+        while (gradeRs.next()) {
+            String studentName = gradeRs.getString("nome");
+            String studentSurname = gradeRs.getString("cognome");
+            int voto = gradeRs.getInt("voto");
+            System.out.println(studentName + " " + studentSurname + ": " + voto);
+        }
+
+        gradeRs.close();
+        gradeStatement.close();
+
+
+
+        //FIXME: deve ritornare una lista di Exam?
     }
 
-    void getGrade(Course course){}
+    public void getGrade(Course course){}
 
-    void setExamDate(Exam exam, String date){}
+    public void setExamDate(Exam exam, String date){}
 
-    void getAverage(Student student){}
+    public void getAverage(Student student){}
 
-    void getAverage(List<Student> students){}
+    public void getAverage(List<Student> students){}
 
-    void getAverage(Course course){}
+    public void getAverage(Course course){}
 
     private Connection connection = null;
-    private String courseName;
+    private String courseID;
 
 }

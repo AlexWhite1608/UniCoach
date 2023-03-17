@@ -2,14 +2,14 @@ package domain_model;
 
 public class User {
 
-    public User(int id, String name, String surname, String email) {
+    public User(String id, String name, String surname, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
     }
 
-    public User(int ID, String n, String s) {
+    public User(String ID, String n, String s) {
         this.id = ID;
         this.name = n;
         this.surname = s;
@@ -32,7 +32,7 @@ public class User {
         return surname;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -40,7 +40,7 @@ public class User {
         return email;
     }
 
-    private int id = 0;
+    private String id;
     private String name = "";
     private String surname = "";
     private String email = "";

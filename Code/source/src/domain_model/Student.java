@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User implements Observer {
-    public Student(int id, String name, String surname) throws SQLException {
+    public Student(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
 
         uniTranscript = new UniTranscript();
@@ -16,12 +16,20 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
+    //TODO: quando lo studente si registra deve scegliere i corsi da seguire --> inserire nel db i corsi scelti!
+
     public void displayUniTranscript(){
         uniTranscript.displayExams();
     }
 
     public UniTranscript getUniTranscript() {
         return uniTranscript;
+    }
+
+    public void addExam(Exam exam) throws SQLException {
+        uniTranscript.addExam(exam);
+
+        studentGateway.addExam(this, exam);
     }
 
     @Override
