@@ -54,7 +54,7 @@ public class ProfessorGateway implements Gateway{
         String gradeSQL = """
                 SELECT esame.voto\s
                 FROM Esame\s
-                WHERE Studente.matricola = ? AND Corso = ?""";
+                WHERE Studente = ? AND Corso = ?""";
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
         gradeStatement.setString(1, student.getId());
@@ -66,12 +66,13 @@ public class ProfessorGateway implements Gateway{
         gradeRs.close();
         gradeStatement.close();
 
-        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame di " + this.courseID);
+        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame con codice " + this.courseID);
 
         //FIXME: deve ritornare un oggetto di tipo Exam?
     }
 
     // Ritorna il voto di ciascuno studente fornito
+    //FIXME: non è giusto il codice per ricavare tutte le matricole!
     public void getGrade(ArrayList<Student> students) throws SQLException {
 
         int grade = 0;
@@ -80,7 +81,7 @@ public class ProfessorGateway implements Gateway{
         String gradeSQL = """
                 SELECT esame.voto\s
                 FROM Esame\s
-                WHERE Corso = ? AND Studente.matricola IN (?)""";
+                WHERE Corso = ? AND Studente IN (?)""";
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
 
@@ -92,20 +93,15 @@ public class ProfessorGateway implements Gateway{
         }
 
         gradeStatement.setString(1, this.courseID);
-        gradeStatement.setString(2, String.join(",", studentsId));
+        gradeStatement.setString(2, String.join(", ", studentsId));
         ResultSet gradeRs = gradeStatement.executeQuery();
 
-        while (gradeRs.next()) {
-            String studentName = gradeRs.getString("nome");
-            String studentSurname = gradeRs.getString("cognome");
-            int voto = gradeRs.getInt("voto");
-            System.out.println(studentName + " " + studentSurname + ": " + voto);
-        }
+        int voto = gradeRs.getInt("voto");
+        System.out.println(voto);
+
 
         gradeRs.close();
         gradeStatement.close();
-
-
 
         //FIXME: deve ritornare una lista di Exam?
     }
