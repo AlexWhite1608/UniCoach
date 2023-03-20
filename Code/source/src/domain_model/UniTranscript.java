@@ -36,6 +36,6 @@ public class UniTranscript {
     }
 
     private List<Exam> examList = new ArrayList<Exam>();
-    private String id;
+    private final String id;
 
 }

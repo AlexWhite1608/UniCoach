@@ -29,7 +29,7 @@ public class Course {
         return id;
     }
 
-    private String id;
+    private final String id;
     private String name;
     private int CFU;
     private Professor professor;

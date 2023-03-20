@@ -99,13 +99,13 @@ public class ProfessorGateway implements Gateway{
         int voto = gradeRs.getInt("voto");
         System.out.println(voto);
 
-
         gradeRs.close();
         gradeStatement.close();
 
         //FIXME: deve ritornare una lista di Exam?
     }
 
+    // Ritorna il voto di tutti gli studenti del corso del professore
     public void getGrade(Course course){}
 
     public void setExamDate(Exam exam, String date){}

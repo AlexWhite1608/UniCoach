@@ -30,7 +30,8 @@ public class Main {
         loginManager.login(student1);
 
         //Aggiunta di un esame per gli studenti
-        Exam examSwe = new Exam(new Course("Swe", 6, professor1, ExamType.PROJECT), "14/03/2023", 30);
+        Course swe = new Course("Swe", 6, professor1, ExamType.PROJECT);
+        Exam examSwe = new Exam(swe, "14/03/2023", 30);
         student1.addExam(examSwe);
         student2.addExam(examSwe);
         student3.addExam(examSwe);

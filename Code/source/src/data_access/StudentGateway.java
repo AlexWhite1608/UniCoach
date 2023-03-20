@@ -37,7 +37,7 @@ public class StudentGateway implements Gateway {
         transcriptStatement.close();
     }
     public void addExam(Student student, Exam exam) throws SQLException {
-        String sql = "INSERT INTO Esame (Codice, Studente, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO Esame (Codice, Studente, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, exam.getId());
