@@ -46,36 +46,4 @@ public class Main {
         studentsList.add(student3);
         professor1.getGrade(studentsList);
     }
-
-//        Student student = new Student("7033449", "Alessandro", "Bianco");
-//        Professor professor = new Professor("382156", "Enrico", "Vicario");
-//
-//        student.displayAttributes();
-//        professor.displayAttributes();
-//
-//        UniTranscript transcript = student.getUniTranscript();
-//        transcript.addExam(new Exam("Prova"));
-//
-//        student.displayUniTranscript();
-//
-//        // Test login manager
-//        LoginManager loginManager = new LoginManager();
-//
-//        loginManager.addUser(student);
-//        loginManager.addUser(professor);
-//
-//        loginManager.login(student);
-//        loginManager.login(professor);
-//
-//        loginManager.getAllUsers();
-//
-//        professor.getGrade(student);
-//
-//        loginManager.logout(student);
-//        loginManager.logout(professor);
-//
-//    }
-
-
-
 }

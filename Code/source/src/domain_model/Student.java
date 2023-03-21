@@ -55,7 +55,6 @@ public class Student extends User implements Observer {
 
     private UniTranscript uniTranscript;
     private List<Subject> subjects;
-
     private StudentGateway studentGateway = new StudentGateway();
 
 }
