@@ -34,6 +34,34 @@ public class DBConnection {
         return conn;
     }
 
+    // Versione per la connessione al db nei test
+    public static Connection connect(String testPath) {
+
+        try {
+            // Verifica se la connessione esiste già
+            if (conn != null && !conn.isClosed()) {
+                return conn;
+            }
+
+            // Carica il driver JDBC per SQLite
+            Class.forName("org.sqlite.JDBC");
+
+            // Apre la connessione al database SQLite
+            conn = DriverManager.getConnection("jdbc:sqlite:" + testPath);
+            System.out.println("Connected to database");
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC driver not found");
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to database");
+            e.printStackTrace();
+
+        }
+        return conn;
+    }
+
     public static Connection disconnect() {
 
         try {
