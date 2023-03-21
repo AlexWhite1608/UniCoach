@@ -14,6 +14,7 @@ public class StudentGateway implements Gateway {
     public StudentGateway() {
         connection = DBConnection.connect();
     }
+
     public void addStudent(Student student) throws SQLException {
         String sql = "INSERT OR IGNORE INTO Studente (Matricola, Nome, Cognome, Email, Libretto) VALUES (?, ?, ?, ?, ?)";
 
@@ -36,18 +37,18 @@ public class StudentGateway implements Gateway {
         transcriptStatement.executeUpdate();
         transcriptStatement.close();
     }
+
     public void addExam(Student student, Exam exam) throws SQLException {
-        String sql = "INSERT OR IGNORE INTO Esame (Codice, Studente, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, exam.getId());
-        statement.setString(2, student.getId());
-        statement.setString(3, exam.getName());
-        statement.setString(4, exam.getDate());
-        statement.setInt(5, exam.getCFU());
-        statement.setInt(6, exam.getGrade());
-        statement.setString(7, exam.getCourse().getId());
-        statement.setString(8, exam.getExamType());
+        statement.setString(2, exam.getName());
+        statement.setString(3, exam.getDate());
+        statement.setInt(4, exam.getCFU());
+        statement.setInt(5, exam.getGrade());
+        statement.setString(6, exam.getCourse().getId());
+        statement.setString(7, exam.getExamType());
 
         statement.executeUpdate();
         statement.close();
@@ -78,7 +79,9 @@ public class StudentGateway implements Gateway {
         transcriptStatement.executeUpdate();
         transcriptStatement.close();
     }
+
     void getGrade(Course course){}
+
     void  getAverage(){}
 
     private Connection connection = null;

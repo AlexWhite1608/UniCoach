@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+        //TODO: SOSTITUISCI TUTTO QUESTO CODICE CON I TEST!
         LoginManager loginManager = new LoginManager();
 
         //Aggiunta studenti

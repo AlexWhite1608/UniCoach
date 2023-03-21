@@ -16,6 +16,7 @@ import static junit.framework.TestCase.assertTrue;
 
 public class StudentTest {
     private Connection conn;
+    private Student student;
 
     @Before
     public void setUp(){
@@ -24,6 +25,7 @@ public class StudentTest {
 
     @After
     public void tearDown() throws SQLException{
+
         // Elimina lo studente appena inserito dal database
         String deleteSql = "DELETE FROM Studente WHERE Matricola = ?";
         PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
@@ -32,12 +34,20 @@ public class StudentTest {
         deleteStatement.executeUpdate();
         deleteStatement.close();
 
+        //Elimina il libretto dello studente
+
+        //Elimina il professore appena inserito
+
+        //Elimina l'esame appena inserito
+
+        //Elimina il corso appena inserito
+
         conn = DBConnection.disconnect();
     }
 
     @Test
     public void testAddStudent() throws SQLException {
-        Student student = new Student("12345", "Mario", "Rossi");
+        student = new Student("12345", "Mario", "Rossi");
 
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Studente WHERE Matricola = ?";
@@ -51,6 +61,13 @@ public class StudentTest {
         assertEquals("Rossi", result.getString("Cognome"));
         assertEquals("12345", result.getString("Matricola"));
 
+        //TODO: verifica anche che venga costruito il libretto!
+
         statement.close();
+    }
+
+    @Test
+    public void testAddExam() throws SQLException{
+
     }
 }
