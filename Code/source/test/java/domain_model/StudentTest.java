@@ -1,7 +1,6 @@
 package domain_model;
 
 import data_access.DBConnection;
-import data_access.StudentGateway;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +14,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public class StudentTest {
-    private Connection conn;
-    private Student student;
-
     @Before
     public void setUp(){
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -65,7 +61,6 @@ public class StudentTest {
 
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.close();
-
 
         conn = DBConnection.disconnect();
     }
@@ -117,4 +112,7 @@ public class StudentTest {
 
         statement.close();
     }
+
+    private Connection conn;
+    private Student student;
 }

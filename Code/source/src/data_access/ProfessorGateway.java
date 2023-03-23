@@ -46,27 +46,28 @@ public class ProfessorGateway implements Gateway{
         statement.close();
     }
 
-    public void getGrade(Student student) throws SQLException {
+    public int getGrade(Student student) throws SQLException {
 
-        int grade = 0;
+        int grade;
 
         //SQL per ottenere il voto dello studente fornito
         String gradeSQL = """
-                SELECT esame.voto\s
+                SELECT Voto\s
                 FROM Esame\s
-                WHERE Studente = ? AND Corso = ?""";
+                WHERE Corso = ?""";
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
-        gradeStatement.setString(1, student.getId());
-        gradeStatement.setString(2, this.courseID);
+        gradeStatement.setString(1, this.courseID);
         ResultSet gradeRs = gradeStatement.executeQuery();
 
-        grade = gradeRs.getInt("voto");
+        grade = gradeRs.getInt("Voto");
 
         gradeRs.close();
         gradeStatement.close();
 
         System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame con codice " + this.courseID);
+
+        return grade;
 
         //FIXME: deve ritornare un oggetto di tipo Exam?
     }
