@@ -35,6 +35,12 @@ public class StudentTest {
         deleteStudentStatement.close();
 
         //Elimina il libretto dello studente
+        String deleteTranscriptSql = "DELETE FROM Libretto WHERE Codice = ?";
+        PreparedStatement deleteTranscriptStatement = conn.prepareStatement(deleteTranscriptSql);
+        deleteTranscriptStatement.setString(1, student.getUniTranscript().getId());
+
+        deleteTranscriptStatement.executeUpdate();
+        deleteTranscriptStatement.close();
 
         //Elimina il professore appena inserito
         String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
@@ -47,19 +53,26 @@ public class StudentTest {
         //Elimina l'esame appena inserito
         String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
         PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
-        deleteExamStatement.setString(1, "Fisica");
+        deleteExamStatement.setString(1, "TestCorso");
 
         deleteExamStatement.executeUpdate();
         deleteExamStatement.close();
 
         //Elimina il corso appena inserito
+        String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, "TestCorso");
+
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.close();
+
 
         conn = DBConnection.disconnect();
     }
 
     @Test
     public void testAddStudent() throws SQLException {
-        student = new Student("12345", "Mario", "Rossi");
+        student = new Student("12345", "TestNome", "TestCognome");
 
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Studente WHERE Matricola = ?";
@@ -69,8 +82,8 @@ public class StudentTest {
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
-        assertEquals("Mario", result.getString("Nome"));
-        assertEquals("Rossi", result.getString("Cognome"));
+        assertEquals("TestNome", result.getString("Nome"));
+        assertEquals("TestCognome", result.getString("Cognome"));
         assertEquals("12345", result.getString("Matricola"));
 
         //TODO: verifica anche che venga costruito il libretto!
@@ -80,12 +93,12 @@ public class StudentTest {
 
     @Test
     public void testAddExam() throws SQLException{
-        Student studentTestExam = new Student("12345", "Mario", "Rossi");
-        Professor testProfessor = new Professor("12345", "Paolo", "Giallo");
-        Course fisica = new Course("Fisica", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
-        Exam examTest = new Exam(fisica, "10/03/2023", 30);
+        student = new Student("12345", "TestNome", "TestCognome");
+        Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
+        Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Exam examTest = new Exam(courseTest, "testData", 30);
 
-        studentTestExam.addExam(examTest);
+        student.addExam(examTest);
 
         // Verifica che l'esame venga inserito correttamente
         String sql = "SELECT * FROM Esame WHERE Codice = ?";
@@ -95,12 +108,12 @@ public class StudentTest {
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
-        assertEquals("Fisica", result.getString("Nome"));
-        assertEquals("10/03/2023", result.getString("Data"));
+        assertEquals("TestCorso", result.getString("Nome"));
+        assertEquals("testData", result.getString("Data"));
         assertEquals(6, result.getInt("CFU"));
         assertEquals(30, result.getInt("Voto"));
-        assertEquals(fisica.getId(), result.getString("Corso"));
-        assertEquals(fisica.getExamType().getDisplayName(), result.getString("TipoEsame"));
+        assertEquals(courseTest.getId(), result.getString("Corso"));
+        assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
 
         statement.close();
     }

@@ -1,10 +1,10 @@
 package domain_model;
 
 public enum ExamType {
-    PROJECT("Project"),
-    ORAL_EXAMINATION("Oral examination"),
-    WRITTEN_TEST("Written test"),
-    WRITTEN_AND_ORAL_TEST("Written and oral test");
+    PROJECT("Progetto"),
+    ORAL_EXAMINATION("Esame orale"),
+    WRITTEN_TEST("Esame scritto"),
+    WRITTEN_AND_ORAL_TEST("Esame scritto e orale");
 
     private final String displayName;
 
