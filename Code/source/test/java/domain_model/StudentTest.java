@@ -27,18 +27,30 @@ public class StudentTest {
     public void tearDown() throws SQLException{
 
         // Elimina lo studente appena inserito dal database
-        String deleteSql = "DELETE FROM Studente WHERE Matricola = ?";
-        PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
-        deleteStatement.setString(1, "12345");
+        String deleteStudentSql = "DELETE FROM Studente WHERE Matricola = ?";
+        PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
+        deleteStudentStatement.setString(1, "12345");
 
-        deleteStatement.executeUpdate();
-        deleteStatement.close();
+        deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.close();
 
         //Elimina il libretto dello studente
 
         //Elimina il professore appena inserito
+        String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
+        PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
+        deleteProfessorStatement.setString(1, "12345");
+
+        deleteProfessorStatement.executeUpdate();
+        deleteProfessorStatement.close();
 
         //Elimina l'esame appena inserito
+        String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
+        PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
+        deleteExamStatement.setString(1, "Fisica");
+
+        deleteExamStatement.executeUpdate();
+        deleteExamStatement.close();
 
         //Elimina il corso appena inserito
 
@@ -68,6 +80,28 @@ public class StudentTest {
 
     @Test
     public void testAddExam() throws SQLException{
+        Student studentTestExam = new Student("12345", "Mario", "Rossi");
+        Professor testProfessor = new Professor("12345", "Paolo", "Giallo");
+        Course fisica = new Course("Fisica", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Exam examTest = new Exam(fisica, "10/03/2023", 30);
 
+        studentTestExam.addExam(examTest);
+
+        // Verifica che l'esame venga inserito correttamente
+        String sql = "SELECT * FROM Esame WHERE Codice = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, examTest.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals("Fisica", result.getString("Nome"));
+        assertEquals("10/03/2023", result.getString("Data"));
+        assertEquals(6, result.getInt("CFU"));
+        assertEquals(30, result.getInt("Voto"));
+        assertEquals(fisica.getId(), result.getString("Corso"));
+        assertEquals(fisica.getExamType().getDisplayName(), result.getString("TipoEsame"));
+
+        statement.close();
     }
 }

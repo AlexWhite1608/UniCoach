@@ -16,7 +16,7 @@ public class StudentGateway implements Gateway {
     }
 
     public void addStudent(Student student) throws SQLException {
-        String sql = "INSERT OR IGNORE INTO Studente (Matricola, Nome, Cognome, Email, Libretto) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Studente (Matricola, Nome, Cognome, Email, Libretto) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, student.getId());
@@ -39,7 +39,7 @@ public class StudentGateway implements Gateway {
     }
 
     public void addExam(Student student, Exam exam) throws SQLException {
-        String sql = "INSERT OR IGNORE INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, exam.getId());
@@ -54,7 +54,7 @@ public class StudentGateway implements Gateway {
         statement.close();
 
         //Aggiungo il corso relativo all'esame
-        String courseSql = "INSERT OR IGNORE INTO Corso (Codice, Nome, CFU, Docente , TipoEsame) VALUES (?, ?, ?, ?, ?)";
+        String courseSql = "INSERT OR IGNORE INTO Corso (Codice, Nome, CFU, Docente, TipoEsame) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement courseStatement = connection.prepareStatement(courseSql);
         courseStatement.setString(1, exam.getCourse().getId());
