@@ -7,12 +7,18 @@ import domain_model.User;
 import java.sql.*;
 
 public class LoginManager {
-    private Connection connection = null;
+    private Connection connection;
+
+    public LoginManager() {
+        connection = DBConnection.connect();
+    }
+
+    public LoginManager(String testDbPath) {    //usato per i test
+        connection = DBConnection.connect(testDbPath);
+    }
 
     // Viene chiamato tipo per la registrazione dell'utente
     public void addUser(User user) throws SQLException{
-        connection = DBConnection.connect();
-
         String sql = "INSERT OR IGNORE INTO Utente (Id, Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getId());
@@ -30,8 +36,6 @@ public class LoginManager {
     }
 
     public boolean login(User user) throws SQLException{
-        connection = DBConnection.connect();
-
         String sql = "SELECT * FROM Utente WHERE Email = ? AND Password = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getEmail());
@@ -69,8 +73,6 @@ public class LoginManager {
     public void logout(User user) {
         //FIXME: da implementare meglio
         System.out.println(user.getName() + " " + user.getSurname() + " log out");
-
-        connection = DBConnection.disconnect();
     }
 
 
