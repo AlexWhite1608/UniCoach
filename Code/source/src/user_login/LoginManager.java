@@ -39,7 +39,7 @@ public class LoginManager {
         String sql = "SELECT * FROM Utente WHERE Email = ? AND Password = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getEmail());
-        statement.setString(2, "12345");
+        statement.setString(2, "12345");    //FIXME: gestisci password!
         ResultSet rs = statement.executeQuery();
         boolean loggedIn = rs.next();
 

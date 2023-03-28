@@ -64,10 +64,32 @@ public class LoginManagerTest extends TestCase {
         statement.close();
     }
 
-    public void testLogin() {
+    public void testLogin() throws SQLException  {
+        Student student = new Student("101010", "TestNome", "TestCognome");
+
+        loginManager.addUser(student);
+
+        assertTrue(loginManager.login(student));
+
+        //Cancella l'utente inserito
+        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
+        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
+        deleteUserStatement.setString(1, "TestNome");
+
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.close();
+
+        //Elimina lo studente appena inserito
+        String deleteStudentSql = "DELETE FROM Studente WHERE Matricola = ?";
+        PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
+        deleteStudentStatement.setString(1, "101010");
+
+        deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.close();
     }
 
-    public void testLogout() {
+    //TODO: da implementare quando si è fatto per bene il codice per il logout
+    public void testLogout(){
     }
 
     private LoginManager loginManager;
