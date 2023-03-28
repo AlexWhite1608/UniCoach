@@ -52,62 +52,31 @@ public class ProfessorGateway implements Gateway{
 
         //SQL per ottenere il voto dello studente fornito
         String gradeSQL = """
-                SELECT Voto\s
-                FROM Esame\s
-                WHERE Corso = ?""";
+            SELECT Esame.Voto
+            FROM Esame
+            JOIN Libretto ON Esame.Codice = Libretto.Esame
+            JOIN Studente ON Libretto.Codice = Studente.Libretto
+            WHERE Esame.Corso = ? AND Studente.Matricola = ?""";
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
         gradeStatement.setString(1, this.courseID);
+        gradeStatement.setString(2, student.getId());
         ResultSet gradeRs = gradeStatement.executeQuery();
 
-        grade = gradeRs.getInt("Voto");
+        if (gradeRs.next()) {
+            grade = gradeRs.getInt("Voto");
 
-        gradeRs.close();
-        gradeStatement.close();
-
-        System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame con codice " + this.courseID);
-
-        return grade;
-
-        //FIXME: deve ritornare un oggetto di tipo Exam?
-    }
-
-    // Ritorna il voto di ciascuno studente fornito
-    //FIXME: non è giusto il codice per ricavare tutte le matricole!
-    public void getGrade(ArrayList<Student> students) throws SQLException {
-
-        int grade = 0;
-
-        //SQL per ottenere il voto dello studente fornito
-        String gradeSQL = """
-                SELECT esame.voto\s
-                FROM Esame\s
-                WHERE Corso = ? AND Studente IN (?)""";
-
-        PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
-
-        // Otteniamo la matricola di tutti gli studenti forniti in input
-        List<String> studentsId = new ArrayList<>(students.size());
-
-        for (Student s: students ) {
-            studentsId.add(s.getId());
+            System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame con codice " + this.courseID);
+        } else {
+            grade = -1; //valore di default per indicare che non c'è un voto per questo studente
+            System.out.println("Lo studente " + student.getId() + " non ha un voto per l'esame con codice " + this.courseID);
         }
 
-        gradeStatement.setString(1, this.courseID);
-        gradeStatement.setString(2, String.join(", ", studentsId));
-        ResultSet gradeRs = gradeStatement.executeQuery();
-
-        int voto = gradeRs.getInt("voto");
-        System.out.println(voto);
-
         gradeRs.close();
         gradeStatement.close();
 
-        //FIXME: deve ritornare una lista di Exam?
+        return grade;
     }
-
-    // Ritorna il voto di tutti gli studenti del corso del professore
-    public void getGrade(Course course){}
 
     public void setExamDate(Exam exam, String date){}
 
