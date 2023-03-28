@@ -25,10 +25,6 @@ public class Professor extends User implements Subject{
         return professorGateway.getGrade(student);
     }
 
-    public void getGrade(ArrayList<Student> students) throws SQLException{
-        professorGateway.getGrade(students);
-    }
-
     @Override
     public void notifyObservers(String msg) {
 
