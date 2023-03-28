@@ -12,6 +12,16 @@ public class Exam{
         this.date = date;
     }
 
+    public Exam(Course course, String date) {
+        this.id = RandomStringGenerator.generateRandomString(8);
+        this.course = course;
+        this.name = course.getName();
+        this.CFU = course.getCFU();
+        this.examType = course.getExamType();
+        this.grade = -1;
+        this.date = date;
+    }
+
     public String getId() {
         return id;
     }

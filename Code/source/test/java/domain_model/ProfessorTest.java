@@ -21,6 +21,7 @@ public class ProfessorTest {
         conn = DBConnection.connect("../database/unicoachdb.db");
     }
 
+    //FIXME: aggiungi rimozione dati di testAddExam()
     @After
     public void tearDown() throws SQLException{
 
@@ -37,7 +38,7 @@ public class ProfessorTest {
 
     @Test
     public void testAddProfessor() throws SQLException {
-        professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
 
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
@@ -50,6 +51,34 @@ public class ProfessorTest {
         assertEquals("TestNome", result.getString("Nome"));
         assertEquals("TestCognome", result.getString("Cognome"));
         assertEquals("12345", result.getString("Matricola"));
+
+        statement.close();
+    }
+
+    //FIXME: non funziona
+    @Test
+    public void testAddExam() throws SQLException {
+        Student student = new Student("12345", "TestNome", "TestCognome");
+        Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
+        Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Exam examTest = new Exam(courseTest, "testData");
+
+        testProfessor.setGrade(student, examTest, 30);
+
+        // Verifica che l'esame venga inserito correttamente
+        String sql = "SELECT * FROM Esame WHERE Codice = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, examTest.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals("TestCorso", result.getString("Nome"));
+        assertEquals("testData", result.getString("Data"));
+        assertEquals(6, result.getInt("CFU"));
+        assertEquals(30, result.getInt("Voto"));
+        assertEquals(courseTest.getId(), result.getString("Corso"));
+        assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
 
         statement.close();
     }
@@ -111,5 +140,4 @@ public class ProfessorTest {
     }
 
     private Connection conn;
-    private Professor professor;
 }

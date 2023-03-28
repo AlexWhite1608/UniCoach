@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorGateway implements Gateway{
@@ -17,10 +16,10 @@ public class ProfessorGateway implements Gateway{
     public ProfessorGateway(Professor professor) throws SQLException {
         connection = DBConnection.connect();
 
-        getCourse(professor);
+        setCourseId(professor);
     }
 
-    private void getCourse(Professor professor) throws SQLException {
+    private void setCourseId(Professor professor) throws SQLException {
         //SQL per ottenere il corso del professore
         String docSql = "SELECT codice FROM Corso WHERE docente = ?";
         PreparedStatement docStatement = connection.prepareStatement(docSql);
@@ -65,11 +64,8 @@ public class ProfessorGateway implements Gateway{
 
         if (gradeRs.next()) {
             grade = gradeRs.getInt("Voto");
-
-            System.out.println("Lo studente " + student.getId() + " ha preso " + grade + " all'esame con codice " + this.courseID);
         } else {
             grade = -1; //valore di default per indicare che non c'è un voto per questo studente
-            System.out.println("Lo studente " + student.getId() + " non ha un voto per l'esame con codice " + this.courseID);
         }
 
         gradeRs.close();
@@ -78,7 +74,35 @@ public class ProfessorGateway implements Gateway{
         return grade;
     }
 
-    public void setExamDate(Exam exam, String date){}
+    public void setGrade(Student student, Exam exam, int grade) throws SQLException{
+        //INSERISCE L'ESAME CON IL RELATIVO VOTO ALLO STUDENTE!
+        String sql = "INSERT INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, exam.getId());
+        statement.setString(2, exam.getName());
+        statement.setString(3, exam.getDate());
+        statement.setInt(4, exam.getCFU());
+        statement.setInt(5, grade);
+        statement.setString(6, exam.getCourse().getId());
+        statement.setString(7, exam.getExamType());
+
+        statement.executeUpdate();
+        statement.close();
+
+        //Aggiungo l'esame al libretto dello studente
+        String transcriptSql = """
+                UPDATE Libretto
+                SET Esame = ?
+                WHERE Codice = ?""";
+
+        PreparedStatement transcriptStatement = connection.prepareStatement(transcriptSql);
+        transcriptStatement.setString(1, exam.getId());
+        transcriptStatement.setString(2, student.getUniTranscript().getId());
+
+        transcriptStatement.executeUpdate();
+        transcriptStatement.close();
+    }
 
     public void getAverage(Student student){}
 
