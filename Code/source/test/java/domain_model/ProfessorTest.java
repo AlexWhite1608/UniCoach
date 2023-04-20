@@ -37,7 +37,7 @@ public class ProfessorTest {
 
     @Test
     public void testAddProfessor() throws SQLException {
-        professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
 
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
@@ -54,6 +54,34 @@ public class ProfessorTest {
         statement.close();
     }
 
+    //FIXME: non funziona
+    @Test
+    public void testAddExam() throws SQLException {
+        Student student = new Student("12345", "TestNome", "TestCognome");
+        Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
+        Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Exam examTest = new Exam(courseTest, "testData");
+
+        testProfessor.setGrade(student, examTest, 30);
+
+        // Verifica che l'esame venga inserito correttamente
+        String sql = "SELECT * FROM Esame WHERE Codice = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, examTest.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals("TestCorso", result.getString("Nome"));
+        assertEquals("testData", result.getString("Data"));
+        assertEquals(6, result.getInt("CFU"));
+        assertEquals(30, result.getInt("Voto"));
+        assertEquals(courseTest.getId(), result.getString("Corso"));
+        assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
+
+        statement.close();
+    }
+
     //FIXME: fallisce assert del voto!
     @Test
     public void testGetGrade() throws SQLException {
@@ -62,7 +90,7 @@ public class ProfessorTest {
         Exam examTest = new Exam(courseTest, "testData", 30);
         Student studentTest = new Student("11111", "TestNome", "TestCognome");
 
-        studentTest.addExam(examTest);
+        //studentTest.addExam(examTest);
         int grade = professorTest.getGrade(studentTest);
 
         // Verifica che l'esame venga inserito correttamente
@@ -111,5 +139,4 @@ public class ProfessorTest {
     }
 
     private Connection conn;
-    private Professor professor;
 }

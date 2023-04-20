@@ -1,12 +1,39 @@
 package domain_model;
 
+import data_access.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class Course {
-    public Course(String name, int CFU, Professor professor, ExamType examType) {
+    public Course(String name, int CFU, Professor professor, ExamType examType) throws SQLException {
         this.id = RandomStringGenerator.generateRandomString(8);
         this.name = name;
         this.CFU = CFU;
         this.professor = professor;
         this.examType = examType;
+
+        this.addCourse();
+    }
+
+    //Aggiunge il corso al db quando viene istanziato
+    private void addCourse() throws SQLException {
+        Connection connection = DBConnection.connect();
+        //Aggiungo il corso relativo all'esame
+        String courseSql = "INSERT OR IGNORE INTO Corso (Codice, Nome, CFU, Docente, TipoEsame) VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement courseStatement = connection.prepareStatement(courseSql);
+        courseStatement.setString(1, this.getId());
+        courseStatement.setString(2, this.getName());
+        courseStatement.setInt(3, this.getCFU());
+        courseStatement.setString(4, this.getProfessor().getId());
+        courseStatement.setString(5, this.getExamType().getDisplayName());
+
+        courseStatement.executeUpdate();
+        courseStatement.close();
+
+        connection = DBConnection.disconnect();
     }
 
     public ExamType getExamType() {

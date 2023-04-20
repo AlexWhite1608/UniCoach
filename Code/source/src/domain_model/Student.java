@@ -26,12 +26,6 @@ public class Student extends User implements Observer {
         return uniTranscript;
     }
 
-    public void addExam(Exam exam) throws SQLException {
-        uniTranscript.addExam(exam);
-
-        studentGateway.addExam(this, exam);
-    }
-
     @Override
     public void update() {
 
