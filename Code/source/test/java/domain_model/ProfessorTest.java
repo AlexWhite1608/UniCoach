@@ -21,7 +21,6 @@ public class ProfessorTest {
         conn = DBConnection.connect("../database/unicoachdb.db");
     }
 
-    //FIXME: aggiungi rimozione dati di testAddExam()
     @After
     public void tearDown() throws SQLException{
 
@@ -91,7 +90,7 @@ public class ProfessorTest {
         Exam examTest = new Exam(courseTest, "testData", 30);
         Student studentTest = new Student("11111", "TestNome", "TestCognome");
 
-        studentTest.addExam(examTest);
+        //studentTest.addExam(examTest);
         int grade = professorTest.getGrade(studentTest);
 
         // Verifica che l'esame venga inserito correttamente

@@ -45,6 +45,7 @@ public class ProfessorGateway implements Gateway{
         statement.close();
     }
 
+    //FIXME
     public int getGrade(Student student) throws SQLException {
 
         int grade;
