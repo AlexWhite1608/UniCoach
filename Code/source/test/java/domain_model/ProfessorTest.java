@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
+
+
 public class ProfessorTest {
 
     @Before
