@@ -30,6 +30,14 @@ public class StudentTest {
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
+        // Elimina lo studente appena inserito dal database
+        String deleteTranscriptSql = "DELETE FROM Libretto WHERE Codice = ?";
+        PreparedStatement deleteTranscriptStatement = conn.prepareStatement(deleteTranscriptSql);
+        deleteTranscriptStatement.setString(1, student.getUniTranscript().getId());
+
+        deleteTranscriptStatement.executeUpdate();
+        deleteTranscriptStatement.close();
+
     }
 
     @Test
@@ -48,7 +56,7 @@ public class StudentTest {
         assertEquals("TestCognome", result.getString("Cognome"));
         assertEquals("12345", result.getString("Matricola"));
 
-        //TODO: verifica anche che venga costruito il libretto!
+        //TODO: verifica anche che venga costruito il libretto e che quindi venga anche eliminato dal db!
 
         statement.close();
     }
