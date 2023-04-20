@@ -38,48 +38,6 @@ public class StudentGateway implements Gateway {
         transcriptStatement.close();
     }
 
-    public void addExam(Student student, Exam exam) throws SQLException {
-        String sql = "INSERT INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, exam.getId());
-        statement.setString(2, exam.getName());
-        statement.setString(3, exam.getDate());
-        statement.setInt(4, exam.getCFU());
-        statement.setInt(5, exam.getGrade());
-        statement.setString(6, exam.getCourse().getId());
-        statement.setString(7, exam.getExamType());
-
-        statement.executeUpdate();
-        statement.close();
-
-        //Aggiungo il corso relativo all'esame
-        String courseSql = "INSERT OR IGNORE INTO Corso (Codice, Nome, CFU, Docente, TipoEsame) VALUES (?, ?, ?, ?, ?)";
-
-        PreparedStatement courseStatement = connection.prepareStatement(courseSql);
-        courseStatement.setString(1, exam.getCourse().getId());
-        courseStatement.setString(2, exam.getCourse().getName());
-        courseStatement.setInt(3, exam.getCFU());
-        courseStatement.setString(4, exam.getCourse().getProfessor().getId());
-        courseStatement.setString(5, exam.getCourse().getExamType().getDisplayName());
-
-        courseStatement.executeUpdate();
-        courseStatement.close();
-
-        //Aggiungo l'esame al libretto dello studente
-        String transcriptSql = """
-                UPDATE Libretto
-                SET Esame = ?
-                WHERE Codice = ?""";
-
-        PreparedStatement transcriptStatement = connection.prepareStatement(transcriptSql);
-        transcriptStatement.setString(1, exam.getId());
-        transcriptStatement.setString(2, student.getUniTranscript().getId());
-
-        transcriptStatement.executeUpdate();
-        transcriptStatement.close();
-    }
-
     void getGrade(Course course){}
 
     void  getAverage(){}

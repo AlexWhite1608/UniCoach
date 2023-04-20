@@ -37,9 +37,9 @@ public class ProfessorTest {
 
     @Test
     public void testAddProfessor() throws SQLException {
-        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+        professor = new Professor("12345", "TestNome", "TestCognome");
 
-        // Verifica che lo studente sia stato effettivamente aggiunto al database
+        // Verifica che lo professore sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, "12345");
@@ -87,10 +87,10 @@ public class ProfessorTest {
     public void testGetGrade() throws SQLException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-        Exam examTest = new Exam(courseTest, "testData", 30);
+        Exam examTest = new Exam(courseTest, "testData");
         Student studentTest = new Student("11111", "TestNome", "TestCognome");
 
-        //studentTest.addExam(examTest);
+        professorTest.setGrade(studentTest, examTest, 22);  // Da togliere??!
         int grade = professorTest.getGrade(studentTest);
 
         // Verifica che l'esame venga inserito correttamente
@@ -139,4 +139,5 @@ public class ProfessorTest {
     }
 
     private Connection conn;
+    private Professor professor;
 }

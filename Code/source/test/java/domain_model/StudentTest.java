@@ -30,7 +30,7 @@ public class StudentTest {
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
-        // Elimina lo studente appena inserito dal database
+        // Elimina il libretto appena inserito dal database
         String deleteTranscriptSql = "DELETE FROM Libretto WHERE Codice = ?";
         PreparedStatement deleteTranscriptStatement = conn.prepareStatement(deleteTranscriptSql);
         deleteTranscriptStatement.setString(1, student.getUniTranscript().getId());
