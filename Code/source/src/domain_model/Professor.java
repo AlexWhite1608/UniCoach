@@ -28,6 +28,8 @@ public class Professor extends User implements Subject{
         return professorGateway.getGrade(student);
     }
 
+
+
     @Override
     public void notifyObservers(String msg) {
 

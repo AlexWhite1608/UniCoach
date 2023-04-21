@@ -105,7 +105,17 @@ public class ProfessorGateway implements Gateway{
         transcriptStatement.close();
     }
 
-    public void getAverage(Student student){}
+    public void getAverage(Student student) throws SQLException{
+        String average = """
+                SELECT AVG(Esame.voto)
+                FROM (Studente JOIN Libretto ON Studente.Libretto = Libretto.codice) JOIN Esame ON Libretto.Esame = Esame.Codice
+                WHERE Studente.Matricola = ?""";
+
+        PreparedStatement statement = connection.prepareStatement(average);
+        statement.setString(1, student.getId());
+
+    }
+
 
     public void getAverage(List<Student> students){}
 
