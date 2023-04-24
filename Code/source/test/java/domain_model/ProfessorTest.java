@@ -56,9 +56,25 @@ public class ProfessorTest {
         statement.close();
     }
 
+    @Test
+    public void testAverageStudent() throws SQLException{
+        Student student = new Student("12345", "TestNome", "TestCognome");
+        professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
+
+        Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        Exam examTest1 = new Exam(courseTest1, "testData1", 26);
+        Exam examTest2 = new Exam(courseTest2, "testData2", 22);
+    }
+
     //FIXME: non funziona
     @Test
     public void testAddExam() throws SQLException {
+        if(conn == null)
+            System.out.println("Connessione sdiahanata");
+
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);

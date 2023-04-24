@@ -76,8 +76,7 @@ public class ProfessorGateway implements Gateway{
     }
 
     public void setGrade(Student student, Exam exam, int grade) throws SQLException{
-        //INSERISCE L'ESAME CON IL RELATIVO VOTO ALLO STUDENTE!
-        String sql = "INSERT INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO Esame (Codice, Nome, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, exam.getId());
@@ -105,15 +104,30 @@ public class ProfessorGateway implements Gateway{
         transcriptStatement.close();
     }
 
-    public void getAverage(Student student) throws SQLException{
+    // Ritorna la media su tutti gli esami dati dallo studente
+    public float getAverage(Student student) throws SQLException, Exception{
         String average = """
                 SELECT AVG(Esame.voto)
                 FROM (Studente JOIN Libretto ON Studente.Libretto = Libretto.codice) JOIN Esame ON Libretto.Esame = Esame.Codice
                 WHERE Studente.Matricola = ?""";
 
-        PreparedStatement statement = connection.prepareStatement(average);
-        statement.setString(1, student.getId());
+        PreparedStatement averageStatement = connection.prepareStatement(average);
+        averageStatement.setString(1, student.getId());
 
+        ResultSet averageRs = averageStatement.executeQuery();
+
+        float finalAverage;
+
+        if (averageRs.next()) {
+            finalAverage = averageRs.getFloat(1);
+        } else {
+            throw new Exception("Non sono presenti esami su cui eseguire la media!");
+        }
+
+        averageRs.close();
+        averageStatement.close();
+
+        return finalAverage;
     }
 
 

@@ -17,7 +17,7 @@ public class Professor extends User implements Subject{
 
     }
 
-    public void setGrade(Student student, Exam exam,int grade) throws SQLException {
+    public void setGrade(Student student, Exam exam, int grade) throws SQLException {
         professorGateway.setGrade(student, exam, grade);
 
         //Aggiunge l'esame al libretto dello studente
