@@ -28,7 +28,7 @@ public class ProfessorGateway implements Gateway{
         if (docRs.next()) {
             this.courseID = docRs.getString("Codice");
         } else {
-            throw new SQLException("Nessun corso trovato per il professore " + professor.getId());
+//            throw new SQLException("Nessun corso trovato per il professore " + professor.getId());
         }
 
         docRs.close();
