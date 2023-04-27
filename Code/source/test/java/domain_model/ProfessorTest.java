@@ -95,7 +95,6 @@ public class ProfessorTest {
         Exam examTest2 = new Exam(courseTest2, "testData2", 22);
     }
 
-    //FIXME: non funziona
     @Test
     public void testAddExam() throws SQLException {
         Student student = new Student("12345", "TestNome", "TestCognome");
