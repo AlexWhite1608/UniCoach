@@ -13,6 +13,7 @@ public class Professor extends User implements Subject{
 
         observers = new ArrayList<>();
 
+        professorGateway = new ProfessorGateway(this);
         professorGateway.addProfessor(this);
 
     }
@@ -46,5 +47,10 @@ public class Professor extends User implements Subject{
     }
 
     private List<Observer> observers;
-    private ProfessorGateway professorGateway = new ProfessorGateway(this);
+
+    public ProfessorGateway getProfessorGateway() {
+        return professorGateway;
+    }
+
+    private ProfessorGateway professorGateway;
 }
