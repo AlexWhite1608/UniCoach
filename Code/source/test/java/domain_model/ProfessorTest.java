@@ -71,6 +71,7 @@ public class ProfessorTest {
     //FIXME: non funziona
     @Test
     public void testAddExam() throws SQLException {
+        conn = DBConnection.connect("../database/unicoachdb.db");
 
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
@@ -80,21 +81,22 @@ public class ProfessorTest {
         testProfessor.setGrade(student, examTest, 30);
 
         // Verifica che l'esame venga inserito correttamente
-        String sql = "SELECT * FROM Esame WHERE Codice = ?";
+        String sql = "SELECT * FROM Esame WHERE ID = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, examTest.getId());
 
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
-        assertEquals("TestCorso", result.getString("Nome"));
-        assertEquals("testData", result.getString("Data"));
+        assertEquals("TestCorso", result.getString("CodiceCorso"));
+        assertEquals("testData", result.getString("DataEsame"));
         assertEquals(6, result.getInt("CFU"));
         assertEquals(30, result.getInt("Voto"));
-        assertEquals(courseTest.getId(), result.getString("Corso"));
+        assertEquals(courseTest.getId(), result.getString("CodiceCorso"));
         assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
 
         statement.close();
+        conn.close();
     }
 
     //FIXME: fallisce assert del voto!
@@ -127,14 +129,6 @@ public class ProfessorTest {
 
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
-
-        //Elimina il libretto dello studente
-        String deleteTranscriptSql = "DELETE FROM Libretto WHERE Codice = ?";
-        PreparedStatement deleteTranscriptStatement = conn.prepareStatement(deleteTranscriptSql);
-        deleteTranscriptStatement.setString(1, studentTest.getUniTranscript().getId());
-
-        deleteTranscriptStatement.executeUpdate();
-        deleteTranscriptStatement.close();
 
         //Elimina l'esame appena inserito
         String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";

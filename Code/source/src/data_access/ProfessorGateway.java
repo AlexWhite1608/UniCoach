@@ -81,11 +81,12 @@ public class ProfessorGateway implements Gateway{
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, exam.getId());
         statement.setString(2, exam.getName());
-        statement.setString(3, exam.getDate());
-        statement.setInt(4, exam.getCFU());
-        statement.setInt(5, grade);
-        statement.setString(6, exam.getCourse().getId());
-        statement.setString(7, exam.getExamType());
+        statement.setString(3, student.getId());
+        statement.setString(4, exam.getDate());
+        statement.setInt(5, exam.getCFU());
+        statement.setInt(6, grade);
+        statement.setString(7, exam.getCourse().getId());
+        statement.setString(8, exam.getExamType());
 
         statement.executeUpdate();
         statement.close();
