@@ -131,9 +131,19 @@ public class ProfessorGateway implements Gateway{
     }
 
 
-    public void getAverage(List<Student> students){}
+    public void getAverage(List<Student> students) throws SQLException{
 
-    public void getAverage(Course course){}
+    }
+
+    public void getAverage(Course course) throws SQLException{
+        String average = """
+                SELECT AVG(Esame.Voto)
+                FROM Corso Join Esame ON Corso.id = Esame.Corso
+                WHERE Corso.id = ?
+                """;
+        PreparedStatement statement = connection.prepareStatement(average);
+        statement.setString(1, course.getId());
+    }
 
     private Connection connection = null;
     private String courseID;
