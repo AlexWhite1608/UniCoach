@@ -1,7 +1,6 @@
 package domain_model;
 
 import data_access.DBConnection;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,8 +71,6 @@ public class ProfessorTest {
     //FIXME: non funziona
     @Test
     public void testAddExam() throws SQLException {
-        if(conn == null)
-            System.out.println("Connessione sdiahanata");
 
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
