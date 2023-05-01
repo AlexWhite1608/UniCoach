@@ -29,6 +29,9 @@ public class Professor extends User implements Subject{
         return professorGateway.getGrade(student);
     }
 
+    public float getAverage(Student student) throws Exception {
+        return professorGateway.getAverage(student);
+    }
 
 
     @Override

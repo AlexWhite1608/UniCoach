@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class StudentGateway implements Gateway {
 
     public StudentGateway() {
-        connection = DBConnection.connect();
+        connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
     public void addStudent(Student student) throws SQLException {

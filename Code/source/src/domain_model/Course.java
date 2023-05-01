@@ -19,7 +19,8 @@ public class Course {
 
     //Aggiunge il corso al db quando viene istanziato
     private void addCourse() throws SQLException {
-        Connection connection = DBConnection.connect();
+        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+
         //Aggiungo il corso relativo all'esame
         String courseSql = "INSERT OR IGNORE INTO Corso (Codice, Nome, CFU, Docente, TipoEsame) VALUES (?, ?, ?, ?, ?)";
 

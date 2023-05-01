@@ -10,7 +10,7 @@ public class LoginManager {
     private Connection connection;
 
     public LoginManager() {
-        connection = DBConnection.connect();
+        connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
     public LoginManager(String testDbPath) {    //usato per i test

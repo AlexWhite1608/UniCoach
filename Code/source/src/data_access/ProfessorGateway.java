@@ -14,7 +14,7 @@ import java.util.List;
 public class ProfessorGateway implements Gateway{
 
     public ProfessorGateway(Professor professor) throws SQLException {
-        connection = DBConnection.connect();
+        connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
     public void setCourseId(Professor professor) throws SQLException {
@@ -97,10 +97,12 @@ public class ProfessorGateway implements Gateway{
     }
 
     // Ritorna la media su tutti gli esami dati dallo studente
+    //FIXME: media ponderata??
     public float getAverage(Student student) throws SQLException, Exception{
         String average = """
                 SELECT AVG(Voto)
                 FROM Esame
+                JOIN Corso ON Esame.Corso = Corso.Codice
                 WHERE Esame.Studente = ?""";
 
         PreparedStatement averageStatement = connection.prepareStatement(average);

@@ -64,7 +64,7 @@ public class ProfessorTest {
 
     @Test
     public void testAddProfessor() throws SQLException {
-        professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
 
         // Verifica che lo professore sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
@@ -83,16 +83,24 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testAverageStudent() throws SQLException{
+    public void testAverageStudent() throws Exception {
         Student student = new Student("12345", "TestNome", "TestCognome");
-        professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
 
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        Exam examTest1 = new Exam(courseTest1, "testData1", 26);
-        Exam examTest2 = new Exam(courseTest2, "testData2", 22);
+        Exam examTest1 = new Exam(courseTest1, "testData1");
+        Exam examTest2 = new Exam(courseTest2, "testData2");
+
+        professor.setGrade(student, examTest1, 26);
+        professor2.setGrade(student, examTest2, 22);
+
+        float average = ( 22 + 26 ) / 2f;
+
+        assertEquals(average, professor.getAverage(student));
+
     }
 
     @Test
@@ -154,5 +162,4 @@ public class ProfessorTest {
     }
 
     private Connection conn;
-    private Professor professor;
 }
