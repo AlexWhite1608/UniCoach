@@ -15,11 +15,11 @@ public class ProfessorGateway implements Gateway{
 
     public ProfessorGateway(Professor professor) throws SQLException {
         connection = DBConnection.connect();
-
-        setCourseId(professor);
     }
 
-    private void setCourseId(Professor professor) throws SQLException {
+    public void setCourseId(Professor professor) throws SQLException {
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
         String docSql = "SELECT Codice FROM Corso WHERE Docente = ?";
         PreparedStatement docStatement = connection.prepareStatement(docSql);
         docStatement.setString(1, professor.getId());
@@ -28,7 +28,7 @@ public class ProfessorGateway implements Gateway{
         if (docRs.next()) {
             this.courseID = docRs.getString("Codice");
         } else {
-//            throw new SQLException("Nessun corso trovato per il professore " + professor.getId());
+            throw new SQLException("Nessun corso trovato per il professore " + professor.getId());
         }
 
         docRs.close();

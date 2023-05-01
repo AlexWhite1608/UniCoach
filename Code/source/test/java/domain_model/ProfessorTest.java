@@ -126,7 +126,6 @@ public class ProfessorTest {
 
     }
 
-    //FIXME: fallisce assert del voto!
     @Test
     public void testGetGrade() throws SQLException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
@@ -134,6 +133,7 @@ public class ProfessorTest {
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
         Exam examTest = new Exam(courseTest, "testData");
 
+        professorTest.getProfessorGateway().setCourseId(professorTest);
         professorTest.setGrade(studentTest, examTest, 22);
         int grade = professorTest.getGrade(studentTest);
 
