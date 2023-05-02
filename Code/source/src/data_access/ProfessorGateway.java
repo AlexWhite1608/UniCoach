@@ -126,7 +126,7 @@ public class ProfessorGateway implements Gateway{
         return finalAverage;
     }
 
-
+    //FIXME: ma ci serve davvero sto metodo?
     public void getAverage(List<Student> students) throws SQLException{
 
     }
