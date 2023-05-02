@@ -103,6 +103,36 @@ public class ProfessorTest {
 
         assertEquals(average, professor.getAverage(student));
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Elimina il professore appena inserito
+        String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
+        PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
+        deleteProfessorStatement.setString(1, "12346");
+
+        deleteProfessorStatement.executeUpdate();
+        deleteProfessorStatement.close();
+
+        //Elimina gli esami inseriti
+        String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
+        PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
+        deleteExamStatement.setString(1, "TestCorso1");
+        deleteExamStatement.executeUpdate();
+        deleteExamStatement.setString(1, "TestCorso2");
+        deleteExamStatement.executeUpdate();
+
+        deleteExamStatement.close();
+
+        //Elimina i corsi appena inseriti
+        String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, "TestCorso1");
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, "TestCorso2");
+        deleteCourseStatement.executeUpdate();
+
+        deleteCourseStatement.close();
+
     }
 
     @Test
