@@ -98,7 +98,7 @@ public class ProfessorGateway implements Gateway{
 
     // Ritorna la media su tutti gli esami dati dallo studente
     //FIXME: media ponderata??
-    public float getAverage(Student student) throws SQLException, Exception{
+    public float getAverage(Student student) throws SQLException{
         String average = """
                 SELECT AVG(Voto)
                 FROM Esame
@@ -117,7 +117,7 @@ public class ProfessorGateway implements Gateway{
         if (averageRs.next()) {
             finalAverage = averageRs.getFloat(1);
         } else {
-            throw new Exception("Non sono presenti esami su cui eseguire la media!");
+            throw new SQLException("Non sono presenti esami su cui eseguire la media!");
         }
 
         averageRs.close();
@@ -131,14 +131,33 @@ public class ProfessorGateway implements Gateway{
 
     }
 
-    public void getAverage(Course course) throws SQLException{
+    //FIXME: media ponderata??
+    public float getAverage(Course course) throws SQLException {
         String average = """
                 SELECT AVG(Esame.Voto)
-                FROM Corso Join Esame ON Corso.id = Esame.Corso
-                WHERE Corso.id = ?
+                FROM Corso Join Esame ON Corso.Codice = Esame.Corso
+                WHERE Corso.Codice = ?
                 """;
-        PreparedStatement statement = connection.prepareStatement(average);
-        statement.setString(1, course.getId());
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement averageStatement = connection.prepareStatement(average);
+        averageStatement.setString(1, course.getId());
+
+        ResultSet averageRs = averageStatement.executeQuery();
+
+        float finalAverage;
+
+        if (averageRs.next()) {
+            finalAverage = averageRs.getFloat(1);
+        } else {
+            throw new SQLException("Non sono presenti esami su cui eseguire la media!");
+        }
+
+        averageRs.close();
+        averageStatement.close();
+
+        return finalAverage;
     }
 
     private Connection connection = null;

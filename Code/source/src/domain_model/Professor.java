@@ -1,6 +1,5 @@
 package domain_model;
 
-import data_access.Gateway;
 import data_access.ProfessorGateway;
 
 import java.sql.SQLException;
@@ -29,8 +28,12 @@ public class Professor extends User implements Subject{
         return professorGateway.getGrade(student);
     }
 
-    public float getAverage(Student student) throws Exception {
+    public float getAverage(Student student) throws SQLException {
         return professorGateway.getAverage(student);
+    }
+
+    public float getAverage(Course course) throws SQLException {
+        return professorGateway.getAverage(course);
     }
 
 
@@ -49,11 +52,11 @@ public class Professor extends User implements Subject{
         observers.remove(o);
     }
 
-    private List<Observer> observers;
-
     public ProfessorGateway getProfessorGateway() {
         return professorGateway;
     }
+
+    private List<Observer> observers;
 
     private ProfessorGateway professorGateway;
 }

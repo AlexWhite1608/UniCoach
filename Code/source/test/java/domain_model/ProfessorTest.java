@@ -32,6 +32,8 @@ public class ProfessorTest {
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.setString(1, "12346");
         deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.setString(1, "12347");
+        deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
         //Elimina i professori inseriti
@@ -91,7 +93,7 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testAverageStudent() throws Exception {
+    public void testAverageStudent() throws SQLException {
         Student student = new Student("12346", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -109,6 +111,29 @@ public class ProfessorTest {
 
         assertEquals(average, professor.getAverage(student));
 
+    }
+
+    @Test
+    public void testAverageCourse() throws SQLException {
+        Student student1 = new Student("12345", "TestNome", "TestCognome");
+        Student student2 = new Student("12346", "TestNome", "TestCognome");
+        Student student3 = new Student("12347", "TestNome", "TestCognome");
+
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+
+        Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        Exam examTest1 = new Exam(courseTest1, "testData");
+        Exam examTest2 = new Exam(courseTest1, "testData1");
+        Exam examTest3 = new Exam(courseTest1, "testData2");
+
+        professor.setGrade(student1, examTest1, 22);
+        professor.setGrade(student2, examTest2, 28);
+        professor.setGrade(student3, examTest3, 21);
+
+        float average = ( 22 + 28 + 21 ) / 3f;
+
+        assertEquals(average, professor.getAverage(courseTest1));
     }
 
     @Test
