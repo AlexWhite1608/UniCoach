@@ -41,27 +41,28 @@ public class ProfessorTest {
         deleteProfessorStatement.executeUpdate();
         deleteProfessorStatement.setString(1, "12346");
         deleteProfessorStatement.executeUpdate();
-
         deleteProfessorStatement.close();
 
         //Elimina gli esami inseriti
         String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
         PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
+        deleteExamStatement.setString(1, "TestCorso");
+        deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso1");
         deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso2");
         deleteExamStatement.executeUpdate();
-
         deleteExamStatement.close();
 
-        //Elimina i corsi appena inseriti
+        //Elimina i corsi inseriti
         String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, "TestCorso");
+        deleteCourseStatement.executeUpdate();
         deleteCourseStatement.setString(1, "TestCorso1");
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.setString(1, "TestCorso2");
         deleteCourseStatement.executeUpdate();
-
         deleteCourseStatement.close();
 
         if (conn != null) {
