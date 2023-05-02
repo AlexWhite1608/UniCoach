@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-
-
 public class ProfessorTest {
 
     @Before
@@ -27,36 +25,43 @@ public class ProfessorTest {
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
-        //Elimina il professore appena inserito
-        String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
-        PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
-        deleteProfessorStatement.setString(1, "12345");
-
-        deleteProfessorStatement.executeUpdate();
-        deleteProfessorStatement.close();
-
-        // Elimina lo studente appena inserito dal database
+        // Elimina gli studenti inseriti
         String deleteStudentSql = "DELETE FROM Studente WHERE Matricola = ?";
         PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
         deleteStudentStatement.setString(1, "12345");
-
+        deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.setString(1, "12346");
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
-        //Elimina l'esame appena inserito
+        //Elimina i professori inseriti
+        String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
+        PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
+        deleteProfessorStatement.setString(1, "12345");
+        deleteProfessorStatement.executeUpdate();
+        deleteProfessorStatement.setString(1, "12346");
+        deleteProfessorStatement.executeUpdate();
+
+        deleteProfessorStatement.close();
+
+        //Elimina gli esami inseriti
         String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
         PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
-        deleteExamStatement.setString(1, "TestCorso");
-
+        deleteExamStatement.setString(1, "TestCorso1");
         deleteExamStatement.executeUpdate();
+        deleteExamStatement.setString(1, "TestCorso2");
+        deleteExamStatement.executeUpdate();
+
         deleteExamStatement.close();
 
-        //Elimina il corso appena inserito
+        //Elimina i corsi appena inseriti
         String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
-        deleteCourseStatement.setString(1, "TestCorso");
-
+        deleteCourseStatement.setString(1, "TestCorso1");
         deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, "TestCorso2");
+        deleteCourseStatement.executeUpdate();
+
         deleteCourseStatement.close();
 
         if (conn != null) {
@@ -86,7 +91,7 @@ public class ProfessorTest {
 
     @Test
     public void testAverageStudent() throws Exception {
-        Student student = new Student("12345", "TestNome", "TestCognome");
+        Student student = new Student("12346", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
 
@@ -102,36 +107,6 @@ public class ProfessorTest {
         float average = ( 22 + 26 ) / 2f;
 
         assertEquals(average, professor.getAverage(student));
-
-        conn = DBConnection.connect("../database/unicoachdb.db");
-
-        //Elimina il professore appena inserito
-        String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
-        PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
-        deleteProfessorStatement.setString(1, "12346");
-
-        deleteProfessorStatement.executeUpdate();
-        deleteProfessorStatement.close();
-
-        //Elimina gli esami inseriti
-        String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
-        PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
-        deleteExamStatement.setString(1, "TestCorso1");
-        deleteExamStatement.executeUpdate();
-        deleteExamStatement.setString(1, "TestCorso2");
-        deleteExamStatement.executeUpdate();
-
-        deleteExamStatement.close();
-
-        //Elimina i corsi appena inseriti
-        String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
-        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
-        deleteCourseStatement.setString(1, "TestCorso1");
-        deleteCourseStatement.executeUpdate();
-        deleteCourseStatement.setString(1, "TestCorso2");
-        deleteCourseStatement.executeUpdate();
-
-        deleteCourseStatement.close();
 
     }
 
