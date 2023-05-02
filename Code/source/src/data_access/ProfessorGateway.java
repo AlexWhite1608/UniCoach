@@ -105,6 +105,8 @@ public class ProfessorGateway implements Gateway{
                 JOIN Corso ON Esame.Corso = Corso.Codice
                 WHERE Esame.Studente = ?""";
 
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
         PreparedStatement averageStatement = connection.prepareStatement(average);
         averageStatement.setString(1, student.getId());
 

@@ -25,6 +25,8 @@ public class ProfessorTest {
     @After
     public void tearDown() throws SQLException{
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
         //Elimina il professore appena inserito
         String deleteProfessorSql = "DELETE FROM Docente WHERE Matricola = ?";
         PreparedStatement deleteProfessorStatement = conn.prepareStatement(deleteProfessorSql);
@@ -94,8 +96,8 @@ public class ProfessorTest {
         Exam examTest1 = new Exam(courseTest1, "testData1");
         Exam examTest2 = new Exam(courseTest2, "testData2");
 
-        professor.setGrade(student, examTest1, 26);
-        professor2.setGrade(student, examTest2, 22);
+        professor.setGrade(student, examTest1, 22);
+        professor2.setGrade(student, examTest2, 26);
 
         float average = ( 22 + 26 ) / 2f;
 
