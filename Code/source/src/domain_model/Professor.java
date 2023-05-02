@@ -36,6 +36,7 @@ public class Professor extends User implements Subject{
         return professorGateway.getAverage(course);
     }
 
+    //TODO: il professore notifica gli studenti con gli homework e le date degli esami (tramite observer)
 
     @Override
     public void notifyObservers(String msg) {

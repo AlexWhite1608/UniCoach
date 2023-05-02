@@ -16,7 +16,9 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-    //TODO: quando lo studente si registra deve scegliere i corsi da seguire --> inserire nel db i corsi scelti!
+    //TODO: quando lo studente si registra deve scegliere i corsi da seguire --> utilizzare una vista?
+
+    //TODO: lo studente sceglierà (tramite notifiche observer) la data dell'esame?
 
     public void displayUniTranscript(){
         uniTranscript.displayExams();
