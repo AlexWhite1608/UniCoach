@@ -39,7 +39,9 @@ public class LoginManagerTest extends TestCase {
         deleteUserStatement.executeUpdate();
         deleteUserStatement.close();
 
-        conn = DBConnection.disconnect();
+        if (conn != null) {
+            conn = DBConnection.disconnect();
+        }
     }
 
     public void testAddUser() throws SQLException {

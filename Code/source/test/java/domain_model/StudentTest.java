@@ -30,6 +30,10 @@ public class StudentTest {
         deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
+        if (conn != null) {
+            conn = DBConnection.disconnect();
+        }
+
     }
 
     @Test
