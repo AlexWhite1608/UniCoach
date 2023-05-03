@@ -85,6 +85,35 @@ public class StudentTest {
         statement.close();
     }
 
+
+    @Test
+    public void testGetGrade() throws SQLException {
+        Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
+        Student studentTest = new Student("12345", "TestNome", "TestCognome");
+        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+        Exam examTest = new Exam(courseTest, "testData");
+
+        professorTest.getProfessorGateway().setCourseId(professorTest);
+
+        professorTest.setGrade(studentTest, examTest, 22);
+        int grade = studentTest.getGrade(courseTest, studentTest);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        // Verifica che l'esame venga inserito correttamente
+        String sql = "SELECT Voto FROM Esame WHERE Corso = ?";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, courseTest.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals(grade, result.getInt("Voto"));
+
+        statement.close();
+    }
+
     private Connection conn;
     private Student student;
 }
