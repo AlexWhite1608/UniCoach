@@ -131,8 +131,9 @@ public class ProfessorGateway implements Gateway{
 
     }
 
+    // Ritorna la media di tutti gli studenti iscritti al corso
     //FIXME: media ponderata??
-    public float getAverage(Course course) throws SQLException {
+    public float getAverage() throws SQLException {
         String average = """
                 SELECT AVG(Esame.Voto)
                 FROM Corso Join Esame ON Corso.Codice = Esame.Corso
@@ -142,7 +143,7 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement averageStatement = connection.prepareStatement(average);
-        averageStatement.setString(1, course.getId());
+        averageStatement.setString(1, this.courseID);
 
         ResultSet averageRs = averageStatement.executeQuery();
 

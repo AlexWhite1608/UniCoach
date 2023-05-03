@@ -120,8 +120,9 @@ public class ProfessorTest {
         Student student3 = new Student("12347", "TestNome", "TestCognome");
 
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
-
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        professor.getProfessorGateway().setCourseId(professor);
 
         Exam examTest1 = new Exam(courseTest1, "testData");
         Exam examTest2 = new Exam(courseTest1, "testData1");
@@ -133,7 +134,7 @@ public class ProfessorTest {
 
         float average = ( 22 + 28 + 21 ) / 3f;
 
-        assertEquals(average, professor.getAverage(courseTest1));
+        assertEquals(average, professor.getAverage());
     }
 
     @Test

@@ -32,8 +32,8 @@ public class Professor extends User implements Subject{
         return professorGateway.getAverage(student);
     }
 
-    public float getAverage(Course course) throws SQLException {
-        return professorGateway.getAverage(course);
+    public float getAverage() throws SQLException {
+        return professorGateway.getAverage();
     }
 
     //TODO: il professore notifica gli studenti con gli homework e le date degli esami (tramite observer)

@@ -28,9 +28,13 @@ public class StudentGateway implements Gateway {
         statement.close();
     }
 
-    void getGrade(Course course){}
+    // Ritorna il voto dello studente all'esame del corso fornito
+    void getGrade(Course course){
 
-    void  getAverage(){}
+    }
+
+    // Ritorna la media dello studente
+    void getAverage(){}
 
     private Connection connection = null;
 }
