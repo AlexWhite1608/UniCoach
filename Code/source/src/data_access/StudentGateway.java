@@ -58,8 +58,37 @@ public class StudentGateway implements Gateway {
         return grade;
     }
 
-    // Ritorna la media dello studente
-    void getAverage(){}
+
+    //Ritorna la media dello studente
+    public float getAverage(Student student) throws SQLException {
+        String average = """
+            SELECT CAST(SUM(CAST(Esame.Voto AS FLOAT) * CAST(Corso.CFU AS FLOAT)) / SUM(CAST(Corso.CFU AS FLOAT)) AS FLOAT)
+            FROM Esame
+            JOIN Corso ON Esame.Corso = Corso.Codice
+            WHERE Esame.Studente = ?;""";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement averageStatement = connection.prepareStatement(average);
+        averageStatement.setString(1, student.getId());
+
+        ResultSet averageRs = averageStatement.executeQuery();
+
+        float finalAverage;
+
+        if (averageRs.next()) {
+            finalAverage = averageRs.getFloat(1);
+        } else {
+            throw new SQLException("Non sono presenti esami su cui eseguire la media!");
+        }
+
+        averageRs.close();
+        averageStatement.close();
+
+        return finalAverage;
+    }
+
+
 
     private Connection connection = null;
 }
