@@ -28,6 +28,10 @@ public class Student extends User implements Observer {
         return uniTranscript;
     }
 
+    public int getGrade(Course course, Student student) throws SQLException {
+        return studentGateway.getGrade(course, student);
+    }
+
     @Override
     public void update() {
 

@@ -104,12 +104,12 @@ public class ProfessorTest {
         Exam examTest1 = new Exam(courseTest1, "testData1");
         Exam examTest2 = new Exam(courseTest2, "testData2");
 
-        professor.setGrade(student, examTest1, 22);
-        professor2.setGrade(student, examTest2, 26);
+        professor.setGrade(student, examTest1, 25);
+        professor2.setGrade(student, examTest2, 24);
 
-        float average = ( 22 + 26 ) / 2f;
+        float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
-        assertEquals(average, professor.getAverage(student));
+        assertEquals(average, professor.getAverage(student), 0.0001f);
 
     }
 
@@ -132,9 +132,9 @@ public class ProfessorTest {
         professor.setGrade(student2, examTest2, 28);
         professor.setGrade(student3, examTest3, 21);
 
-        float average = ( 22 + 28 + 21 ) / 3f;
+        float average = ( 22 * 6 + 28 * 6 + 21 * 6 ) / 18f;
 
-        assertEquals(average, professor.getAverage());
+        assertEquals(average, professor.getAverage(), 0.0001f);
     }
 
     @Test
