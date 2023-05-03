@@ -32,6 +32,10 @@ public class Student extends User implements Observer {
         return studentGateway.getGrade(course, student);
     }
 
+    public float getAverage(Student student) throws SQLException {
+        return studentGateway.getAverage(student);
+    }
+
     @Override
     public void update() {
 

@@ -22,6 +22,8 @@ public class StudentTest {
     @After
     public void tearDown() throws SQLException{
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
         // Elimina lo studente appena inserito dal database
         String deleteStudentSql = "DELETE FROM Studente WHERE Matricola = ?";
         PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
@@ -68,7 +70,7 @@ public class StudentTest {
 
     @Test
     public void testAddStudent() throws SQLException {
-        student = new Student("12345", "TestNome", "TestCognome");
+        Student student = new Student("12345", "TestNome", "TestCognome");
 
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Studente WHERE Matricola = ?";
@@ -114,6 +116,26 @@ public class StudentTest {
         statement.close();
     }
 
+    @Test
+    public void testAverage() throws SQLException {
+        Student student = new Student("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
+
+        Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        Exam examTest1 = new Exam(courseTest1, "testData1");
+        Exam examTest2 = new Exam(courseTest2, "testData2");
+
+        professor.setGrade(student, examTest1, 25);
+        professor2.setGrade(student, examTest2, 24);
+
+        float average = ( 25 * 6 + 24 * 6 ) / 12f;
+
+        assertEquals(average, student.getAverage(student), 0.0001f);
+
+    }
+
     private Connection conn;
-    private Student student;
 }
