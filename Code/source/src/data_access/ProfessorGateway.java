@@ -130,7 +130,6 @@ public class ProfessorGateway implements Gateway{
     }
 
     // Ritorna la media del corso (tutti i voti degli studenti iscritti / numeri iscritti)
-    //FIXME: media ponderata??
     public float getAverage() throws SQLException {
         String average = """
             SELECT CAST(SUM(CAST(Esame.Voto AS FLOAT) * CAST(Corso.CFU AS FLOAT)) / SUM(CAST(Corso.CFU AS FLOAT)) AS FLOAT)
