@@ -99,7 +99,7 @@ public class ProfessorGateway implements Gateway{
     // Ritorna la media su tutti gli esami dati dallo studente
     public float getAverage(Student student) throws SQLException{
         String average = """
-                SELECT CAST((SUM(Esame.Voto * Corso.CFU) / SUM(Corso.CFU)) AS DECIMAL(10,2))
+                SELECT CAST(SUM(CAST(Esame.Voto AS FLOAT) * CAST(Corso.CFU AS FLOAT)) / SUM(CAST(Corso.CFU AS FLOAT)) AS FLOAT)
                 FROM Esame
                 JOIN Corso ON Esame.Corso = Corso.Codice
                 WHERE Esame.Studente = ?;""";
@@ -133,10 +133,10 @@ public class ProfessorGateway implements Gateway{
     //FIXME: media ponderata??
     public float getAverage() throws SQLException {
         String average = """
-            SELECT CAST(SUM(CAST(Esame.Voto AS DECIMAL(10,2)) * CAST(Corso.CFU AS DECIMAL(10,2))) / SUM(CAST(Corso.CFU AS DECIMAL(10,2))) AS DECIMAL(10,2))
+            SELECT CAST(SUM(CAST(Esame.Voto AS FLOAT) * CAST(Corso.CFU AS FLOAT)) / SUM(CAST(Corso.CFU AS FLOAT)) AS FLOAT)
             FROM Esame
             JOIN Corso ON Esame.Corso = Corso.Codice
-            WHERE Esame.Studente = ?;""";
+            WHERE Corso.Codice = ?;""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
