@@ -176,6 +176,7 @@ public class ProfessorTest {
         Exam examTest = new Exam(courseTest, "testData");
 
         professorTest.getProfessorGateway().setCourseId(professorTest);
+
         professorTest.setGrade(studentTest, examTest, 22);
         int grade = professorTest.getGrade(studentTest);
 

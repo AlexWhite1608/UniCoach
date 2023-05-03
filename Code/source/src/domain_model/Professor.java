@@ -58,6 +58,5 @@ public class Professor extends User implements Subject{
     }
 
     private List<Observer> observers;
-
     private ProfessorGateway professorGateway;
 }

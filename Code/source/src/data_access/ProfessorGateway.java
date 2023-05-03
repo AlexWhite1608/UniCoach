@@ -127,11 +127,11 @@ public class ProfessorGateway implements Gateway{
     }
 
     //FIXME: ma ci serve davvero sto metodo?
-    public void getAverage(List<Student> students) throws SQLException{
+    public void getAverage(List<Student> students) throws SQLException {
 
     }
 
-    // Ritorna la media di tutti gli studenti iscritti al corso
+    // Ritorna la media del corso (tutti i voti degli studenti iscritti / numeri iscritti)
     //FIXME: media ponderata??
     public float getAverage() throws SQLException {
         String average = """
