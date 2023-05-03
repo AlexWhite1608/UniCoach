@@ -3,7 +3,6 @@ package manager_implementation;
 import java.util.Arrays;
 
 public class Calendar {
-    private String[][] calendar;
 
     public Calendar() {
 
@@ -47,4 +46,10 @@ public class Calendar {
             System.out.println(String.format("%02d", i) + ":00\t\t" + String.join("\t\t", time));
         }
     }
+
+    public String[][] getCalendar() {
+        return calendar;
+    }
+
+    private String[][] calendar;
 }
