@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +21,8 @@ public class LoginManagerTest extends TestCase {
         conn = DBConnection.connect("../database/unicoachdb.db");
         loginManager = new LoginManager("../database/unicoachdb.db");
     }
+
+
 
     @After
     public void tearDown() throws SQLException {
@@ -47,13 +51,18 @@ public class LoginManagerTest extends TestCase {
     public void testAddUser() throws SQLException {
         Professor professor = new Professor("12121", "testNome", "testCognome");
 
+        // Prepara la password simulata
+        String simulatedInput = "password123\n";
+        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(inputStream);
+
         loginManager.addUser(professor);
 
         //Verifica che siano aggiunti i due utenti
         String sql = "SELECT * FROM Utente WHERE Email = ? and Password = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, professor.getEmail());
-        statement.setString(2, "12345");    //FIXME: gestire la password!
+        statement.setString(2, professor.getPassword());
 
         ResultSet result = statement.executeQuery();
 
@@ -61,7 +70,7 @@ public class LoginManagerTest extends TestCase {
         assertEquals("testNome", result.getString("Nome"));
         assertEquals("testCognome", result.getString("Cognome"));
         assertEquals(professor.getEmail(), result.getString("Email"));
-        assertEquals("12345", result.getString("Password"));
+        assertEquals(professor.getPassword(), result.getString("Password"));
 
         statement.close();
     }
@@ -69,7 +78,17 @@ public class LoginManagerTest extends TestCase {
     public void testLogin() throws SQLException  {
         Student student = new Student("101010", "TestNome", "TestCognome");
 
+        // Prepara la password simulata per la registrazione
+        String simulatedInput1 = "password123\n";
+        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+        System.setIn(inputStream1);
+
         loginManager.addUser(student);
+
+        // Prepara la password simulata per il login
+        String simulatedInput2 = "password123\n";
+        InputStream inputStream2 = new ByteArrayInputStream(simulatedInput2.getBytes());
+        System.setIn(inputStream2);
 
         assertTrue(loginManager.login(student));
 

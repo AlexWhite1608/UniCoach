@@ -40,9 +40,18 @@ public class User {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String id;
     private String name = "";
     private String surname = "";
     private String email = "";
+    private String password = "";
 
 }
