@@ -202,7 +202,7 @@ public class ProfessorTest {
 
     @Test
     public void testSendEmail() throws SQLException, MessagingException {
-        Professor professorTest = new Professor("12345", "Riccardo", "Becciolini", "riccardo.becciolini00@gmail.com");
+        Professor professorTest = new Professor("12345", "testNome", "testCognome", "riccardo.becciolini00@gmail.com");
 
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
         professorTest.getProfessorGateway().setCourseId(professorTest);
@@ -221,6 +221,15 @@ public class ProfessorTest {
         studentTest.attach(courseTest);
 
         professorTest.notifyObservers("FUNZIONA");
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Cancella l'utente inserito
+        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
+        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
+        deleteUserStatement.setString(1, "testNome");
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.close();
 
     }
 
