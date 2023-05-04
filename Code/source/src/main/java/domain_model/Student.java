@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User implements Observer {
+    public Student(String id, String name, String surname, String email) throws SQLException {
+        super(id, name, surname, email);
+
+        uniTranscript = new UniTranscript();
+        subjects = new ArrayList<>();
+
+        studentGateway.addStudent(this);
+    }
+
     public Student(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
 

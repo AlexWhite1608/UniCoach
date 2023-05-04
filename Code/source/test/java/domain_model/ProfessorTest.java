@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import user_login.LoginManager;
 
+import javax.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -200,19 +201,20 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testSendEmail() throws SQLException {
-        Professor professorTest = new Professor("12345", "riccardo", "becciolini00");
+    public void testSendEmail() throws SQLException, MessagingException {
+        Professor professorTest = new Professor("12345", "Riccardo", "Becciolini", "riccardo.becciolini00@gmail.com");
+
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
         professorTest.getProfessorGateway().setCourseId(professorTest);
 
-        Student studentTest = new Student("12346", "alessandro", "Becciolini00");
+        Student studentTest = new Student("12346", "Alessandro", "Bianco", "nibbiojr@gmail.com");
 
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         // Prepara la password simulata
-        String simulatedInput = "HIcd126@\n";
-        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
-        System.setIn(inputStream);
+        String simulatedInput1 = "fldiejclqrzckthd\n";
+        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+        System.setIn(inputStream1);
 
         loginManager.addUser(professorTest);
 

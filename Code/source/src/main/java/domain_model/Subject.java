@@ -1,7 +1,9 @@
 package domain_model;
 
+import javax.mail.MessagingException;
+
 public interface Subject {
-    void notifyObservers(String msg);
+    void notifyObservers(String msg) throws MessagingException;
 
     void subscribe(Observer o);
 
