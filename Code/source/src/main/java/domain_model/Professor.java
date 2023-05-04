@@ -114,7 +114,7 @@ public class Professor extends User implements Subject{
 
     public void addExamDate() throws MessagingException {
         //TODO Modifica il calendario del professore
-        
+
         String string = " ";
         notifyObservers(string);
     }
