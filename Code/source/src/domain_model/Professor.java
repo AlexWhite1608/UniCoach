@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
+
 public class Professor extends User implements Subject{
     public Professor(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
@@ -95,6 +99,11 @@ public class Professor extends User implements Subject{
     @Override
     public void notifyObservers(String msg) {
 
+        for(Observer observer : observers){
+            sendEmail(observer, msg);
+            observer.update();
+        }
+
     }
 
     @Override
@@ -106,6 +115,14 @@ public class Professor extends User implements Subject{
     public void unsubscribe(Observer o) {
         observers.remove(o);
     }
+
+    public void addExamDate() {
+        //TODO Modifica il calendario del professore
+        
+        String string = " ";
+        notifyObservers(string);
+    }
+
 
     public ProfessorGateway getProfessorGateway() {
         return professorGateway;
