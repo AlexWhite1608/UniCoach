@@ -38,6 +38,60 @@ public class Professor extends User implements Subject{
 
     //TODO: il professore notifica gli studenti con gli homework e le date degli esami (tramite observer)
 
+    private void sendEmail(Observer dest, String msg) {
+
+        // Imposta le proprietà per la connessione SMTP
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com"); // il server SMTP
+        props.put("mail.smtp.socketFactory.port", "465"); // porta per la connessione SSL
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // tipo di socket
+        props.put("mail.smtp.auth", "true"); // abilita l'autenticazione
+        props.put("mail.smtp.port", "465"); // porta per la connessione SMTP
+
+        // Autenticazione
+        String senderEmail = this.getEmail();
+        String senderPassword = this.getPassword();
+
+        Authenticator auth = new Authenticator() {
+            // sostituire email e password con le proprie credenziali
+            protected PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(senderEmail, senderPassword);
+            }
+        };
+
+        // Crea la sessione per l'invio dell'email
+        Session session = Session.getDefaultInstance(props, auth);
+
+        try {
+            // Crea il messaggio email
+            Message message = new MimeMessage(session);
+
+            // Imposta il mittente dell'email
+            message.setFrom(new InternetAddress(senderEmail));
+
+            // Imposta i destinatari dell'email
+            try {
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(((Student) dest).getEmail()));
+            } catch (ClassCastException e) {
+                System.out.println(e.getMessage());
+            }
+
+            // Imposta l'oggetto dell'email
+            message.setSubject("Oggetto dell'email");
+
+            // Imposta il testo dell'email
+            message.setText(msg);    //TODO: inserire la roba da comunicare
+
+            // Invia l'email
+            Transport.send(message);
+
+            System.out.println("Email inviata correttamente.");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void notifyObservers(String msg) {
 

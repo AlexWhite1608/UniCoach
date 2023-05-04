@@ -38,7 +38,7 @@ public class Student extends User implements Observer {
 
     @Override
     public void update() {
-
+        //TODO: deve modificare il calendario aggiungendo l'evento inviato
     }
 
     @Override
