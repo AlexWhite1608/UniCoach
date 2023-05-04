@@ -4,7 +4,10 @@ import data_access.DBConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import user_login.LoginManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -194,6 +197,29 @@ public class ProfessorTest {
         assertEquals(grade, result.getInt("Voto"));
 
         statement.close();
+    }
+
+    @Test
+    public void testSendEmail() throws SQLException {
+        Professor professorTest = new Professor("12345", "riccardo", "becciolini00");
+        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+        professorTest.getProfessorGateway().setCourseId(professorTest);
+
+        Student studentTest = new Student("12346", "alessandro", "Becciolini00");
+
+        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+
+        // Prepara la password simulata
+        String simulatedInput = "HIcd126@\n";
+        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(inputStream);
+
+        loginManager.addUser(professorTest);
+
+        studentTest.attach(courseTest);
+
+        professorTest.notifyObservers("FUNZIONA");
+
     }
 
     private Connection conn;
