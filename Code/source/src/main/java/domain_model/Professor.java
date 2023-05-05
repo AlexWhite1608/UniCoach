@@ -92,10 +92,24 @@ public class Professor extends User implements Subject{
         }
     }
 
-    //TODO Modifica il calendario del professore
-    public void addExamDate() throws MessagingException {
+    //FIXME: ora questo metodo ritorna l'oggetto Activity ma non è troppo corretto
+    public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
 
-        String string = " ";
+        String subject = "Nuova data esame professor " + this.getName() + " " + this.getSurname();
+        String msg = "Di seguito la data del prossimo esame: \n" + date;
+
+        //Notifica gli studenti del nuovo esame
+        notifyObservers(msg, subject);
+
+        Activity addExamActivity = new Activity();
+        addExamActivity.setName("Data esame");   //FIXME: trovare il modo di passare il nome del corso del professore!
+        addExamActivity.setDate(date);
+        addExamActivity.setStartTime(startTime);
+        addExamActivity.setEndTime(endTime);
+
+        this.addActivity(addExamActivity);
+
+        return addExamActivity;
     }
 
     @Override

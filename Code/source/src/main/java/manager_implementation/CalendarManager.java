@@ -2,15 +2,18 @@ package manager_implementation;
 
 import java.util.Arrays;
 
-public class Calendar {
+//FIXME: CAPIRE COSA FARE CON QUESTA CLASSE!!
+public class CalendarManager {
 
-    public Calendar() {
+    public CalendarManager() {
 
         //Inizializza il calendario vuoto
         calendar = new String[7][24];
         for (String[] row : calendar) {
             Arrays.fill(row, "");
         }
+
+
     }
 
     public void addActivity(String activity, int day, int startTime, int endTime) {
@@ -52,4 +55,6 @@ public class Calendar {
     }
 
     private String[][] calendar;
+
+
 }

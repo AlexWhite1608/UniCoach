@@ -1,6 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
+import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -206,11 +207,11 @@ public class ProfessorTest {
     @Test
     public void testSendEmail() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "testNome", "testCognome", "riccardo.becciolini00@gmail.com");
-
+        Student studentTest = new Student("12346", "Alessandro", "Bianco", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-        professorTest.getProfessorGateway().setCourseId(professorTest);
 
-        Student studentTest = new Student("12346", "Alessandro", "Bianco", "nibbiojr@gmail.com");
+        //Collega il corso al professore
+        professorTest.getProfessorGateway().setCourseId(professorTest);
 
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -220,6 +221,7 @@ public class ProfessorTest {
         System.setIn(inputStream1);
 
         loginManager.addUser(professorTest);
+        loginManager.addUser(studentTest);
 
         studentTest.attach(courseTest);
 
@@ -233,6 +235,65 @@ public class ProfessorTest {
         deleteUserStatement.setString(1, "testNome");
         deleteUserStatement.executeUpdate();
         deleteUserStatement.close();
+
+    }
+
+    @Test
+    public void testAddActivity() throws SQLException, MessagingException {
+        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        //Eseguo registrazione professore per la mandare la mail
+        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+
+        //Prepara la password simulata
+        String simulatedInput1 = "fldiejclqrzckthd\n";
+        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+        System.setIn(inputStream1);
+
+        loginManager.addUser(professorTest);
+
+        //Iscrivo gli studenti al corso del professore
+        studentTest1.attach(courseTest);
+        studentTest2.attach(courseTest);
+
+        //Il professore aggiunge la nuova data dell'esame (e quindi richiama il notifyObservers)
+        Activity activity = professorTest.addExamDate("24/05/2023", 8, 10);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
+        String sql = "SELECT * FROM CalendarioDocenti WHERE Id = ?";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, activity.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals(activity.getName(), result.getString("Attività"));
+        assertEquals(activity.getDate(), result.getString("Data"));
+        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
+        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
+        assertEquals(professorTest.getId(), result.getString("Matricola"));
+
+        statement.close();
+
+        //Cancella l'utente inserito
+        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
+        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
+        deleteUserStatement.setString(1, "testNome");
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.close();
+
+        //Elimino l'attività inserita
+        String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
+        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
+        deleteActivityStatement.setString(1, activity.getId());
+        deleteActivityStatement.executeUpdate();
+        deleteActivityStatement.close();
 
     }
 
