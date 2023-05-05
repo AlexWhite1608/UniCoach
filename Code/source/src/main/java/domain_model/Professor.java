@@ -1,6 +1,7 @@
 package domain_model;
 
 import data_access.ProfessorGateway;
+import manager_implementation.Activity;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -110,6 +111,10 @@ public class Professor extends User implements Subject{
         this.addActivity(addExamActivity);
 
         return addExamActivity;
+    }
+
+    private void addActivity(Activity activity) throws SQLException {
+        professorGateway.addActivity(activity, this);
     }
 
     @Override
