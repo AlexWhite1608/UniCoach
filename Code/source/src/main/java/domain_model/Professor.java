@@ -52,7 +52,7 @@ public class Professor extends User implements Subject{
 
 
     //FIXME: questo metodo andrebbe spostato dalla classe professor
-    private void sendEmail(Observer dest, String msg) throws MessagingException {
+    private void sendEmail(Observer dest, String msg, String subject) throws MessagingException {
         Properties prop = new Properties();
 
         prop.put("mail.smtp.auth", true);
@@ -72,10 +72,10 @@ public class Professor extends User implements Subject{
             }
         });
 
-        Message message = prepareMessage(session, professorEmail, ((Student) dest).getEmail(), msg, "OGGETTO EMAIL");   //FIXME: rendere modificabile l'oggetto della mail
+        Message message = prepareMessage(session, professorEmail, ((Student) dest).getEmail(), msg, subject);   //FIXME: rendere modificabile l'oggetto della mail
 
         Transport.send(message);
-        System.out.println("email sent successfully");
+        System.out.println("Email inviata correttamente");
     }
 
     private Message prepareMessage(Session s, String email, String dest, String msg, String subject){
@@ -92,11 +92,17 @@ public class Professor extends User implements Subject{
         }
     }
 
+    public void addExamDate() throws MessagingException {
+        //TODO Modifica il calendario del professore
+
+        String string = " ";
+    }
+
     @Override
-    public void notifyObservers(String msg) throws MessagingException {
+    public void notifyObservers(String msg, String subject) throws MessagingException {
 
         for(Observer observer : observers){
-            sendEmail(observer, msg);
+            sendEmail(observer, msg, subject);
             observer.update();
         }
 
@@ -111,14 +117,6 @@ public class Professor extends User implements Subject{
     public void unsubscribe(Observer o) {
         observers.remove(o);
     }
-
-    public void addExamDate() throws MessagingException {
-        //TODO Modifica il calendario del professore
-
-        String string = " ";
-        notifyObservers(string);
-    }
-
 
     public ProfessorGateway getProfessorGateway() {
         return professorGateway;

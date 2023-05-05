@@ -220,7 +220,7 @@ public class ProfessorTest {
 
         studentTest.attach(courseTest);
 
-        professorTest.notifyObservers("FUNZIONA");
+        professorTest.notifyObservers("Test Messaggio", "Test Oggetto");
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

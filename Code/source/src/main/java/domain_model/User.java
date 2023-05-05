@@ -14,7 +14,7 @@ public class User {
         this.name = n;
         this.surname = s;
 
-        this.email = n + "." + s + "@gmail.com"; //FIXME: gestire email per bene
+        this.email = n + "." + s + "@gmail.com";  //FIXME: gestire email per bene
     }
 
     public void displayAttributes() {
