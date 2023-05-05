@@ -168,6 +168,9 @@ public class ProfessorTest {
         assertEquals(courseTest.getId(), result.getString("Corso"));
         assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
 
+        //Si verifica anche che l'esame sia stato inserito nel libretto:
+        assertEquals(student.getUniTranscript().getExam(examTest.getId()), examTest);
+
         statement.close();
 
     }

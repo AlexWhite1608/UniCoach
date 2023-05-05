@@ -50,8 +50,7 @@ public class Professor extends User implements Subject{
         return professorGateway.getAverage();
     }
 
-
-    //FIXME: questo metodo andrebbe spostato dalla classe professor
+    //FIXME: questo metodo andrebbe spostato dalla classe professor?
     private void sendEmail(Observer dest, String msg, String subject) throws MessagingException {
         Properties prop = new Properties();
 
@@ -78,6 +77,7 @@ public class Professor extends User implements Subject{
         System.out.println("Email inviata correttamente");
     }
 
+    //FIXME: questo metodo andrebbe spostato dalla classe professor?
     private Message prepareMessage(Session s, String email, String dest, String msg, String subject){
         try {
             Message message = new MimeMessage(s);
@@ -92,8 +92,8 @@ public class Professor extends User implements Subject{
         }
     }
 
+    //TODO Modifica il calendario del professore
     public void addExamDate() throws MessagingException {
-        //TODO Modifica il calendario del professore
 
         String string = " ";
     }
