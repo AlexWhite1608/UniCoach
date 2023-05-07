@@ -113,6 +113,22 @@ public class Professor extends User implements Subject{
         return addExamActivity;
     }
 
+    public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
+        String subject = "Resoconto lezione " + date;
+
+        notifyObservers(msg, subject);
+
+        Activity addLectureNotesActivity = new Activity();
+        addLectureNotesActivity.setName("Resoconto lezione");   //FIXME: trovare il modo di passare il nome del corso del professore!
+        addLectureNotesActivity.setDate(date);
+        addLectureNotesActivity.setStartTime(0);    // FIXME: negli orari ci possiamo mettere gli orari della lezione svolta
+        addLectureNotesActivity.setEndTime(0);
+
+        this.addActivity(addLectureNotesActivity);
+
+        return addLectureNotesActivity;
+    }
+
     private void addActivity(Activity activity) throws SQLException {
         professorGateway.addActivity(activity, this);
     }
