@@ -89,19 +89,21 @@ public class StudentGateway implements Gateway {
     @Override
     public void addActivity(Activity activity, User student) throws SQLException {
         String sql = """
-                INSERT INTO CalendarioStudenti(Id, Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?, ?)""";
+                INSERT INTO CalendarioStudenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        statement.setString(1, activity.getId());
-        statement.setString(2, activity.getName());
-        statement.setString(3, activity.getDate());
-        statement.setInt(4, activity.getStartTime());
-        statement.setInt(5, activity.getEndTime());
-        statement.setString(6, student.getId());
+
+        statement.setString(1, activity.getName());
+        statement.setString(2, activity.getDate());
+        statement.setInt(3, activity.getStartTime());
+        statement.setInt(4, activity.getEndTime());
+        statement.setString(5, student.getId());
+
+        String sql
 
         statement.executeUpdate();
         statement.close();

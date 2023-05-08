@@ -4,12 +4,9 @@ import domain_model.RandomStringGenerator;
 
 public class Activity {
 
-    public Activity() {
-        this.id = RandomStringGenerator.generateRandomString(8);
-    }
+    public Activity() {}
 
     public Activity(String name, String date, int startTime, int endTime) {
-        this.id = RandomStringGenerator.generateRandomString(8);
         this.name = name;
         this.date = date;
         this.startTime = startTime;
