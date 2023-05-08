@@ -32,6 +32,11 @@ public class Professor extends User implements Subject{
 
     }
 
+    @Override
+    public void displayActivities() throws SQLException {
+        professorGateway.displayActivities(this);
+    }
+
     public void setGrade(Student student, Exam exam, int grade) throws SQLException {
         professorGateway.setGrade(student, exam, grade);
 

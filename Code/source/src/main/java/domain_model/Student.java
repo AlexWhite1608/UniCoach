@@ -16,6 +16,11 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
+    @Override
+    public void displayActivities() throws SQLException {
+        studentGateway.displayActivities(this);
+    }
+
     public Student(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
 

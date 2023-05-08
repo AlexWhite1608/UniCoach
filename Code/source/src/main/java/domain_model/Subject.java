@@ -1,9 +1,10 @@
 package domain_model;
 
 import javax.mail.MessagingException;
+import java.sql.SQLException;
 
 public interface Subject {
-    void notifyObservers(String msg, String subject) throws MessagingException;
+    void notifyObservers(String msg, String subject, Activity activity) throws MessagingException, SQLException;
 
     void subscribe(Observer o);
 

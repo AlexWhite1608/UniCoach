@@ -225,7 +225,7 @@ public class ProfessorTest {
 
         studentTest.attach(courseTest);
 
-        professorTest.notifyObservers("Test Messaggio", "Test Oggetto");
+        professorTest.notifyObservers("Test Messaggio", "Test Oggetto", null);  //FIXME: passa attività!
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

@@ -1,6 +1,8 @@
 package domain_model;
 
-public class User {
+import java.sql.SQLException;
+
+public abstract class User {
 
     public User(String id, String name, String surname, String email) {
         this.id = id;
@@ -23,6 +25,8 @@ public class User {
         System.out.println("Surname: " + surname);
         System.out.println("Email: " + email);
     }
+
+    public abstract void displayActivities() throws SQLException;
 
     public String getName() {
         return name;

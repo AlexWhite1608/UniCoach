@@ -180,6 +180,39 @@ public class ProfessorGateway implements Gateway{
 
     }
 
+    public void displayActivities(Professor professor) throws SQLException {
+        String sql = """
+                SELECT Attività, Data, OraInizio, OraFine
+                FROM CalendarioStudenti
+                WHERE Matricola = ?
+                ORDER BY CAST(Data as date) ASC""";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, professor.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            String activity = resultSet.getString(1);
+            String date = resultSet.getDate(2).toString();
+            int startTime = resultSet.getInt(3);
+            int endTime = resultSet.getInt(4);
+
+            System.out.println("\nProssime attività di " + professor.getName() + " " + professor.getSurname());
+            System.out.println("Nome attività: " + activity);
+            System.out.println("Data: " + date);
+            System.out.println("Ora inizio: " + startTime);
+            System.out.println("Ora fine: " + endTime);
+        } else {
+            throw new SQLException("Non sono presenti attività da mostrare");
+        }
+
+        resultSet.close();
+        statement.close();
+    }
+
     private Connection connection = null;
     private String courseID;
 
