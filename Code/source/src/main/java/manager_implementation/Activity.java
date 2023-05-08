@@ -8,6 +8,14 @@ public class Activity {
         this.id = RandomStringGenerator.generateRandomString(8);
     }
 
+    public Activity(String name, String date, int startTime, int endTime) {
+        this.id = RandomStringGenerator.generateRandomString(8);
+        this.name = name;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public String getId() {
         return id;
     }

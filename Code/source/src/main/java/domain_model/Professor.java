@@ -104,14 +104,14 @@ public class Professor extends User implements Subject{
         String subject = "Nuova data esame professor " + this.getName() + " " + this.getSurname();
         String msg = "Di seguito la data del prossimo esame: \n" + date;
 
-        //Notifica gli studenti del nuovo esame
-        notifyObservers(msg, subject);
-
         Activity addExamActivity = new Activity();
         addExamActivity.setName("Data esame");   //FIXME: trovare il modo di passare il nome del corso del professore!
         addExamActivity.setDate(date);
         addExamActivity.setStartTime(startTime);
         addExamActivity.setEndTime(endTime);
+
+        //Notifica gli studenti del nuovo esame
+        notifyObservers(msg, subject, addExamActivity);
 
         this.addActivity(addExamActivity);
 
@@ -121,13 +121,13 @@ public class Professor extends User implements Subject{
     public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
         String subject = "Resoconto lezione " + date;
 
-        notifyObservers(msg, subject);
-
         Activity addLectureNotesActivity = new Activity();
         addLectureNotesActivity.setName("Resoconto lezione");   //FIXME: trovare il modo di passare il nome del corso del professore!
         addLectureNotesActivity.setDate(date);
         addLectureNotesActivity.setStartTime(0);    // FIXME: negli orari ci possiamo mettere gli orari della lezione svolta
         addLectureNotesActivity.setEndTime(0);
+
+        notifyObservers(msg, subject, addLectureNotesActivity);
 
         this.addActivity(addLectureNotesActivity);
 
@@ -139,11 +139,11 @@ public class Professor extends User implements Subject{
     }
 
     @Override
-    public void notifyObservers(String msg, String subject) throws MessagingException {
+    public void notifyObservers(String msg, String subject, Activity activity) throws MessagingException, SQLException {
 
         for(Observer observer : observers){
             sendEmail(observer, msg, subject);
-            observer.update();
+            observer.update(activity);
         }
 
     }

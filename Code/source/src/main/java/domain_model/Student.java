@@ -1,6 +1,7 @@
 package domain_model;
 
 import data_access.StudentGateway;
+import manager_implementation.Activity;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,8 +52,9 @@ public class Student extends User implements Observer {
     }
 
     @Override
-    public void update() {
-        //TODO: deve modificare il calendario aggiungendo l'evento inviato
+    public void update(Activity activity) throws SQLException {
+
+        studentGateway.addActivity(activity, this);
     }
 
     @Override

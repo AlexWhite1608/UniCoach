@@ -1,9 +1,7 @@
 package data_access;
 
-import domain_model.Course;
-import domain_model.Professor;
-import domain_model.Student;
-import domain_model.Exam;
+import domain_model.*;
+import manager_implementation.Activity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,6 +84,28 @@ public class StudentGateway implements Gateway {
         averageStatement.close();
 
         return finalAverage;
+    }
+
+    @Override
+    public void addActivity(Activity activity, User student) throws SQLException {
+        String sql = """
+                INSERT INTO CalendarioStudenti(Id, Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?, ?)""";
+
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setString(1, activity.getId());
+        statement.setString(2, activity.getName());
+        statement.setString(3, activity.getDate());
+        statement.setInt(4, activity.getStartTime());
+        statement.setInt(5, activity.getEndTime());
+        statement.setString(6, student.getId());
+
+        statement.executeUpdate();
+        statement.close();
+
     }
 
     public void displayActivities(Student student) throws SQLException {

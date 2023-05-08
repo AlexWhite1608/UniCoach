@@ -4,6 +4,7 @@ import domain_model.Course;
 import domain_model.Exam;
 import domain_model.Professor;
 import domain_model.Student;
+import domain_model.User;
 import manager_implementation.Activity;
 
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+
 
 public class ProfessorGateway implements Gateway{
 
@@ -159,8 +162,8 @@ public class ProfessorGateway implements Gateway{
         return finalAverage;
     }
 
-
-    public void addActivity(Activity activity, Professor professor) throws SQLException{
+    @Override
+    public void addActivity(Activity activity, User professor) throws SQLException{
         String sql = """
                 INSERT INTO CalendarioDocenti(Id, Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?, ?)""";
 
