@@ -103,7 +103,16 @@ public class StudentGateway implements Gateway {
         statement.setInt(4, activity.getEndTime());
         statement.setString(5, student.getId());
 
-        String sql
+        String select = """
+                SELECT Id FROM CalendarioStudenti ORDER BY Id DESC LIMIT 1""";
+
+        PreparedStatement selectStatement = connection.prepareStatement(select);
+        ResultSet resultSet = selectStatement.executeQuery();
+
+        if(resultSet.next()){
+            String id = resultSet.getString(1);
+            activity.setId(id);
+        } else throw new SQLException("Non è riuscito a inserire l'evento nel database");
 
         statement.executeUpdate();
         statement.close();

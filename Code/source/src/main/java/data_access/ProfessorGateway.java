@@ -165,18 +165,30 @@ public class ProfessorGateway implements Gateway{
     @Override
     public void addActivity(Activity activity, User professor) throws SQLException{
         String sql = """
-                INSERT INTO CalendarioDocenti(Id, Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?, ?)""";
+                INSERT INTO CalendarioDocenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        statement.setString(1, activity.getId());
-        statement.setString(2, activity.getName());
-        statement.setString(3, activity.getDate());
-        statement.setInt(4, activity.getStartTime());
-        statement.setInt(5, activity.getEndTime());
-        statement.setString(6, professor.getId());
+
+        statement.setString(1, activity.getName());
+        statement.setString(2, activity.getDate());
+        statement.setInt(3, activity.getStartTime());
+        statement.setInt(4, activity.getEndTime());
+        statement.setString(5, professor.getId());
+
+        String select = """
+                SELECT Id FROM CalendarioDocenti ORDER BY Id DESC LIMIT 1""";
+
+        PreparedStatement selectStatement = connection.prepareStatement(select);
+        ResultSet resultSet = selectStatement.executeQuery();
+
+        if(resultSet.next()){
+            String id = resultSet.getString(1);
+            activity.setId(id);
+        } else throw new SQLException("Non è riuscito a inserire l'evento nel database");
+
 
         statement.executeUpdate();
         statement.close();
