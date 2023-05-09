@@ -91,11 +91,9 @@ public class StudentGateway implements Gateway {
         String sql = """
                 INSERT INTO CalendarioStudenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
-
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statement = connection.prepareStatement(sql);
-
 
         statement.setString(1, activity.getName());
         statement.setString(2, activity.getDate());
@@ -103,8 +101,13 @@ public class StudentGateway implements Gateway {
         statement.setInt(4, activity.getEndTime());
         statement.setString(5, student.getId());
 
+        statement.executeUpdate();
+        statement.close();
+
         String select = """
-                SELECT Id FROM CalendarioStudenti ORDER BY Id DESC LIMIT 1""";
+                SELECT Id FROM CalendarioDocenti ORDER BY Id DESC LIMIT 1""";   //FIXME: ho fatto che l'attività nella tabella CalendarioStudenti prende lo stesso id della stessa attività in CalendarioDocenti
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement selectStatement = connection.prepareStatement(select);
         ResultSet resultSet = selectStatement.executeQuery();
@@ -114,8 +117,8 @@ public class StudentGateway implements Gateway {
             activity.setId(id);
         } else throw new SQLException("Non è riuscito a inserire l'evento nel database");
 
-        statement.executeUpdate();
-        statement.close();
+        resultSet.close();
+        selectStatement.close();
 
     }
 
@@ -144,6 +147,7 @@ public class StudentGateway implements Gateway {
             System.out.println("Data: " + date);
             System.out.println("Ora inizio: " + startTime);
             System.out.println("Ora fine: " + endTime);
+            System.out.println("---------\n");
         } else {
             throw new SQLException("Non sono presenti attività da mostrare");
         }

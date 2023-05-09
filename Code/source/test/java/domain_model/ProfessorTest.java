@@ -262,13 +262,12 @@ public class ProfessorTest {
         //Il professore aggiunge la nuova data dell'esame (e quindi richiama il notifyObservers)
         Activity activity = professorTest.addExamDate("24/05/2023", 8, 10);
 
-        //TODO: Visualizza tutte le attività
         professorTest.displayActivities();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
         //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
-        String sql = "SELECT * FROM CalendarioDocenti WHERE Id = ?";
+        String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
 
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, activity.getId());

@@ -171,15 +171,19 @@ public class ProfessorGateway implements Gateway{
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-
         statement.setString(1, activity.getName());
         statement.setString(2, activity.getDate());
         statement.setInt(3, activity.getStartTime());
         statement.setInt(4, activity.getEndTime());
         statement.setString(5, professor.getId());
 
+        statement.executeUpdate();
+        statement.close();
+
         String select = """
                 SELECT Id FROM CalendarioDocenti ORDER BY Id DESC LIMIT 1""";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement selectStatement = connection.prepareStatement(select);
         ResultSet resultSet = selectStatement.executeQuery();
@@ -189,9 +193,8 @@ public class ProfessorGateway implements Gateway{
             activity.setId(id);
         } else throw new SQLException("Non è riuscito a inserire l'evento nel database");
 
-
-        statement.executeUpdate();
-        statement.close();
+        resultSet.close();
+        selectStatement.close();
 
     }
 
@@ -211,7 +214,7 @@ public class ProfessorGateway implements Gateway{
 
         if (resultSet.next()) {
             String activity = resultSet.getString(1);
-            String date = resultSet.getDate(2).toString();
+            String date = resultSet.getString(2);
             int startTime = resultSet.getInt(3);
             int endTime = resultSet.getInt(4);
 
@@ -220,6 +223,7 @@ public class ProfessorGateway implements Gateway{
             System.out.println("Data: " + date);
             System.out.println("Ora inizio: " + startTime);
             System.out.println("Ora fine: " + endTime);
+            System.out.println("---------\n");
         } else {
             throw new SQLException("Non sono presenti attività da mostrare");
         }

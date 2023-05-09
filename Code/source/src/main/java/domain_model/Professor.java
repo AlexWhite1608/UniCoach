@@ -110,10 +110,11 @@ public class Professor extends User implements Subject{
         addExamActivity.setStartTime(startTime);
         addExamActivity.setEndTime(endTime);
 
+        this.addActivity(addExamActivity);
+
         //Notifica gli studenti del nuovo esame
         notifyObservers(msg, subject, addExamActivity);
 
-        this.addActivity(addExamActivity);
 
         return addExamActivity;
     }
