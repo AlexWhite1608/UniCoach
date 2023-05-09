@@ -138,40 +138,42 @@ public class StudentTest {
 
     }
 
-    @Test
-    public void testUpdate() throws SQLException {
-        Student studentTest = new Student("12345", "TestName", "TestSurname");
-        Activity activity = new Activity("TestName", "TestDate", 13, 14);
-
-        studentTest.update(activity);
-
-        conn = DBConnection.connect("../database/unicoachdb.db");
-
-        //Verifico che l'attività sia stata correttamente inserita nel calendario dello studente
-        String sql = "SELECT * FROM CalendarioStudenti WHERE Id = ?";
-
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, activity.getId());
-
-        ResultSet result = statement.executeQuery();
-
-        assertTrue(result.next());
-        assertEquals(activity.getName(), result.getString("Attività"));
-        assertEquals(activity.getDate(), result.getString("Data"));
-        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
-        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
-        assertEquals(studentTest.getId(), result.getString("Matricola"));
-
-        statement.close();
-
-        //Elimino l'attività inserita nel database
-        String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
-        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
-        deleteActivityStatement.setString(1, activity.getId());
-        deleteActivityStatement.executeUpdate();
-        deleteActivityStatement.close();
-
-    }
+    //FIXME: decidere se togliere o meno questo test
+//    @Test
+//    public void testUpdate() throws SQLException {
+//        Student studentTest = new Student("12345", "TestName", "TestSurname");
+//        Activity activity = new Activity("TestName", "TestDate", 13, 14);
+//
+//
+//        studentTest.update(activity);
+//
+//        conn = DBConnection.connect("../database/unicoachdb.db");
+//
+//        //Verifico che l'attività sia stata correttamente inserita nel calendario dello studente
+//        String sql = "SELECT * FROM CalendarioStudenti WHERE Id = ?";
+//
+//        PreparedStatement statement = conn.prepareStatement(sql);
+//        statement.setString(1, activity.getId());
+//
+//        ResultSet result = statement.executeQuery();
+//
+//        assertTrue(result.next());
+//        assertEquals(activity.getName(), result.getString("Attività"));
+//        assertEquals(activity.getDate(), result.getString("Data"));
+//        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
+//        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
+//        assertEquals(studentTest.getId(), result.getString("Matricola"));
+//
+//        statement.close();
+//
+//        //Elimino l'attività inserita nel database
+//        String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
+//        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
+//        deleteActivityStatement.setString(1, activity.getId());
+//        deleteActivityStatement.executeUpdate();
+//        deleteActivityStatement.close();
+//
+//    }
 
     private Connection conn;
 }

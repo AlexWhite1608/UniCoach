@@ -221,7 +221,6 @@ public class ProfessorTest {
         System.setIn(inputStream1);
 
         loginManager.addUser(professorTest);
-        loginManager.addUser(studentTest);
 
         studentTest.attach(courseTest);
 
