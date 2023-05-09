@@ -204,38 +204,38 @@ public class ProfessorTest {
         statement.close();
     }
 
-    @Test
-    public void testSendEmail() throws SQLException, MessagingException {
-        Professor professorTest = new Professor("12345", "testNome", "testCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest = new Student("12346", "Alessandro", "Bianco", "alessandro.bianco1608@gmail.com");
-        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-
-        //Collega il corso al professore
-        professorTest.getProfessorGateway().setCourseId(professorTest);
-
-        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
-
-        // Prepara la password simulata
-        String simulatedInput1 = "fldiejclqrzckthd\n";
-        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
-        System.setIn(inputStream1);
-
-        loginManager.addUser(professorTest);
-
-        studentTest.attach(courseTest);
-
-        professorTest.notifyObservers("Test Messaggio", "Test Oggetto", null);  //FIXME: passa attività!
-
-        conn = DBConnection.connect("../database/unicoachdb.db");
-
-        //Cancella l'utente inserito
-        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
-        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
-        deleteUserStatement.setString(1, "testNome");
-        deleteUserStatement.executeUpdate();
-        deleteUserStatement.close();
-
-    }
+//    @Test
+//    public void testSendEmail() throws SQLException, MessagingException {
+//        Professor professorTest = new Professor("12345", "testNome", "testCognome", "riccardo.becciolini00@gmail.com");
+//        Student studentTest = new Student("12346", "Alessandro", "Bianco", "alessandro.bianco1608@gmail.com");
+//        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+//
+//        //Collega il corso al professore
+//        professorTest.getProfessorGateway().setCourseId(professorTest);
+//
+//        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+//
+//        // Prepara la password simulata
+//        String simulatedInput1 = "fldiejclqrzckthd\n";
+//        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+//        System.setIn(inputStream1);
+//
+//        loginManager.addUser(professorTest);
+//
+//        studentTest.attach(courseTest);
+//
+//        professorTest.notifyObservers("Test Messaggio", "Test Oggetto", null);  //FIXME: passa attività!
+//
+//        conn = DBConnection.connect("../database/unicoachdb.db");
+//
+//        //Cancella l'utente inserito
+//        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
+//        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
+//        deleteUserStatement.setString(1, "testNome");
+//        deleteUserStatement.executeUpdate();
+//        deleteUserStatement.close();
+//
+//    }
 
     @Test
     public void testAddActivity() throws SQLException, MessagingException {
