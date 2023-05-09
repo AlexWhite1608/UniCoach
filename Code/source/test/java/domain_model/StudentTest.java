@@ -5,11 +5,7 @@ import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import user_login.LoginManager;
 
-import javax.mail.MessagingException;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,7 +139,7 @@ public class StudentTest {
     }
 
     @Test
-    public void testAddUpdate() throws SQLException {
+    public void testUpdate() throws SQLException {
         Student studentTest = new Student("12345", "TestName", "TestSurname");
         Activity activity = new Activity("TestName", "TestDate", 13, 14);
 
