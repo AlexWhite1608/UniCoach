@@ -135,6 +135,16 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
+    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) {
+        int tmpGiorno = giorno;
+        int tmpMese = mese;
+        int tmpAnno = anno;
+
+        while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
+            Activity activity = new Activity("mt")
+        }
+    }
+
     private void addActivity(Activity activity) throws SQLException {
         professorGateway.addActivity(activity, this);
     }
@@ -146,7 +156,6 @@ public class Professor extends User implements Subject{
             sendEmail(observer, msg, subject);
             observer.update(activity);
         }
-
     }
 
     @Override
