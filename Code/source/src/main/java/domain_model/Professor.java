@@ -135,13 +135,45 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
-    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) {
+    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException{
+
+        //FIXME: anche qui trovare il modo di passare il corso
+
+        String name = "Lezione di " + this.getName();
         int tmpGiorno = giorno;
         int tmpMese = mese;
         int tmpAnno = anno;
 
         while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
-            Activity activity = new Activity("mt")
+            String date = tmpGiorno + "/" + tmpMese + "/" + tmpAnno;
+
+            Activity activity = new Activity(name, date, oraInizio, oraFine);
+
+            this.addActivity(activity);
+
+            tmpGiorno += 7;
+
+            if(tmpGiorno >=30 && ((tmpMese == 4) || (tmpMese == 6) || (tmpMese == 9) || (tmpMese == 11))){
+                tmpGiorno -=  30;
+                tmpMese += 1;
+            }
+
+            if(tmpGiorno >=31 && ((tmpMese == 1) || (tmpMese == 3) || (tmpMese == 5) || (tmpMese == 7) || (tmpMese == 8) || (tmpMese == 10) || (tmpMese ==12) )){
+                tmpGiorno -=  31;
+                tmpMese += 1;
+
+                if(tmpMese > 12) {
+                    tmpMese -= 12;
+                    tmpAnno += 1;
+                }
+            }
+
+            if(tmpGiorno >=28 && (tmpMese == 2)){
+                tmpGiorno -=  28;
+                tmpMese += 1;
+            }
+
+
         }
     }
 
