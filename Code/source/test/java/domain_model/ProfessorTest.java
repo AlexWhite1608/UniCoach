@@ -286,14 +286,20 @@ public class ProfessorTest {
         //Cancella l'utente inserito
         String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
         PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
-        deleteUserStatement.setString(1, "testNome");
+        deleteUserStatement.setString(1, "TestNome");
         deleteUserStatement.executeUpdate();
         deleteUserStatement.close();
 
-        //Elimino l'attività inserita
+        //Elimino l'attività inserita per docente e studente
         String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
+        PreparedStatement deleteActivityProfessorStatement = conn.prepareStatement(deleteActivitySql);
+        deleteActivityProfessorStatement.setString(1, activity.getId());
+        deleteActivityProfessorStatement.executeUpdate();
+        deleteActivityProfessorStatement.close();
+
+        deleteActivitySql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
         PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
-        deleteActivityStatement.setString(1, activity.getId());
+        deleteActivityStatement.setString(1, activity.getName());
         deleteActivityStatement.executeUpdate();
         deleteActivityStatement.close();
 
