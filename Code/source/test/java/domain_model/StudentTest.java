@@ -6,14 +6,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.ByteArrayInputStream;
 
 import static junit.framework.TestCase.*;
 
@@ -197,12 +198,21 @@ public class StudentTest {
             professor4.getProfessorGateway().setCourseId(professor4);
 
             //inserisce i codici dei corsi
-            TestInputSimulator inputSimulator = new TestInputSimulator();
-            inputSimulator.addInput(courseTest1.getId());
-            inputSimulator.addInput(courseTest2.getId());
-            inputSimulator.addInput(courseTest3.getId());
-            inputSimulator.addInput("0");
-            inputSimulator.simulateInput();
+//            TestInputSimulator inputSimulator = new TestInputSimulator();
+//            inputSimulator.addInput(courseTest1.getId());
+//            inputSimulator.addInput(courseTest2.getId());
+//            inputSimulator.addInput(courseTest3.getId());
+//            inputSimulator.addInput("0");
+//            inputSimulator.simulateInput();
+
+             // Simuliamo l'input utente con tutti i courseTest.getId()
+            String input = courseTest1.getId()+"\n"+courseTest2+"\n"+courseTest3+"\n0\n";
+            InputStream in = new ByteArrayInputStream(input.getBytes());
+            System.setIn(in);
+
+            // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+            ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(outContent));
 
             student.chooseCourse();
 
