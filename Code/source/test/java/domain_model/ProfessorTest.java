@@ -19,6 +19,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class ProfessorTest {
 
@@ -375,6 +376,85 @@ public class ProfessorTest {
         }
 
         deleteStatement.close();
+    }
+
+    @Test
+    public void testRemoveLesson() throws SQLException, MessagingException, InvalidAttributesException {
+        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        professorTest.getProfessorGateway().setCourseId(professorTest);
+
+        //Eseguo registrazione professore per la mandare la mail
+        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+
+        //Prepara la password simulata
+        String simulatedInput1 = "fldiejclqrzckthd\n";
+        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+        System.setIn(inputStream1);
+
+        loginManager.addUser(professorTest);
+
+        //Iscrivo gli studenti al corso del professore
+        studentTest1.attach(courseTest);
+        studentTest2.attach(courseTest);
+
+        //Ritorna tutte le lezioni a partire dalla data inserita (una lezione a settimana)
+        List<Activity> activityList = professorTest.scheduleLessons(12, 4, 2023, 10, 12);
+
+        //Rimuovo una lezione
+        professorTest.removeLesson(3, 5, 2023);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Verifico che la lezione sia rimossa da entrambi i calendari
+        String sql = "SELECT * FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, "3/5/2023");
+        statement.setString(2, professorTest.getId());
+
+        ResultSet result = statement.executeQuery();
+        assertFalse(result.next());
+
+        sql = "SELECT * FROM CalendarioStudenti WHERE Data = ? AND Matricola = ?";
+        statement = conn.prepareStatement(sql);
+        statement.setString(1, "3/5/2023");
+        statement.setString(2, studentTest1.getId());
+
+        result = statement.executeQuery();
+        assertFalse(result.next());
+
+        statement = conn.prepareStatement(sql);
+        statement.setString(1, "3/5/2023");
+        statement.setString(2, studentTest2.getId());
+
+        result = statement.executeQuery();
+        assertFalse(result.next());
+
+        statement.close();
+
+        //Elimino le lezioni inserite
+        String deleteSql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
+
+        PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+        for (Activity activity : activityList) {
+            deleteStatement.setString(1, activity.getId());
+            deleteStatement.executeUpdate();
+        }
+
+        deleteSql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
+
+        deleteStatement = conn.prepareStatement(deleteSql);
+        for (Activity activity : activityList) {
+            deleteStatement.setString(1, activity.getName());
+            deleteStatement.executeUpdate();
+        }
+
+        deleteStatement.close();
+
     }
 
     private Connection conn;
