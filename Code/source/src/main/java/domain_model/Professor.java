@@ -157,12 +157,12 @@ public class Professor extends User implements Subject{
 
             tmpGiorno += 7;
 
-            if(tmpGiorno >=30 && ((tmpMese == 4) || (tmpMese == 6) || (tmpMese == 9) || (tmpMese == 11))){
+            if(tmpGiorno >30 && ((tmpMese == 4) || (tmpMese == 6) || (tmpMese == 9) || (tmpMese == 11))){
                 tmpGiorno -=  30;
                 tmpMese += 1;
             }
 
-            if(tmpGiorno >=31 && ((tmpMese == 1) || (tmpMese == 3) || (tmpMese == 5) || (tmpMese == 7) || (tmpMese == 8) || (tmpMese == 10) || (tmpMese ==12) )){
+            if(tmpGiorno >31 && ((tmpMese == 1) || (tmpMese == 3) || (tmpMese == 5) || (tmpMese == 7) || (tmpMese == 8) || (tmpMese == 10) || (tmpMese ==12) )){
                 tmpGiorno -=  31;
                 tmpMese += 1;
 
@@ -172,7 +172,7 @@ public class Professor extends User implements Subject{
                 }
             }
 
-            if(tmpGiorno >=28 && (tmpMese == 2)){
+            if(tmpGiorno >28 && (tmpMese == 2)){
                 tmpGiorno -=  28;
                 tmpMese += 1;
             }
@@ -200,6 +200,13 @@ public class Professor extends User implements Subject{
     }
 
     @Override
+    public void notifyObservers(Activity activity) throws SQLException {
+        for(Observer observer : observers) {
+            observer.update(activity);
+        }
+    }
+
+    @Override
     public void subscribe(Observer o) {
         observers.add(o);
     }
@@ -212,6 +219,7 @@ public class Professor extends User implements Subject{
     public ProfessorGateway getProfessorGateway() {
         return professorGateway;
     }
+    
 
     private List<Observer> observers;
     private ProfessorGateway professorGateway;
