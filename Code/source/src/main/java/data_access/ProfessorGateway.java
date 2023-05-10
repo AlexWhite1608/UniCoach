@@ -21,6 +21,7 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
+    //FIXME: ora che abbiamo messo l'attributo corso nel professore ci serve ancora setCourseID?
     public void setCourseId(Professor professor) throws SQLException {
         connection = DBConnection.connect("../database/unicoachdb.db");
 
@@ -196,6 +197,38 @@ public class ProfessorGateway implements Gateway{
         resultSet.close();
         selectStatement.close();
 
+    }
+
+    public void removeLesson(int giorno, int mese, int anno, Professor professor) throws SQLException {
+
+        //Ricerco la lezione nel database
+        String findCourseSql = "SELECT * FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement selectStatement = connection.prepareStatement(findCourseSql);
+        String data = String.valueOf(giorno) + "/" + String.valueOf(mese) + "/" + String.valueOf(anno);
+
+        selectStatement.setString(1, data);
+        selectStatement.setString(2, professor.getId());
+        ResultSet resultSet = selectStatement.executeQuery();
+
+        if(resultSet.next()){
+            //TODO: qui elimino la data dal db dei docenti e richiamo l'update dello studente per toglierlo anche da calendariostudenti
+            String deleteLesson = "DELETE FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
+            connection = DBConnection.connect("../database/unicoachdb.db");
+
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteLesson);
+            deleteStatement.setString(1, data);
+            deleteStatement.setString(2, professor.getId());
+            deleteStatement.executeUpdate();
+
+            //TODO: elimina la lezione dal calendario dello studente!!!!
+
+        } else throw new SQLException("La lezione inserita non è presente");
+
+        resultSet.close();
+        selectStatement.close();
     }
 
     public void displayActivities(Professor professor) throws SQLException {

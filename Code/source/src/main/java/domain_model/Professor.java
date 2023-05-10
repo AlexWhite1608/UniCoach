@@ -189,10 +189,14 @@ public class Professor extends User implements Subject{
         }
 
         for(Observer obs : observers){
-            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date " + course.getName());
+            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni di" + course.getName());
         }
 
         return activityList;
+    }
+
+    public void removeLesson(int giorno, int mese, int anno) throws SQLException {    //TODO: deve rimuovere la lezione anche dal calendario dello studente!!
+        professorGateway.removeLesson(giorno, mese, anno, this);
     }
 
     private void addActivity(Activity activity) throws SQLException {
