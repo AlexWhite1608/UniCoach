@@ -42,11 +42,12 @@ public class Student extends User implements Observer {
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
 
-            while (!input.equals("0")) {
+             do{
                 studentGateway.linkStudentToCourse(input, this);
                 System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
                 input = scanner.nextLine();
-            }
+            } while (!input.equals("0"));
+
         } catch (SQLException e) {
             System.err.println("Errore durante l'accesso al database: " + e.getMessage());
         }
