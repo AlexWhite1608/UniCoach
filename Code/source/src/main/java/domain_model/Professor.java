@@ -135,7 +135,7 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
-    public Activity scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
+    public List<Activity> scheduleLessons(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
 
         if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
             throw new InvalidAttributesException("Data inserita errata");
@@ -150,7 +150,8 @@ public class Professor extends User implements Subject{
         while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
             String date = tmpGiorno + "/" + tmpMese + "/" + tmpAnno;
 
-            activity = new Activity(name, date, oraInizio, oraFine);
+            Activity activity = new Activity(name, date, oraInizio, oraFine);
+            activityList.add(activity);
 
             this.addActivity(activity);
             this.notifyObservers(activity);
@@ -183,7 +184,7 @@ public class Professor extends User implements Subject{
             this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni professor" + this.getName() + " " + this.getSurname());
         }
 
-        return activity;
+        return activityList;
     }
 
     private void addActivity(Activity activity) throws SQLException {

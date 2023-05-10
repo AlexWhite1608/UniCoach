@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -326,15 +327,16 @@ public class ProfessorTest {
         studentTest1.attach(courseTest);
         studentTest2.attach(courseTest);
 
-        Activity activity = professorTest.scheduleLesson(12, 4, 2023, 10, 12);
+        //Ritorna tutte le lezioni a partire dalla data inserita (una lezione a settimana)
+        List<Activity> activityList = professorTest.scheduleLessons(12, 4, 2023, 10, 12);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
-        //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
+        //Verifico che tutte le lezioni siano correttamente inserite
         String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
 
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, activity.getId());
+        statement.setString(1, activityList[].getId());
 
         ResultSet result = statement.executeQuery();
 
