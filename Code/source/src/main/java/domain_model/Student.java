@@ -33,16 +33,22 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-    public void chooseCourse() throws SQLException{
-        System.out.println("Tutti i corsi disponibli sono i seguenti: ");
-        studentGateway.displayCourse();
+    public void chooseCourse() {
+        try {
+            System.out.println("Tutti i corsi disponibli sono i seguenti: ");
+            studentGateway.displayCourse();
 
-        System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
-        Scanner scanner = new Scanner(System.in);
+            System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
 
-        while (!Objects.equals(scanner.nextLine(), "0")) {
-            studentGateway.linkStudentToCourse(scanner.nextLine(), this);
-            scanner = new Scanner(System.in);
+            while (!input.equals("0")) {
+                studentGateway.linkStudentToCourse(input, this);
+                System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
+                input = scanner.nextLine();
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'accesso al database: " + e.getMessage());
         }
     }
 

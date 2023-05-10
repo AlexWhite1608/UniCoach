@@ -194,7 +194,7 @@ public class StudentGateway implements Gateway {
 
     public void linkStudentToCourse(String codiceCorso, Student studente) throws SQLException{
 
-        String sqlSelect1 = "SELECT * FROM  Corso WHERE Codice = ?";
+        String sqlSelect1 = "SELECT * FROM Corso WHERE Codice = ?";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
