@@ -38,16 +38,13 @@ public class Student extends User implements Observer {
 
         studentGateway.displayCourse();
 
-
-        System.out.println("Digita il codice del corso che vuoi seguire ");
-
+        System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
         Scanner scanner = new Scanner(System.in);
 
-
-        studentGateway.linkStudentToCourse(scanner.nextLine(), this);
-
-
-
+        while (!Objects.equals(scanner.nextLine(), "0")) {
+            studentGateway.linkStudentToCourse(scanner.nextLine(), this);
+            scanner = new Scanner(System.in);
+        }
     }
 
     public void displayUniTranscript(){
