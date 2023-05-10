@@ -13,8 +13,9 @@ public class Course {
         this.CFU = CFU;
         this.professor = professor;
         this.examType = examType;
-
         this.addCourse();
+
+        professor.setCourse(this);
     }
 
     //Aggiunge il corso al db quando viene istanziato

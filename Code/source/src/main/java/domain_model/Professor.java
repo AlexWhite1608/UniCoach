@@ -22,6 +22,7 @@ public class Professor extends User implements Subject{
         professorGateway = new ProfessorGateway(this);
         professorGateway.addProfessor(this);
 
+        course = null;
 
     }
 
@@ -33,6 +34,7 @@ public class Professor extends User implements Subject{
         professorGateway = new ProfessorGateway(this);
         professorGateway.addProfessor(this);
 
+        course = null;
     }
 
     @Override
@@ -45,6 +47,10 @@ public class Professor extends User implements Subject{
 
         //Aggiunge l'esame al libretto dello studente
         student.getUniTranscript().addExam(exam);
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public int getGrade(Student student) throws SQLException {
@@ -104,11 +110,11 @@ public class Professor extends User implements Subject{
     //FIXME: ora questo metodo ritorna l'oggetto Activity ma non è troppo corretto
     public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
 
-        String subject = "Nuova data esame professor " + this.getName() + " " + this.getSurname();
+        String subject = "Nuova data esame professor " + course.getName() + " " + this.getSurname();
         String msg = "Di seguito la data del prossimo esame: \n" + date;
 
         Activity addExamActivity = new Activity();
-        addExamActivity.setName("Data esame");   //FIXME: trovare il modo di passare il nome del corso del professore!
+        addExamActivity.setName("Data esame " + course.getName());
         addExamActivity.setDate(date);
         addExamActivity.setStartTime(startTime);
         addExamActivity.setEndTime(endTime);
@@ -122,10 +128,10 @@ public class Professor extends User implements Subject{
     }
 
     public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
-        String subject = "Resoconto lezione " + date;
+        String subject = "Resoconto lezione di "+ course.getName()+ " del " + date;
 
         Activity addLectureNotesActivity = new Activity();
-        addLectureNotesActivity.setName("Resoconto lezione");   //FIXME: trovare il modo di passare il nome del corso del professore!
+        addLectureNotesActivity.setName("Resoconto lezione di " + course.getName());
         addLectureNotesActivity.setDate(date);
         addLectureNotesActivity.setStartTime(0);    // FIXME: negli orari ci possiamo mettere gli orari della lezione svolta
         addLectureNotesActivity.setEndTime(0);
@@ -142,7 +148,7 @@ public class Professor extends User implements Subject{
         if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
             throw new InvalidAttributesException("Data inserita errata");
 
-        String name = "Lezione";    //FIXME: anche qui trovare il modo di passare il corso
+        String name = "Lezione " + course.getName();
         int tmpGiorno = giorno;
         int tmpMese = mese;
         int tmpAnno = anno;
@@ -226,4 +232,5 @@ public class Professor extends User implements Subject{
 
     private List<Observer> observers;
     private ProfessorGateway professorGateway;
+    private Course course;
 }
