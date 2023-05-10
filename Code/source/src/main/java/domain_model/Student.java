@@ -32,8 +32,10 @@ public class Student extends User implements Observer {
     }
 
     //TODO: quando lo studente si registra deve scegliere i corsi da seguire --> utilizzare una vista?
+    public void chooseCourse() {
+        System.out.println("Tutti i corsi disponibli sono i seguenti: ");
 
-    //TODO: lo studente sceglierà (tramite notifiche observer) la data dell'esame?
+    }
 
     public void displayUniTranscript(){
         uniTranscript.displayExams();

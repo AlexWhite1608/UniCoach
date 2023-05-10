@@ -156,5 +156,16 @@ public class StudentGateway implements Gateway {
         statement.close();
     }
 
+    public void displayCourse () throws SQLException{
+        String sql = "SELECT * FROM Corso";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+
+
+    }
+
     private Connection connection = null;
 }
