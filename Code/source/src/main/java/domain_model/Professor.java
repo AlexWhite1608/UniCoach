@@ -21,6 +21,8 @@ public class Professor extends User implements Subject{
 
         professorGateway = new ProfessorGateway(this);
         professorGateway.addProfessor(this);
+
+
     }
 
     public Professor(String id, String name, String surname) throws SQLException {
@@ -145,7 +147,7 @@ public class Professor extends User implements Subject{
         int tmpMese = mese;
         int tmpAnno = anno;
 
-        Activity activity = null;
+        List<Activity> activityList= new ArrayList<>();
 
         while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
             String date = tmpGiorno + "/" + tmpMese + "/" + tmpAnno;
@@ -220,7 +222,7 @@ public class Professor extends User implements Subject{
     public ProfessorGateway getProfessorGateway() {
         return professorGateway;
     }
-    
+
 
     private List<Observer> observers;
     private ProfessorGateway professorGateway;
