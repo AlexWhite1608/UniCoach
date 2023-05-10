@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.naming.directory.InvalidAttributesException;
 import java.util.Properties;
 
 public class Professor extends User implements Subject{
@@ -135,9 +136,12 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
-    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException{
+    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException {
 
         //FIXME: anche qui trovare il modo di passare il corso
+
+        if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
+            throw new InvalidAttributesException("Data inserita errata");
 
         String name = "Lezione di " + this.getName();
         int tmpGiorno = giorno;
@@ -172,7 +176,6 @@ public class Professor extends User implements Subject{
                 tmpGiorno -=  28;
                 tmpMese += 1;
             }
-
 
         }
     }
