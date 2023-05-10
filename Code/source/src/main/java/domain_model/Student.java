@@ -53,9 +53,12 @@ public class Student extends User implements Observer {
         return studentGateway.getAverage(student);
     }
 
+    public StudentGateway getStudentGateway() {
+        return studentGateway;
+    }
+
     @Override
     public void update(Activity activity) throws SQLException {
-
         studentGateway.addActivity(activity, this);
     }
 
@@ -67,6 +70,7 @@ public class Student extends User implements Observer {
         professor.subscribe(this);
     }
 
+    //TODO: andrebbe testata anche la cancellazione dello studente dal corso!
     @Override
     public void detach(Course course) {
         Professor professor = course.getProfessor();

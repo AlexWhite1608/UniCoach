@@ -15,4 +15,13 @@ public enum ExamType {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static ExamType getExamTypeFromString(String input) {
+        for (ExamType examType : ExamType.values()) {
+            if (examType.getDisplayName().equalsIgnoreCase(input)) {
+                return examType;
+            }
+        }
+        return null;  // Ritorna null se la stringa non corrisponde a nessun elemento dell'enum
+    }
 }

@@ -2,6 +2,7 @@ package domain_model;
 
 import java.security.SecureRandom;
 
+//FIXME: SPOSTAMI DA QUI IN UN NUOVO PACKAGE PIU' IDONEO!
 public class RandomStringGenerator {
     private static final String ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static SecureRandom random = new SecureRandom();
