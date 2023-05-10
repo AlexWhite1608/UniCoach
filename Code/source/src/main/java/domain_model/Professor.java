@@ -116,7 +116,6 @@ public class Professor extends User implements Subject{
         //Notifica gli studenti del nuovo esame
         notifyObservers(msg, subject, addExamActivity);
 
-
         return addExamActivity;
     }
 
@@ -129,9 +128,9 @@ public class Professor extends User implements Subject{
         addLectureNotesActivity.setStartTime(0);    // FIXME: negli orari ci possiamo mettere gli orari della lezione svolta
         addLectureNotesActivity.setEndTime(0);
 
-        notifyObservers(msg, subject, addLectureNotesActivity);
-
         this.addActivity(addLectureNotesActivity);
+
+        notifyObservers(msg, subject, addLectureNotesActivity);
 
         return addLectureNotesActivity;
     }
