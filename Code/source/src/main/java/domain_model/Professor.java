@@ -136,7 +136,7 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
-    public void scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException {
+    public Activity scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException {
 
         //FIXME: anche qui trovare il modo di passare il corso
 
@@ -148,10 +148,12 @@ public class Professor extends User implements Subject{
         int tmpMese = mese;
         int tmpAnno = anno;
 
+        Activity activity = null;
+
         while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
             String date = tmpGiorno + "/" + tmpMese + "/" + tmpAnno;
 
-            Activity activity = new Activity(name, date, oraInizio, oraFine);
+            activity = new Activity(name, date, oraInizio, oraFine);
 
             this.addActivity(activity);
 
@@ -178,6 +180,8 @@ public class Professor extends User implements Subject{
             }
 
         }
+
+        return activity;
     }
 
     private void addActivity(Activity activity) throws SQLException {
