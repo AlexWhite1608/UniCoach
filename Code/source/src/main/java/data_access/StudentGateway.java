@@ -203,6 +203,8 @@ public class StudentGateway implements Gateway {
         ResultSet resultSelect1 = statementSelect1.executeQuery();
 
         if(resultSelect1.next()){
+            connection = DBConnection.connect("../database/unicoachdb.db");
+
             String sqlSelect2 = "SELECT * FROM Docente WHERE Matricola = ?";
             PreparedStatement statementSelect2 = connection.prepareStatement(sqlSelect2);
             statementSelect2.setString(1, resultSelect1.getString("Docente"));
@@ -226,6 +228,8 @@ public class StudentGateway implements Gateway {
             statementSelect2.close();
 
         } else throw new SQLException("Hai inserito un codice sbagliato");
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
 
         String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";
 
