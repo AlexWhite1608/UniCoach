@@ -194,14 +194,12 @@ public class StudentGateway implements Gateway {
 
     public void linkStudentToCourse(String codiceCorso, Student studente) throws SQLException{
 
-
         String sqlSelect1 = "SELECT * FROM  Corso WHERE Codice = ?";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statementSelect1 = connection.prepareStatement(sqlSelect1);
         statementSelect1.setString(1, codiceCorso);
-
         ResultSet resultSelect1 = statementSelect1.executeQuery();
 
         if(resultSelect1.next()){
@@ -216,7 +214,6 @@ public class StudentGateway implements Gateway {
             String email = resultSelect2.getString("Email");
             Professor professor = new Professor(matricola, nome, cognome,email);
 
-
             String codice = resultSelect1.getString("Codice");
             String nomeCod = resultSelect1.getString("Nome");
             int cfu = resultSelect1.getInt("CFU");
@@ -230,9 +227,6 @@ public class StudentGateway implements Gateway {
 
         } else throw new SQLException("Hai inserito un codice sbagliato");
 
-
-
-
         String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";
 
         PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
@@ -242,18 +236,6 @@ public class StudentGateway implements Gateway {
 
         statementInsert.close();
         statementSelect1.close();
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 

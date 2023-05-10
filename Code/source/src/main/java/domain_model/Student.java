@@ -6,6 +6,7 @@ import manager_implementation.Activity;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Student extends User implements Observer {
@@ -32,10 +33,8 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-
     public void chooseCourse() throws SQLException{
         System.out.println("Tutti i corsi disponibli sono i seguenti: ");
-
         studentGateway.displayCourse();
 
         System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
