@@ -6,6 +6,7 @@ import manager_implementation.Activity;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Student extends User implements Observer {
     public Student(String id, String name, String surname, String email) throws SQLException {
@@ -31,9 +32,21 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-    //TODO: quando lo studente si registra deve scegliere i corsi da seguire --> utilizzare una vista?
-    public void chooseCourse() {
+
+    public void chooseCourse() throws SQLException{
         System.out.println("Tutti i corsi disponibli sono i seguenti: ");
+
+        studentGateway.displayCourse();
+
+
+        System.out.println("Digita il codice del corso che vuoi seguire ");
+
+        Scanner scanner = new Scanner(System.in);
+
+
+        studentGateway.linkStudentToCourse(scanner.nextLine(), this);
+
+
 
     }
 

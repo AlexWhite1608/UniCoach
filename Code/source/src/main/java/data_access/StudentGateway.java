@@ -174,10 +174,89 @@ public class StudentGateway implements Gateway {
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String codice = resultSet.getString("Codice");
+            String nome = resultSet.getString("Nome");
+            int cfu = resultSet.getInt("CFU");
+            String docente= resultSet.getString("Docente");
+            String tipoEsame = resultSet.getString("TipoEsame");
+
+            System.out.println("\nCODICE CORSO: " + codice);
+            System.out.println("NOME CORSO: " + nome);
+            System.out.println("CFU: " + cfu);
+            System.out.println("DOCENTE: " + docente);
+            System.out.println("TIPO ESAME: " + tipoEsame +"\n");
+        }
+
+    }
+
+    public void linkStudentToCourse(String codiceCorso, Student studente) throws SQLException{
+
+
+        String sqlSelect1 = "SELECT * FROM  Corso WHERE Codice = ?";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement statementSelect1 = connection.prepareStatement(sqlSelect1);
+        statementSelect1.setString(1, codiceCorso);
+
+        ResultSet resultSelect1 = statementSelect1.executeQuery();
+
+        if(resultSelect1.next()){
+            String sqlSelect2 = "SELECT * FROM Docente WHERE Matricola = ?";
+            PreparedStatement statementSelect2 = connection.prepareStatement(sqlSelect2);
+            statementSelect2.setString(1, resultSelect1.getString("Docente"));
+            ResultSet resultSelect2 = statementSelect2.executeQuery();
+
+            String matricola = resultSelect2.getString("Matricola");
+            String nome = resultSelect2.getString("Nome");
+            String cognome = resultSelect2.getString("Cognome");
+            String email = resultSelect2.getString("Email");
+            Professor professor = new Professor(matricola, nome, cognome,email);
+
+
+            String codice = resultSelect1.getString("Codice");
+            String nomeCod = resultSelect1.getString("Nome");
+            int cfu = resultSelect1.getInt("CFU");
+            String tipoEsame = resultSelect1.getString("TipoEsame");
+
+            Course corso = new Course(codice, nomeCod, cfu, professor, ExamType.getExamTypeFromString(tipoEsame));
+
+            studente.attach(corso);
+
+            statementSelect2.close();
+
+        } else throw new SQLException("Hai inserito un codice sbagliato");
+
+
+
+
+        String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";
+
+        PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
+        statementInsert.setString(1, studente.getId());
+        statementInsert.setString(2, codiceCorso);
+        statementInsert.executeUpdate();
+
+        statementInsert.close();
+        statementSelect1.close();
+
+
+
+
+
+
+
+
+
 
 
 
     }
+
+
 
     private Connection connection = null;
 }

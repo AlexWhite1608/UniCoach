@@ -18,6 +18,17 @@ public class Course {
         professor.setCourse(this);
     }
 
+    public Course(String id, String name, int CFU, Professor professor, ExamType examType) throws SQLException {
+        this.id = id;
+        this.name = name;
+        this.CFU = CFU;
+        this.professor = professor;
+        this.examType = examType;
+        this.addCourse();
+
+        professor.setCourse(this);
+    }
+
     //Aggiunge il corso al db quando viene istanziato
     private void addCourse() throws SQLException {
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
