@@ -143,6 +143,14 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     public List<Activity> scheduleLessons(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
 
         if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)

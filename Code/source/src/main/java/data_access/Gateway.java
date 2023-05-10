@@ -9,4 +9,6 @@ public interface Gateway {
 
     void addActivity(Activity activity, User user) throws SQLException;
 
+    void removeActivity(Activity activity, User user) throws SQLException;
+
 }

@@ -1,10 +1,6 @@
 package data_access;
 
-import domain_model.Course;
-import domain_model.Exam;
-import domain_model.Professor;
-import domain_model.Student;
-import domain_model.User;
+import domain_model.*;
 import manager_implementation.Activity;
 
 import java.sql.Connection;
@@ -164,7 +160,7 @@ public class ProfessorGateway implements Gateway{
     }
 
     @Override
-    public void addActivity(Activity activity, User professor) throws SQLException{
+    public void addActivity(Activity activity, User user) throws SQLException{
         String sql = """
                 INSERT INTO CalendarioDocenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
@@ -176,7 +172,7 @@ public class ProfessorGateway implements Gateway{
         statement.setString(2, activity.getDate());
         statement.setInt(3, activity.getStartTime());
         statement.setInt(4, activity.getEndTime());
-        statement.setString(5, professor.getId());
+        statement.setString(5, user.getId());
 
         statement.executeUpdate();
         statement.close();
@@ -199,6 +195,18 @@ public class ProfessorGateway implements Gateway{
 
     }
 
+    @Override
+    public void removeActivity(Activity activity, User user) throws SQLException {
+        String deleteLesson = "DELETE FROM CalendarioDocenti WHERE Data = ? AND Attività = ? AND Matricola = ? ";
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement deleteStatement = connection.prepareStatement(deleteLesson);
+        deleteStatement.setString(1, activity.getDate());
+        deleteStatement.setString(2, activity.getName());
+        deleteStatement.setString(3, user.getId());
+        deleteStatement.executeUpdate();
+    }
+
     public void removeLesson(int giorno, int mese, int anno, Professor professor) throws SQLException {
 
         //Ricerco la lezione nel database
@@ -214,16 +222,17 @@ public class ProfessorGateway implements Gateway{
         ResultSet resultSet = selectStatement.executeQuery();
 
         if(resultSet.next()){
-            //TODO: qui elimino la data dal db dei docenti e richiamo l'update dello studente per toglierlo anche da calendariostudenti
-            String deleteLesson = "DELETE FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
-            connection = DBConnection.connect("../database/unicoachdb.db");
+            //Elimina la lezione dal calendario del professore
+            Activity removeLesson = new Activity();
+            removeLesson.setName("Lezione " + professor.getCourse().getName());
+            removeLesson.setDate(data);
 
-            PreparedStatement deleteStatement = connection.prepareStatement(deleteLesson);
-            deleteStatement.setString(1, data);
-            deleteStatement.setString(2, professor.getId());
-            deleteStatement.executeUpdate();
+            removeActivity(removeLesson, professor);
 
-            //TODO: elimina la lezione dal calendario dello studente!!!!
+            //Elimina anche la lezione visualizzata nel calendario dello studente
+            for(Observer student : professor.getObservers()){
+                ((Student)student).getStudentGateway().removeActivity(removeLesson, (Student)student);
+            }
 
         } else throw new SQLException("La lezione inserita non è presente");
 
