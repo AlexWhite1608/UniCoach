@@ -80,7 +80,7 @@ public class Professor extends User implements Subject{
             }
         });
 
-        Message message = prepareMessage(session, professorEmail, ((Student) dest).getEmail(), msg, subject);   //FIXME: rendere modificabile l'oggetto della mail
+        Message message = prepareMessage(session, professorEmail, ((Student) dest).getEmail(), msg, subject);
 
         Transport.send(message);
         System.out.println("Email inviata correttamente");
@@ -183,7 +183,7 @@ public class Professor extends User implements Subject{
         }
 
         for(Observer obs : observers){
-            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni professor" + this.getName() + " " + this.getSurname());
+            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date " + course.getName());
         }
 
         return activityList;

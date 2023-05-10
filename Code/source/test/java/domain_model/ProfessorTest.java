@@ -158,6 +158,8 @@ public class ProfessorTest {
         Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
         Exam examTest = new Exam(courseTest, "testData");
 
+        testProfessor.getProfessorGateway().setCourseId(testProfessor);
+
         testProfessor.setGrade(student, examTest, 30);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -253,6 +255,8 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        professorTest.getProfessorGateway().setCourseId(professorTest);
+
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -313,6 +317,8 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        professorTest.getProfessorGateway().setCourseId(professorTest);
+
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -336,31 +342,39 @@ public class ProfessorTest {
         String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
 
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, activityList[].getId());
+        for (Activity activity : activityList) {
+            statement.setString(1, activity.getId());
 
-        ResultSet result = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
 
-        assertTrue(result.next());
-        assertEquals(activity.getName(), result.getString("Attività"));
-        assertEquals(activity.getDate(), result.getString("Data"));
-        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
-        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
-        assertEquals(professorTest.getId(), result.getString("Matricola"));
+            assertTrue(result.next());
+            assertEquals(activity.getName(), result.getString("Attività"));
+            assertEquals(activity.getDate(), result.getString("Data"));
+            assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
+            assertEquals(activity.getEndTime(), result.getInt("OraFine"));
+            assertEquals(professorTest.getId(), result.getString("Matricola"));
+        }
 
         statement.close();
 
-        //Elimino l'attività inserita per docente e studente
-        String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Attività = ?";
-        PreparedStatement deleteActivityProfessorStatement = conn.prepareStatement(deleteActivitySql);
-        deleteActivityProfessorStatement.setString(1, activity.getName());
-        deleteActivityProfessorStatement.executeUpdate();
-        deleteActivityProfessorStatement.close();
+        //Elimino le lezioni inserite
+        String deleteSql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
 
-        deleteActivitySql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
-        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
-        deleteActivityStatement.setString(1, activity.getName());
-        deleteActivityStatement.executeUpdate();
-        deleteActivityStatement.close();
+        PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+        for (Activity activity : activityList) {
+            deleteStatement.setString(1, activity.getId());
+            deleteStatement.executeUpdate();
+        }
+
+        deleteSql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
+
+        deleteStatement = conn.prepareStatement(deleteSql);
+        for (Activity activity : activityList) {
+            deleteStatement.setString(1, activity.getName());
+            deleteStatement.executeUpdate();
+        }
+
+        deleteStatement.close();
     }
 
     private Connection conn;
