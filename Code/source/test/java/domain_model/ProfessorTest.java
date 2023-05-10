@@ -8,6 +8,7 @@ import org.junit.Test;
 import user_login.LoginManager;
 
 import javax.mail.MessagingException;
+import javax.naming.directory.InvalidAttributesException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -71,6 +72,13 @@ public class ProfessorTest {
         deleteCourseStatement.setString(1, "TestCorso2");
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.close();
+
+        //Cancella l'utente inserito
+        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
+        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
+        deleteUserStatement.setString(1, "TestNome");
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.close();
 
         if (conn != null) {
             conn = DBConnection.disconnect();
@@ -282,13 +290,6 @@ public class ProfessorTest {
 
         statement.close();
 
-        //Cancella l'utente inserito
-        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
-        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
-        deleteUserStatement.setString(1, "TestNome");
-        deleteUserStatement.executeUpdate();
-        deleteUserStatement.close();
-
         //Elimino l'attività inserita per docente e studente
         String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Id = ?";
         PreparedStatement deleteActivityProfessorStatement = conn.prepareStatement(deleteActivitySql);
@@ -304,6 +305,61 @@ public class ProfessorTest {
 
     }
 
+    @Test
+    public void testScheduleLesson() throws SQLException, InvalidAttributesException, MessagingException {
+        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        //Eseguo registrazione professore per la mandare la mail
+        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+
+        //Prepara la password simulata
+        String simulatedInput1 = "fldiejclqrzckthd\n";
+        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
+        System.setIn(inputStream1);
+
+        loginManager.addUser(professorTest);
+
+        //Iscrivo gli studenti al corso del professore
+        studentTest1.attach(courseTest);
+        studentTest2.attach(courseTest);
+
+        Activity activity = professorTest.scheduleLesson(12, 4, 2023, 10, 12);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
+        String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, activity.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals(activity.getName(), result.getString("Attività"));
+        assertEquals(activity.getDate(), result.getString("Data"));
+        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
+        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
+        assertEquals(professorTest.getId(), result.getString("Matricola"));
+
+        statement.close();
+
+        //Elimino l'attività inserita per docente e studente
+        String deleteActivitySql = "DELETE FROM CalendarioDocenti WHERE Attività = ?";
+        PreparedStatement deleteActivityProfessorStatement = conn.prepareStatement(deleteActivitySql);
+        deleteActivityProfessorStatement.setString(1, activity.getName());
+        deleteActivityProfessorStatement.executeUpdate();
+        deleteActivityProfessorStatement.close();
+
+        deleteActivitySql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
+        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
+        deleteActivityStatement.setString(1, activity.getName());
+        deleteActivityStatement.executeUpdate();
+        deleteActivityStatement.close();
+    }
 
     private Connection conn;
 }

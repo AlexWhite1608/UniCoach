@@ -135,14 +135,12 @@ public class Professor extends User implements Subject{
         return addLectureNotesActivity;
     }
 
-    public Activity scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException {
-
-        //FIXME: anche qui trovare il modo di passare il corso
+    public Activity scheduleLesson(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
 
         if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
             throw new InvalidAttributesException("Data inserita errata");
 
-        String name = "Lezione di " + this.getName();
+        String name = "Lezione";    //FIXME: anche qui trovare il modo di passare il corso
         int tmpGiorno = giorno;
         int tmpMese = mese;
         int tmpAnno = anno;
@@ -155,6 +153,7 @@ public class Professor extends User implements Subject{
             activity = new Activity(name, date, oraInizio, oraFine);
 
             this.addActivity(activity);
+            this.notifyObservers(activity);
 
             tmpGiorno += 7;
 
@@ -178,6 +177,10 @@ public class Professor extends User implements Subject{
                 tmpMese += 1;
             }
 
+        }
+
+        for(Observer obs : observers){
+            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni professor" + this.getName() + " " + this.getSurname());
         }
 
         return activity;
