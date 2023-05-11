@@ -1,7 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
-import manager_implementation.Activity;
+import manager_implementation.CoursesManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.io.ByteArrayInputStream;
 import static junit.framework.TestCase.*;
 
@@ -180,74 +177,72 @@ public class StudentTest {
 //
 //    }
 
-    @Test
-        public void TestChooseCourses() throws SQLException {
-            Student student = new Student("12345", "TestNome", "TestCognome");
-            Professor professor = new Professor("12345", "TestNome", "TestCognome");
-            Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
-            Professor professor3 = new Professor("12347", "TestNome", "TestCognome");
-            Professor professor4 = new Professor("12348", "TestNome", "TestCognome");
+@Test
+public void TestChooseCourses() throws SQLException {
+    Student student = new Student("12345", "TestNome", "TestCognome");
+    Professor professor = new Professor("12345", "TestNome", "TestCognome");
+    Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
+    Professor professor3 = new Professor("12347", "TestNome", "TestCognome");
+    Professor professor4 = new Professor("12348", "TestNome", "TestCognome");
 
-            Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
-            Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
-            Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
-            Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
+    Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+    Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
+    Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
+    Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
-            professor.getProfessorGateway().setCourseId(professor);
-            professor2.getProfessorGateway().setCourseId(professor2);
-            professor3.getProfessorGateway().setCourseId(professor3);
-            professor4.getProfessorGateway().setCourseId(professor4);
+    professor.getProfessorGateway().setCourseId(professor);
+    professor2.getProfessorGateway().setCourseId(professor2);
+    professor3.getProfessorGateway().setCourseId(professor3);
+    professor4.getProfessorGateway().setCourseId(professor4);
 
-            //inserisce i codici dei corsi
-//            TestInputSimulator inputSimulator = new TestInputSimulator();
-//            inputSimulator.addInput(courseTest1.getId());
-//            inputSimulator.addInput(courseTest2.getId());
-//            inputSimulator.addInput(courseTest3.getId());
-//            inputSimulator.addInput("0");
-//            inputSimulator.simulateInput();
+    // Simuliamo l'input utente con tutti i courseTest.getId()
+    String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n0\n";
+    InputStream in = new ByteArrayInputStream(input.getBytes());
+    System.setIn(in);
 
-             // Simuliamo l'input utente con tutti i courseTest.getId()
-            String input = courseTest1.getId()+"\n"+courseTest2+"\n"+courseTest3+"\n0\n";
-            InputStream in = new ByteArrayInputStream(input.getBytes());
-            System.setIn(in);
+    // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outContent));
 
-            // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-            ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(outContent));
+    student.chooseCourses();
 
-            student.chooseCourse();
+    conn = DBConnection.connect("../database/unicoachdb.db");
 
-            conn = DBConnection.connect("../database/unicoachdb.db");
+    assertTrue(professor.getObservers().contains(student));
+    assertTrue(professor2.getObservers().contains(student));
+    assertTrue(professor3.getObservers().contains(student));
 
-            //Verifica che gli studenti siano iscritti ai professori
-            assertTrue(professor.getObservers().contains(student));
-            assertTrue(professor2.getObservers().contains(student));
-            assertTrue(professor3.getObservers().contains(student));
+    //Verifichiamo che nel corso non scelto dallo studente quest'ultimo non sia iscritto
+    assertFalse(professor4.getObservers().contains(student));
 
-            //Verifichiamo che nel corso non scelto dallo studente quest'ultimo non sia iscritto
-            assertFalse(professor4.getObservers().contains(student));
+    //Verifica che siano inserite le righe nella tabella IscrizioneCorso
+    String sql = "SELECT * FROM IscrizioneCorso WHERE IdStudente = ?";
 
-            //Verifica che siano inserite le righe nella tabella IscrizioneCorso
-            String sql = "SELECT * FROM IscrizioneCorso WHERE IdStudente = ?";
+    PreparedStatement statement = conn.prepareStatement(sql);
+    statement.setString(1, student.getId());
 
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, student.getId());
+    ResultSet result = statement.executeQuery();
 
-            ResultSet result = statement.executeQuery();
+    List<String> courseIdList = new ArrayList<>(); // Lista per memorizzare gli ID dei corsi
 
-            result.next();
-            assertEquals(courseTest1.getId(), result.getString("IdCorso"));
-            result.next();
-            assertEquals(courseTest2.getId(), result.getString("IdCorso"));
-            result.next();
-            assertEquals(courseTest3.getId(), result.getString("IdCorso"));
+    while (result.next()) {
+        courseIdList.add(result.getString("IdCorso")); // Aggiungi l'ID del corso alla lista
+    }
 
-            assertFalse(result.next());     //Corso non selezionato
+    assertEquals(3, courseIdList.size()); // Verifica che siano presenti i corsi inseriti
 
-            statement.close();
+    // Verifica che i corsi siano corretti confrontandoli con i corrispettivi ID
+    assertTrue(courseIdList.contains(courseTest1.getId()));
+    assertTrue(courseIdList.contains(courseTest2.getId()));
+    assertTrue(courseIdList.contains(courseTest3.getId()));
 
-            //TODO: ELIMINA TUTTA LA ROBA
-        }
+    // Verifica che non ci siano altri ID di corsi nella lista
+    assertFalse(courseIdList.contains(courseTest4.getId()));
+
+    statement.close();
+
+    //TODO: ELIMINA TUTTA LA ROBA
+}
 
     private Connection conn;
 }
