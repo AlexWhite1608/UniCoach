@@ -2,6 +2,7 @@ package domain_model;
 
 import data_access.StudentGateway;
 import manager_implementation.Activity;
+import manager_implementation.CoursesManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

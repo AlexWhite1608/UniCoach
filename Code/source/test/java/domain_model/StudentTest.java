@@ -5,7 +5,6 @@ import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.ByteArrayInputStream;
-
 import static junit.framework.TestCase.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentTest {
     @Before

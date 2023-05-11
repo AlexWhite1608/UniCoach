@@ -1,6 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
+import manager_implementation.CoursesManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,8 +17,11 @@ public class Course {
         this.addCourse();
 
         professor.setCourse(this);
+
+        CoursesManager.addCourse(this);
     }
 
+    //FIXME: Vedere se serve questo costruttore
     public Course(String id, String name, int CFU, Professor professor, ExamType examType) throws SQLException {
         this.id = id;
         this.name = name;
@@ -27,6 +31,8 @@ public class Course {
         this.addCourse();
 
         professor.setCourse(this);
+
+        CoursesManager.addCourse(this);
     }
 
     //Aggiunge il corso al db quando viene istanziato
