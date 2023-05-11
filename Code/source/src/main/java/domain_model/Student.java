@@ -6,7 +6,6 @@ import manager_implementation.Activity;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Student extends User implements Observer {
@@ -33,24 +32,8 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-    public void chooseCourse() {
-        try {
-            System.out.println("Tutti i corsi disponibli sono i seguenti: ");
-            studentGateway.displayCourse();
-
-            System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
-
-             do{
-                studentGateway.linkStudentToCourse(input, this);
-                System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
-                input = scanner.nextLine();
-            } while (!input.equals("0"));
-
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'accesso al database: " + e.getMessage());
-        }
+    public void chooseCourses() {
+        CoursesManager.chooseCourses(this);
     }
 
     public void displayUniTranscript(){
