@@ -22,7 +22,7 @@ public class StudentGateway implements Gateway {
         statement.setString(1, student.getId());
         statement.setString(2, student.getName());
         statement.setString(3, student.getSurname());
-        statement.setString(4, student.getEmail());
+        statement.setString(4,  student.getEmail());
 
         statement.executeUpdate();
         statement.close();
