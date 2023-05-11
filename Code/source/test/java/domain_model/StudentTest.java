@@ -254,7 +254,6 @@ public void TestChooseCourses() throws SQLException {
     PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
     deleteCourseStatement.setString(1, student.getId());
     deleteCourseStatement.executeUpdate();
-
 }
 
     private Connection conn;
