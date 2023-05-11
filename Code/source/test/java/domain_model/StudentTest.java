@@ -41,6 +41,10 @@ public class StudentTest {
         deleteProfessorStatement.executeUpdate();
         deleteProfessorStatement.setString(1, "12346");
         deleteProfessorStatement.executeUpdate();
+        deleteProfessorStatement.setString(1, "12347");
+        deleteProfessorStatement.executeUpdate();
+        deleteProfessorStatement.setString(1, "12348");
+        deleteProfessorStatement.executeUpdate();
         deleteProfessorStatement.close();
 
         //Elimina gli esami inseriti
@@ -52,7 +56,7 @@ public class StudentTest {
         deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso2");
         deleteExamStatement.executeUpdate();
-        deleteExamStatement.close();
+
 
         //Elimina i corsi inseriti
         String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
@@ -62,6 +66,10 @@ public class StudentTest {
         deleteCourseStatement.setString(1, "TestCorso1");
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.setString(1, "TestCorso2");
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, "TestCorso3");
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, "TestCorso4");
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.close();
 
@@ -241,7 +249,12 @@ public void TestChooseCourses() throws SQLException {
 
     statement.close();
 
-    //TODO: ELIMINA TUTTA LA ROBA
+    //Elimino i corsi in IscrizioneCorso
+    String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdStudente = ?";
+    PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+    deleteCourseStatement.setString(1, student.getId());
+    deleteCourseStatement.executeUpdate();
+
 }
 
     private Connection conn;
