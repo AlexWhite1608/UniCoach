@@ -5,10 +5,15 @@ import domain_model.Exam;
 import domain_model.Student;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +25,7 @@ public class GradesManager {
 
         JFreeChart chart = ChartFactory.createBarChart(
                 "Esami di " + student.getName() + " " + student.getSurname(),
-                "Nome esame",           // Etichetta asse x
+                "Esame",           // Etichetta asse x
                 "Voti",                               // Etichetta asse y
                 getStudentDataset(student)            // Dataset
         );
@@ -30,6 +35,34 @@ public class GradesManager {
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
         frame.setVisible(true);
+
+        // Specifica il percorso e il nome del file di output
+        String outputPath = "../graph/image.png";    //FIXME: cambia percorso!!
+
+        // Crea un oggetto ChartPanel per il grafico
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        // Specifica le dimensioni desiderate per l'immagine del grafico
+        int width = 800;
+        int height = 600;
+
+        // Crea un oggetto BufferedImage per l'immagine del grafico
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+
+        // Disegna il grafico nell'immagine
+        chartPanel.setSize(width, height);
+        chartPanel.paint(graphics);
+
+        // Salva l'immagine del grafico
+        try {
+            File outputFile = new File(outputPath);
+            ImageIO.write(image, "png", outputFile);
+            System.out.println("Grafico salvato come: " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Errore durante il salvataggio dell'immagine del grafico: " + e.getMessage());
+        }
+
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
@@ -48,7 +81,7 @@ public class GradesManager {
         for (Exam exam : examListStudent) {
             String examName = exam.getName();
             int grade = exam.getGrade();
-            studentDataset.addValue(grade, "Esami " + student.getId(), examName);
+            studentDataset.addValue(grade, "Studente " + student.getId(), examName);
         }
 
         return studentDataset;
