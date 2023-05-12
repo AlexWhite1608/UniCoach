@@ -78,20 +78,19 @@ public class ProfessorGateway implements Gateway{
         return grade;
     }
 
-    public void setGrade(Student student, Exam exam, int grade) throws SQLException{
-        String sql = "INSERT INTO Esame (Codice, Nome, Studente, Data, CFU, Voto, Corso, TipoEsame) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public void setGrade(Exam exam, int grade, String date) throws SQLException{
+        String sql = """
+            UPDATE Esame
+            SET Data = ?, Voto = ?
+            WHERE Codice = ?""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, exam.getId());
-        statement.setString(2, exam.getName());
-        statement.setString(3, student.getId());
-        statement.setString(4, exam.getDate());
-        statement.setInt(5, exam.getCFU());
-        statement.setInt(6, grade);
-        statement.setString(7, exam.getCourse().getId());
-        statement.setString(8, exam.getExamType());
+        statement.setString(1, date);
+        statement.setInt(2, grade);
+        statement.setString(3, exam.getId());
+
 
         statement.executeUpdate();
         statement.close();

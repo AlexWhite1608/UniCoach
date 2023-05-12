@@ -43,11 +43,17 @@ public class Professor extends User implements Subject{
         professorGateway.displayActivities(this);
     }
 
-    public void setGrade(Student student, Exam exam, int grade) throws SQLException {
-        professorGateway.setGrade(student, exam, grade);
-
+    public void setGrade(Student student, int grade, String data) throws SQLException {
         //Aggiunge l'esame al libretto dello studente
-        student.getUniTranscript().addExam(exam);
+        Exam exam = student.getUniTranscript().findExam(this.course);
+
+        if(exam != null) {
+            professorGateway.setGrade(exam,grade,data);
+        } else {
+            System.out.println("Lo studente selezionato non è iscritto al corso");
+        }
+
+
     }
 
     public void setCourse(Course course) {

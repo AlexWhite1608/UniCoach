@@ -103,11 +103,20 @@ public class StudentTest {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-        Exam examTest = new Exam(courseTest, "testData");
 
-        professorTest.getProfessorGateway().setCourseId(professorTest);
 
-        professorTest.setGrade(studentTest, examTest, 22);
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        String input = courseTest.getId()  + "\n0";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        studentTest.chooseCourses();
+
+        professorTest.setGrade(studentTest, 22, "dataTest");
         int grade = studentTest.getGrade(courseTest, studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -135,11 +144,20 @@ public class StudentTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        Exam examTest1 = new Exam(courseTest1, "testData1");
-        Exam examTest2 = new Exam(courseTest2, "testData2");
 
-        professor.setGrade(student, examTest1, 25);
-        professor2.setGrade(student, examTest2, 24);
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        String input = courseTest1.getId()  + "\n0" + courseTest2.getId() + "\n0";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        student.chooseCourses();
+
+        professor.setGrade(student, 25, "dataTest");
+        professor2.setGrade(student,  24, "dataTest");
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
