@@ -2,6 +2,7 @@ package domain_model;
 
 import data_access.ProfessorGateway;
 import manager_implementation.Activity;
+import manager_implementation.GradesManager;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -141,6 +142,21 @@ public class Professor extends User implements Subject{
         notifyObservers(msg, subject, addLectureNotesActivity);
 
         return addLectureNotesActivity;
+    }
+
+    //Grafica gli esami svolti da quello studente con la media
+    public void displayExamsGraph(Student student){
+        GradesManager.displayExamsGraph(student);
+    }
+
+    //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
+    public static void displayExamsGraph(Course course){
+        GradesManager.displayExamsGraph(course);
+    }
+
+    //Grafica la media di ogni corso presente
+    public void displayExamsGraph(){
+        GradesManager.displayExamsGraph();
     }
 
     public Course getCourse() {

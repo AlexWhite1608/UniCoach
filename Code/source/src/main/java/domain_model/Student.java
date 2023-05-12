@@ -3,11 +3,11 @@ package domain_model;
 import data_access.StudentGateway;
 import manager_implementation.Activity;
 import manager_implementation.CoursesManager;
+import manager_implementation.GradesManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Student extends User implements Observer {
     public Student(String id, String name, String surname, String email) throws SQLException {
@@ -51,6 +51,10 @@ public class Student extends User implements Observer {
 
     public float getAverage(Student student) throws SQLException {
         return studentGateway.getAverage(student);
+    }
+
+    public void displayExamsGraph(){
+        GradesManager.displayExamsGraph(this);
     }
 
     public StudentGateway getStudentGateway() {
