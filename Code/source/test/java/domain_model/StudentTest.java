@@ -105,8 +105,6 @@ public class StudentTest {
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
 
-
-
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest.getId()  + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());

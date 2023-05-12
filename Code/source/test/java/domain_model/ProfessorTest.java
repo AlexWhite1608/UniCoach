@@ -148,16 +148,33 @@ public class ProfessorTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()  + "\n0" + courseTest1.getId() + "\n0" + courseTest1.getId() + "\n0";
+        String input = courseTest1.getId()  + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
         // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         student1.chooseCourses();
+
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        input = courseTest1.getId()  + "\n0";
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
         student2.chooseCourses();
+
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        input = courseTest1.getId()  + "\n0";
+        in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
         student3.chooseCourses();
 
         professor.setGrade(student1,22 , "dataTest");
