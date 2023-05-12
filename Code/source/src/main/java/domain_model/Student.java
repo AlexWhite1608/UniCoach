@@ -45,6 +45,11 @@ public class Student extends User implements Observer {
         return uniTranscript;
     }
 
+    public List<Exam> getExams(Student student) throws SQLException {
+        return studentGateway.getExams(this);
+
+    }
+
     public int getGrade(Course course, Student student) throws SQLException {
         return studentGateway.getGrade(course, student);
     }
@@ -53,7 +58,7 @@ public class Student extends User implements Observer {
         return studentGateway.getAverage(student);
     }
 
-    public void displayExamsGraph(){
+    public void displayExamsGraph() throws SQLException {
         GradesManager.displayExamsGraph(this);
     }
 

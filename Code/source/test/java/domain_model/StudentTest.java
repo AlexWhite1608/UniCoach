@@ -57,7 +57,6 @@ public class StudentTest {
         deleteExamStatement.setString(1, "TestCorso2");
         deleteExamStatement.executeUpdate();
 
-
         //Elimina i corsi inseriti
         String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentGateway implements Gateway {
@@ -26,6 +27,30 @@ public class StudentGateway implements Gateway {
 
         statement.executeUpdate();
         statement.close();
+    }
+
+    public List<Exam> getExams(Student student) throws SQLException{
+
+        String sql = """
+                SELECT Codice
+                FROM Esame
+                WHERE Studente = ?""";
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, student.getId());
+        ResultSet gradeRs = statement.executeQuery();
+
+        List<Exam> examList = new ArrayList<>();
+
+        while(gradeRs.next()){
+            String examId = gradeRs.getString("Codice");
+            examList.add(student.getUniTranscript().findExam(examId));
+        }
+
+        return examList;
+
     }
 
     // Ritorna il voto dello studente all'esame del corso fornito
