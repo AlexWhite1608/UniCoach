@@ -2,6 +2,7 @@ package manager_implementation;
 
 import domain_model.Course;
 import domain_model.Exam;
+import domain_model.Observer;
 import domain_model.Student;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -89,4 +90,19 @@ public class GradesManager {
         return studentDataset;
 
     }
+
+    private static DefaultCategoryDataset getCourseDataset(Course course) throws SQLException {
+        DefaultCategoryDataset studentDataset = new DefaultCategoryDataset();
+
+        List<Observer> studentsLinkedToCourse = course.getProfessor().getObservers();
+
+        for(Observer student : studentsLinkedToCourse){
+            String studentId = ((Student) student).getId();
+            int grade = ((Student) student).getUniTranscript().findExam(course).getGrade();
+            studentDataset.addValue(grade, course.getName(), studentId);
+        }
+
+        return studentDataset;
+    }
+
 }
