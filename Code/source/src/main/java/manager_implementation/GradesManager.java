@@ -37,7 +37,7 @@ public class GradesManager {
         frame.setVisible(true);
 
         // Specifica il percorso e il nome del file di output
-        String outputPath = "../database/image.png";    //FIXME: cambia percorso!!
+        String outputPath = "../graph/image.png";    //FIXME: cambia percorso!!
 
         // Crea un oggetto ChartPanel per il grafico
         ChartPanel chartPanel = new ChartPanel(chart);
