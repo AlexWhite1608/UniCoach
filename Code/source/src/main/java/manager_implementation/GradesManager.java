@@ -7,6 +7,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.imageio.ImageIO;
@@ -36,6 +37,9 @@ public class GradesManager {
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
         frame.setVisible(true);
+
+        //Modifica estetica grafico
+        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d3557"));
 
         // Specifica il percorso e il nome del file di output
         String outputPath = "../graph/"+ "grafico" + student.getId() + ".png";    //FIXME: cambia percorso!!
