@@ -10,6 +10,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,7 +32,7 @@ public class GradesManager {
         );
 
         // Crea una finestra per mostrare il grafico
-        ChartFrame frame = new ChartFrame("Grafico voti " + student.getName() + " " + student.getSurname(), chart);
+        JFrame frame = new JFrame("Grafico voti " + student.getName() + " " + student.getSurname());
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
         frame.setVisible(true);
@@ -39,18 +40,15 @@ public class GradesManager {
         // Specifica il percorso e il nome del file di output
         String outputPath = "../graph/image.png";    //FIXME: cambia percorso!!
 
-        // Crea un oggetto ChartPanel per il grafico
-        ChartPanel chartPanel = new ChartPanel(chart);
-
-        // Specifica le dimensioni desiderate per l'immagine del grafico
+        // Specifica le dimensioni per l'immagine del grafico
         int width = 800;
         int height = 600;
 
-        // Crea un oggetto BufferedImage per l'immagine del grafico
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = image.createGraphics();
 
-        // Disegna il grafico nell'immagine
+        // Crea un oggetto ChartPanel per il grafico
+        ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setSize(width, height);
         chartPanel.paint(graphics);
 

@@ -30,6 +30,8 @@ public class GradeManagerTest {
     @After
     public void tearDown() throws SQLException {
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
         // Elimina lo studente appena inserito dal database
         String deleteStudentSql = "DELETE FROM Studente WHERE Matricola = ?";
         PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
@@ -58,6 +60,10 @@ public class GradeManagerTest {
         deleteExamStatement.setString(1, "TestCorso1");
         deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso2");
+        deleteExamStatement.executeUpdate();
+        deleteExamStatement.setString(1, "TestCorso3");
+        deleteExamStatement.executeUpdate();
+        deleteExamStatement.setString(1, "TestCorso4");
         deleteExamStatement.executeUpdate();
 
         //Elimina i corsi inseriti
