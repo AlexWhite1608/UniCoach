@@ -10,7 +10,9 @@ import user_login.LoginManager;
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,21 +95,23 @@ public class GradeManagerTest {
         Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        //Imposta i corsi ai professori
-        professor.getProfessorGateway().setCourseId(professor);
-        professor2.getProfessorGateway().setCourseId(professor2);
-        professor3.getProfessorGateway().setCourseId(professor3);
-        professor4.getProfessorGateway().setCourseId(professor4);
 
-        Exam examTest1 = new Exam(courseTest1, "testData1");
-        Exam examTest2 = new Exam(courseTest2, "testData2");
-        Exam examTest3 = new Exam(courseTest3, "testData3");
-        Exam examTest4 = new Exam(courseTest4, "testData4");
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n" + courseTest4+"\n0\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
-        professor.setGrade(student, examTest1, 25);
-        professor2.setGrade(student, examTest2, 24);
-        professor3.setGrade(student, examTest3, 29);
-        professor4.setGrade(student, examTest4, 27);
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        student.chooseCourses();
+
+        professor.setGrade(student,25, "TestData");
+        professor2.setGrade(student, 24, "TestData");
+        professor3.setGrade(student, 29, "TestData");
+        professor4.setGrade(student, 27, "TestData");
+
 
         student.displayExamsGraph();
     }
