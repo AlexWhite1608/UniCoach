@@ -2,14 +2,14 @@ package domain_model;
 
 public class Exam{
 
-    public Exam(Course course, String date, int grade) {
+    public Exam(Course course) {
         this.id = RandomStringGenerator.generateRandomString(8);
         this.course = course;
         this.name = course.getName();
         this.CFU = course.getCFU();
         this.examType = course.getExamType();
-        this.grade = grade;
-        this.date = date;
+        this.grade = -1;
+        this.date = null;
     }
 
     public Exam(Course course, String date) {
@@ -21,6 +21,7 @@ public class Exam{
         this.grade = -1;
         this.date = date;
     }
+
 
     public String getId() {
         return id;

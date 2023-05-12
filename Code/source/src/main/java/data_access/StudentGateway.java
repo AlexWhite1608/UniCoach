@@ -229,12 +229,27 @@ public class StudentGateway implements Gateway {
         PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
         statementInsert.setString(1, studente.getId());
 
-        for(Course course : courses){
+        String sqlInsertExam = "INSERT INTO Esame(Codice, Nome, Studente, Data, CFU, Voto, Corso, TipoEsame) VALUES (?,?,?,?,?,?,?,?)";
+        PreparedStatement statementInsertExam = connection.prepareStatement(sqlInsertExam);
+        statementInsertExam.setString(3, studente.getId());
+
+        for(Course course : courses) {
             statementInsert.setString(2, course.getId());
             statementInsert.executeUpdate();
             studente.attach(course);
+
+            Exam exam = new Exam(course);
+            studente.getUniTranscript().addExam(exam);
+            statementInsertExam.setString(1, exam.getId());
+            statementInsertExam.setString(2, exam.getName());
+            statementInsertExam.setString(4, exam.getDate());
+            statementInsertExam.setInt(5, exam.getCFU());
+            statementInsertExam.setInt(6, exam.getGrade());
+            statementInsertExam.setString(7, exam.getCourse().getId());
+            statementInsertExam.setString(8, exam.getExamType());
         }
 
+        statementInsertExam.close();
         statementInsert.close();
     }
 
