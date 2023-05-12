@@ -252,15 +252,26 @@ public void testChooseCourses() throws SQLException {
     statement.close();
 
     //Verifico che anche gli esami siano stati inseriti nel database correttamente
-    String sql1 = "SELECT * FROM Exam "
+    String sql1 = "SELECT * FROM Esame WHERE Studente = ?";
+    PreparedStatement statement2 = conn.prepareStatement(sql1);
+    statement2.setString(1, student.getId());
+    ResultSet resultSet = statement2.executeQuery();
+
+    int i = 1;
+    while (resultSet.next()){
+        assertEquals("TestCorso" + i, resultSet.getString("Nome"));
+        assertNull(resultSet.getString("Data"));
+        assertEquals(-1, resultSet.getInt("Voto"));
+        i++;
+    }
+    statement2.close();
 
     //Elimino i corsi in IscrizioneCorso
     String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdStudente = ?";
     PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
     deleteCourseStatement.setString(1, student.getId());
     deleteCourseStatement.executeUpdate();
+
 }
-
-
     private Connection conn;
 }
