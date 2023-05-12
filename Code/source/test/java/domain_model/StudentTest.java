@@ -127,7 +127,7 @@ public class StudentTest {
     }
 
     @Test
-    public void testAverage() throws SQLException {
+    public void testAverageAndDisplayTranscript() throws SQLException {
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -145,6 +145,7 @@ public class StudentTest {
 
         assertEquals(average, student.getAverage(student), 0.0001f);
 
+        student.displayUniTranscript();
     }
 
     //FIXME: decidere se togliere o meno questo test
@@ -185,7 +186,7 @@ public class StudentTest {
 //    }
 
 @Test
-public void TestChooseCourses() throws SQLException {
+public void testChooseCourses() throws SQLException {
     Student student = new Student("12345", "TestNome", "TestCognome");
     Professor professor = new Professor("12345", "TestNome", "TestCognome");
     Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -197,6 +198,7 @@ public void TestChooseCourses() throws SQLException {
     Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
+    //Imposta i corsi ai professori
     professor.getProfessorGateway().setCourseId(professor);
     professor2.getProfessorGateway().setCourseId(professor2);
     professor3.getProfessorGateway().setCourseId(professor3);
@@ -254,6 +256,7 @@ public void TestChooseCourses() throws SQLException {
     deleteCourseStatement.setString(1, student.getId());
     deleteCourseStatement.executeUpdate();
 }
+
 
     private Connection conn;
 }

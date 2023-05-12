@@ -217,6 +217,8 @@ public class StudentGateway implements Gateway {
             System.out.println("TIPO ESAME: " + tipoEsame +"\n");
         }
 
+        resultSet.close();
+
     }
 
     public void linkStudentToCourse(List<Course> courses, Student studente) throws SQLException{
@@ -234,6 +236,47 @@ public class StudentGateway implements Gateway {
         }
 
         statementInsert.close();
+    }
+
+
+
+    public void displayTranscript(Student studente) throws SQLException {
+
+        connection = DBConnection.connect("../database/unicoachdb.db");
+
+        String sql = """
+                SELECT Nome, Data, CFU, Voto, TipoEsame
+                FROM Esame
+                WHERE Studente = ?""";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, studente.getId());
+        ResultSet resultSet = statement.executeQuery();
+
+        int somma = 0;
+
+
+        System.out.println("Esami conseguiti");
+
+        while (resultSet.next()) {
+            String nome = resultSet.getString("Nome");
+            String data = resultSet.getString("Data");
+            int cfu = resultSet.getInt("CFU");
+            int voto = resultSet.getInt("Voto");
+            String tipoEsame = resultSet.getString("TipoEsame");
+
+            System.out.println("\nNome esame: " + nome);
+            System.out.println("Conseguito il: " + data);
+            System.out.println("CFU: " + cfu);
+            System.out.println("Voto preso: " + voto);
+            System.out.println("Tipo di valutazione: " + tipoEsame + "\n");
+
+            somma += cfu;
+
+        }
+
+        System.out.println("CFU convalidati " + somma + "/180");
+
+        resultSet.close();
 
     }
 

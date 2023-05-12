@@ -37,8 +37,8 @@ public class Student extends User implements Observer {
         CoursesManager.chooseCourses(this);
     }
 
-    public void displayUniTranscript(){
-        uniTranscript.displayExams();
+    public void displayUniTranscript() throws SQLException{
+        studentGateway.displayTranscript(this);
     }
 
     public UniTranscript getUniTranscript() {
