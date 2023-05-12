@@ -121,6 +121,44 @@ public class GradeManagerTest {
 
         student.displayExamsGraph();
         professor.displayExamsGraph(student);
+
+        // Mostra i voti di tutti gli studenti iscritti al corso
+        professor.displayExamsGraph(courseTest1);
+    }
+
+    //FIXME: capisci come far inserire i codici dei corsi a tutti gli studenti
+    @Test
+    public void testCourseGraph() throws SQLException {
+        Student student1 = new Student("12345", "TestNome", "TestCognome");
+        Student student2 = new Student("12346", "TestNome", "TestCognome");
+        Student student3 = new Student("12347", "TestNome", "TestCognome");
+        Student student4 = new Student("12348", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+
+        Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+
+
+        // Simuliamo l'input utente con tutti i courseTest.getId()
+        String input = courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        student1.chooseCourses();
+        student2.chooseCourses();
+        student3.chooseCourses();
+        student4.chooseCourses();
+
+        professor.setGrade(student1,25, "TestData");
+        professor.setGrade(student2,21, "TestData");
+        professor.setGrade(student3,29, "TestData");
+        professor.setGrade(student4,30, "TestData");
+
+        // Mostra i voti di tutti gli studenti iscritti al corso
+        professor.displayExamsGraph(courseTest1);
     }
 
     private Connection conn;

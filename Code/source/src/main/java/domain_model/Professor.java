@@ -156,7 +156,7 @@ public class Professor extends User implements Subject{
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
-    public static void displayExamsGraph(Course course){
+    public void displayExamsGraph(Course course) throws SQLException {
         GradesManager.displayExamsGraph(course);
     }
 

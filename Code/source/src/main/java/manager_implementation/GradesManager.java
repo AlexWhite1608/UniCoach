@@ -69,8 +69,46 @@ public class GradesManager {
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
-    public static void displayExamsGraph(Course course){
+    public static void displayExamsGraph(Course course) throws SQLException {
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Situazione corso " + course.getName(),
+                "Studenti",           // Etichetta asse x
+                "Voti",                               // Etichetta asse y
+                getCourseDataset(course)            // Dataset
+        );
 
+        // Crea una finestra per mostrare il grafico
+        JFrame frame = new JFrame("Grafico voti del corso" + course.getName());
+        frame.setPreferredSize(new Dimension(500, 400));
+        frame.pack();
+        frame.setVisible(true);
+
+        //Modifica estetica grafico
+        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d3557"));
+
+        // Specifica il percorso e il nome del file di output
+        String outputPath = "../graph/"+ "grafico_corso_" + course.getId() + ".png";    //FIXME: cambia percorso!!
+
+        // Specifica le dimensioni per l'immagine del grafico
+        int width = 800;
+        int height = 600;
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+
+        // Crea un oggetto ChartPanel per il grafico
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setSize(width, height);
+        chartPanel.paint(graphics);
+
+        // Salva l'immagine del grafico
+        try {
+            File outputFile = new File(outputPath);
+            ImageIO.write(image, "png", outputFile);
+            System.out.println("Grafico salvato come: " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Errore durante il salvataggio dell'immagine del grafico: " + e.getMessage());
+        }
     }
 
     //Grafica la media di ogni corso presente
