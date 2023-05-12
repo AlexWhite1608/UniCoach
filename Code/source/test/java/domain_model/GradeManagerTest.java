@@ -116,6 +116,7 @@ public class GradeManagerTest {
         professor4.setGrade(student, examTest4, 27);
 
         student.displayExamsGraph();
+        professor.displayExamsGraph(student);
     }
 
     private Connection conn;

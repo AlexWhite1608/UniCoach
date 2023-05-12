@@ -38,7 +38,7 @@ public class GradesManager {
         frame.setVisible(true);
 
         // Specifica il percorso e il nome del file di output
-        String outputPath = "../graph/image.png";    //FIXME: cambia percorso!!
+        String outputPath = "../graph/"+ "grafico" + student.getId() + ".png";    //FIXME: cambia percorso!!
 
         // Specifica le dimensioni per l'immagine del grafico
         int width = 800;
