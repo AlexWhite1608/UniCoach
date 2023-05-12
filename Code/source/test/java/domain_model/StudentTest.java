@@ -224,6 +224,7 @@ public void testChooseCourses() throws SQLException {
     //Verifichiamo che nel corso non scelto dallo studente quest'ultimo non sia iscritto
     assertFalse(professor4.getObservers().contains(student));
 
+
     //Verifica che siano inserite le righe nella tabella IscrizioneCorso
     String sql = "SELECT * FROM IscrizioneCorso WHERE IdStudente = ?";
 
@@ -249,6 +250,9 @@ public void testChooseCourses() throws SQLException {
     assertFalse(courseIdList.contains(courseTest4.getId()));
 
     statement.close();
+
+    //Verifico che anche gli esami siano stati inseriti nel database correttamente
+    String sql1 = "SELECT * FROM Exam "
 
     //Elimino i corsi in IscrizioneCorso
     String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdStudente = ?";
