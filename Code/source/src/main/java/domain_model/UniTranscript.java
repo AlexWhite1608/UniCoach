@@ -46,6 +46,14 @@ public class UniTranscript {
         return null;
     }
 
+    public Exam findExam(Course course) {
+        for(Exam e : examList){
+            if(Objects.equals(e.getCourse(), course))
+                return e;
+        }
+        return null;
+    }
+
     public List<Exam> getExamList() {
         return examList;
     }

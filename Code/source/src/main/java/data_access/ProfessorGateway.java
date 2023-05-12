@@ -95,6 +95,9 @@ public class ProfessorGateway implements Gateway{
 
         statement.executeUpdate();
         statement.close();
+
+        //Modifica il voto anche nell'istanza di Exam passata alla funzione!
+        exam.setGrade(grade);
     }
 
     // Ritorna la media su tutti gli esami dati dallo studente
