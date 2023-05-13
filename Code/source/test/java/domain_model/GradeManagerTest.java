@@ -88,6 +88,18 @@ public class GradeManagerTest {
         }
     }
 
+    // Crea un metodo per simulare l'input dell'utente e catturare l'output
+    private static void simulateUserInput(Student student, Course course) {
+        String input = course.getId() + "\n0\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        student.chooseCourses();
+    }
+
     @Test
     public void testStudentGraph() throws SQLException {
         Student student = new Student("12345", "TestNome", "TestCognome");
@@ -126,7 +138,6 @@ public class GradeManagerTest {
         professor.displayExamsGraph(courseTest1);
     }
 
-    //FIXME: capisci come far inserire i codici dei corsi a tutti gli studenti
     @Test
     public void testCourseGraph() throws SQLException {
         Student student1 = new Student("12345", "TestNome", "TestCognome");
@@ -137,20 +148,11 @@ public class GradeManagerTest {
 
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
-
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n" + courseTest1.getId()+"\n0\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student1.chooseCourses();
-        student2.chooseCourses();
-        student3.chooseCourses();
-        student4.chooseCourses();
+        // Simula l'input per tutti gli studenti
+        simulateUserInput(student1, courseTest1);
+        simulateUserInput(student2, courseTest1);
+        simulateUserInput(student3, courseTest1);
+        simulateUserInput(student4, courseTest1);
 
         professor.setGrade(student1,25, "TestData");
         professor.setGrade(student2,21, "TestData");
