@@ -55,5 +55,9 @@ public class CoursesManager {
         return null;
     }
 
+    public static List<Course> getCourses() {
+        return courses;
+    }
+
     private static List<Course> courses = new ArrayList<>();
 }

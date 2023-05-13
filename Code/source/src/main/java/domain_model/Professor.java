@@ -161,7 +161,7 @@ public class Professor extends User implements Subject{
     }
 
     //Grafica la media di ogni corso presente
-    public void displayExamsGraph(){
+    public void displayExamsGraph() throws SQLException {
         GradesManager.displayExamsGraph();
     }
 
