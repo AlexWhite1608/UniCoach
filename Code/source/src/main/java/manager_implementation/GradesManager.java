@@ -204,7 +204,7 @@ public class GradesManager {
         for (Map.Entry<String, List<Integer>> entry : studentGrades.entrySet()) {
             String courseName = entry.getKey();
             float average = (float) calculateAverage(entry.getValue());
-            averageForEachCourse.put(entry.getKey(), average);
+            averageForEachCourse.put(courseName, average);
         }
 
         //Inserisce le informazioni nel dataset
@@ -242,6 +242,7 @@ public class GradesManager {
         statement.close();
     }
 
+    //TODO: spostalo in un package utility
     private static double calculateAverage(List<Integer> list) {
         int sum = 0;
         for (int value : list) {
