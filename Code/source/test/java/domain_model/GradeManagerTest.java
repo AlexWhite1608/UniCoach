@@ -39,6 +39,12 @@ public class GradeManagerTest {
         PreparedStatement deleteStudentStatement = conn.prepareStatement(deleteStudentSql);
         deleteStudentStatement.setString(1, "12345");
         deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.setString(1, "12346");
+        deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.setString(1, "12347");
+        deleteStudentStatement.executeUpdate();
+        deleteStudentStatement.setString(1, "12348");
+        deleteStudentStatement.executeUpdate();
         deleteStudentStatement.close();
 
         //Elimina i professori inseriti
@@ -88,7 +94,7 @@ public class GradeManagerTest {
         }
     }
 
-    // Crea un metodo per simulare l'input dell'utente e catturare l'output
+    //TODO: si potrebbe usare anche negli altri test??
     private static void simulateUserInput(Student student, Course course) {
         String input = course.getId() + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -161,6 +167,14 @@ public class GradeManagerTest {
 
         // Mostra i voti di tutti gli studenti iscritti al corso
         professor.displayExamsGraph(courseTest1);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
     }
 
     private Connection conn;
