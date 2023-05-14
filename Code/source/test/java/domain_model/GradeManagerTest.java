@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -106,6 +107,20 @@ public class GradeManagerTest {
         student.chooseCourses();
     }
 
+    //TODO: si potrebbe usare anche negli altri test??
+    private static void simulateUserInput(Student student, List<Course> courseList) {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        for (Course course : courseList) {
+            String input = course.getId() + "\n0\n";
+            InputStream in = new ByteArrayInputStream(input.getBytes());
+            System.setIn(in);
+
+            student.chooseCourses();
+        }
+    }
+
     @Test
     public void testStudentGraph() throws SQLException {
         Student student = new Student("12345", "TestNome", "TestCognome");
@@ -118,7 +133,6 @@ public class GradeManagerTest {
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
-
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n" + courseTest4+"\n0\n";
@@ -175,6 +189,73 @@ public class GradeManagerTest {
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
         deleteCourseStatement.setString(1, courseTest1.getId());
         deleteCourseStatement.executeUpdate();
+    }
+
+    @Test
+    public void testAllCoursesAvg() throws SQLException {
+        Student student1 = new Student("12345", "TestNome", "TestCognome");
+        Student student2 = new Student("12346", "TestNome", "TestCognome");
+        Student student3 = new Student("12347", "TestNome", "TestCognome");
+        Student student4 = new Student("12348", "TestNome", "TestCognome");
+
+        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
+        Professor professor3 = new Professor("12347", "TestNome", "TestCognome");
+        Professor professor4 = new Professor("12348", "TestNome", "TestCognome");
+
+        Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
+        Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
+        Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
+        Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest1);
+        courseList.add(courseTest2);
+        courseList.add(courseTest3);
+        courseList.add(courseTest4);
+
+        // Si iscrivono gli studenti ai corsi
+        simulateUserInput(student1, courseList);
+        simulateUserInput(student2, courseList);
+        simulateUserInput(student3, courseList);
+        simulateUserInput(student4, courseList);
+
+        // Si inseriscono i voti degli esami
+        professor.setGrade(student1,25, "TestData");
+        professor.setGrade(student2,21, "TestData");
+        professor.setGrade(student3,29, "TestData");
+        professor.setGrade(student4,30, "TestData");
+
+        professor2.setGrade(student1,18, "TestData");
+        professor2.setGrade(student2,26, "TestData");
+        professor2.setGrade(student3,30, "TestData");
+        professor2.setGrade(student4,30, "TestData");
+
+        professor3.setGrade(student1,30, "TestData");
+        professor3.setGrade(student2,20, "TestData");
+        professor3.setGrade(student3,26, "TestData");
+        professor3.setGrade(student4,36, "TestData");
+
+        professor4.setGrade(student1,25, "TestData");
+        professor4.setGrade(student2,22, "TestData");
+        professor4.setGrade(student3,24, "TestData");
+        professor4.setGrade(student4,35, "TestData");
+
+        // Un qualsiasi professore può vedere la situazione di tutti i corsi
+        professor.displayExamsGraph();
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest2.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest3.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest4.getId());
+        deleteCourseStatement.executeUpdate();
+
     }
 
     private Connection conn;
