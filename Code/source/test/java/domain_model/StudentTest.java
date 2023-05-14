@@ -145,7 +145,7 @@ public class StudentTest {
 
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()  + "\n0" + courseTest2.getId() + "\n0";
+        String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

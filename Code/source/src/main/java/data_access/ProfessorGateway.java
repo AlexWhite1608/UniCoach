@@ -101,15 +101,17 @@ public class ProfessorGateway implements Gateway{
             statement.setInt(2, grade);
             statement.setString(3, exam.getId());
 
-
             statement.executeUpdate();
             statement.close();
-
             //Modifica il voto anche nell'istanza di Exam passata alla funzione!
             exam.setGrade(grade);
+
         } else {
             System.out.println("Il voto di questo esame è già stato convalidato e non può essere più modificato");
         }
+
+        statementCont.close();
+
     }
 
     // Ritorna la media su tutti gli esami dati dallo studente
