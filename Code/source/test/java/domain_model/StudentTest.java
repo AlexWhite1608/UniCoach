@@ -56,6 +56,8 @@ public class StudentTest {
         deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso2");
         deleteExamStatement.executeUpdate();
+        deleteExamStatement.setString(1, "TestCorso3");
+        deleteExamStatement.executeUpdate();
 
         //Elimina i corsi inseriti
         String deleteCourseSql = "DELETE FROM Corso WHERE Nome = ?";
@@ -146,7 +148,7 @@ public class StudentTest {
 
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()  + "\n0" + courseTest2.getId() + "\n0";
+        String input = courseTest1.getId()  + "\n" + courseTest2.getId() + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -164,6 +166,16 @@ public class StudentTest {
         assertEquals(average, student.getAverage(student), 0.0001f);
 
         student.displayUniTranscript();
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest2.getId());
+        deleteCourseStatement.executeUpdate();
     }
 
     //FIXME: decidere se togliere o meno questo test
@@ -241,7 +253,6 @@ public void testChooseCourses() throws SQLException {
 
     //Verifichiamo che nel corso non scelto dallo studente quest'ultimo non sia iscritto
     assertFalse(professor4.getObservers().contains(student));
-
 
     //Verifica che siano inserite le righe nella tabella IscrizioneCorso
     String sql = "SELECT * FROM IscrizioneCorso WHERE IdStudente = ?";
