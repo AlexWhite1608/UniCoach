@@ -136,6 +136,15 @@ public class ProfessorTest {
 
         assertEquals(average, professor.getAverage(student), 0.0001f);
 
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest2.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.close();
+
     }
 
     @Test
@@ -184,6 +193,13 @@ public class ProfessorTest {
         float average = ( 22 * 6 + 28 * 6 + 21 * 6 ) / 18f;
 
         assertEquals(average, professor.getAverage(), 0.0001f);
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.close();
     }
 
 
@@ -243,7 +259,6 @@ public class ProfessorTest {
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
-
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest.getId()  + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -274,6 +289,13 @@ public class ProfessorTest {
         assertEquals(grade, result.getInt("Voto"));
 
         statement.close();
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.close();
     }
 
 //    @Test
