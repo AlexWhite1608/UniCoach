@@ -244,6 +244,8 @@ public class GradeManagerTest {
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
         professor.displayExamsGraph();
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
         //Elimino i corsi in IscrizioneCorso
         String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
