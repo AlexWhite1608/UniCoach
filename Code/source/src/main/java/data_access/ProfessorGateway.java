@@ -79,24 +79,37 @@ public class ProfessorGateway implements Gateway{
     }
 
     public void setGrade(Exam exam, int grade, String date) throws SQLException{
-        String sql = """
-            UPDATE Esame
-            SET Data = ?, Voto = ?
-            WHERE Codice = ?""";
-
+        String sqlCont = """
+                SELECT Esame
+                WHERE Codice = ?""";
         connection = DBConnection.connect("../database/unicoachdb.db");
+        PreparedStatement statementCont = connection.prepareStatement(sqlCont);
+        statementCont.setString(1, exam.getId());
 
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, date);
-        statement.setInt(2, grade);
-        statement.setString(3, exam.getId());
+        ResultSet control = statementCont.executeQuery();
+
+        if(control.getInt("Voto") == -1) {
+            String sql = """
+                UPDATE Esame
+                SET Data = ?, Voto = ?
+                WHERE Codice = ?""";
+
+            connection = DBConnection.connect("../database/unicoachdb.db");
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, date);
+            statement.setInt(2, grade);
+            statement.setString(3, exam.getId());
 
 
-        statement.executeUpdate();
-        statement.close();
+            statement.executeUpdate();
+            statement.close();
 
-        //Modifica il voto anche nell'istanza di Exam passata alla funzione!
-        exam.setGrade(grade);
+            //Modifica il voto anche nell'istanza di Exam passata alla funzione!
+            exam.setGrade(grade);
+        } else {
+            System.out.println("Il voto di questo esame è già stato convalidato e non può essere più modificato");
+        }
     }
 
     // Ritorna la media su tutti gli esami dati dallo studente
