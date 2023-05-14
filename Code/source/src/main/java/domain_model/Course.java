@@ -36,6 +36,7 @@ public class Course {
     }
 
     //Aggiunge il corso al db quando viene istanziato
+    //TODO: aggiungi anche l'esame nella tabella Esame con valori Data e Voto nulli!
     private void addCourse() throws SQLException {
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
 
