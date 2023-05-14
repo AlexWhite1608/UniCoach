@@ -247,6 +247,7 @@ public class StudentGateway implements Gateway {
             statementInsertExam.setInt(6, exam.getGrade());
             statementInsertExam.setString(7, exam.getCourse().getId());
             statementInsertExam.setString(8, exam.getExamType());
+            statementInsertExam.executeUpdate();
         }
 
         statementInsertExam.close();

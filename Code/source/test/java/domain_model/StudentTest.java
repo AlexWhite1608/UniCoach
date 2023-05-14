@@ -106,7 +106,7 @@ public class StudentTest {
 
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest.getId()  + "\n0";
+        String input = courseTest.getId() + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -282,6 +282,10 @@ public void testChooseCourses() throws SQLException {
         assertEquals(-1, resultSet.getInt("Voto"));
         i++;
     }
+
+    //Verifico che gli esami sono stati inseriti nella lista UniTranscipt dello studente
+    assertEquals(student.getUniTranscript().getSize(),3);
+
     statement2.close();
 
     //Elimino i corsi in IscrizioneCorso

@@ -54,6 +54,10 @@ public class UniTranscript {
         return null;
     }
 
+    public int getSize() {
+        return this.examList.size();
+    }
+
     public List<Exam> getExamList() {
         return examList;
     }
