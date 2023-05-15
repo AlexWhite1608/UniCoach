@@ -47,10 +47,14 @@ public class Professor extends User implements Subject{
         //Aggiunge l'esame al libretto dello studente
         Exam exam = student.getUniTranscript().findExam(this.course);
 
-        if(exam != null) {
-            professorGateway.setGrade(exam,grade,data);
+        if(grade >=1 && grade <= 30){
+            if(exam != null) {
+                professorGateway.setGrade(exam,grade,data);
+            } else {
+                System.out.println("Lo studente selezionato non è iscritto al corso");
+            }
         } else {
-            System.out.println("Lo studente selezionato non è iscritto al corso");
+            System.out.println("Il voto inserito non è valido");
         }
 
 

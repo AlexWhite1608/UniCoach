@@ -230,7 +230,6 @@ public class ProfessorTest {
         student.chooseCourses();
 
 
-
         testProfessor.setGrade(student, 30, "dataTest");
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -260,7 +259,7 @@ public class ProfessorTest {
 */
 
     @Test
-    public void testGetGrade() throws SQLException {
+    public void testSetGetGrade() throws SQLException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
@@ -276,7 +275,7 @@ public class ProfessorTest {
 
         studentTest.chooseCourses();
 
-        professorTest.setGrade(studentTest, 22, "dataTest");
+        professorTest.setGrade(studentTest, 22, "dataTest"); //TODO: testare se ha inviato l'email
         int grade = professorTest.getGrade(studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -301,39 +300,6 @@ public class ProfessorTest {
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.close();
     }
-
-//    @Test
-//    public void testSendEmail() throws SQLException, MessagingException {
-//        Professor professorTest = new Professor("12345", "testNome", "testCognome", "riccardo.becciolini00@gmail.com");
-//        Student studentTest = new Student("12346", "Alessandro", "Bianco", "alessandro.bianco1608@gmail.com");
-//        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-//
-//
-//
-//
-//        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
-//
-//        // Prepara la password simulata
-//        String simulatedInput1 = "fldiejclqrzckthd\n";
-//        InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
-//        System.setIn(inputStream1);
-//
-//        loginManager.addUser(professorTest);
-//
-//        studentTest.attach(courseTest);
-//
-//        professorTest.notifyObservers("Test Messaggio", "Test Oggetto", null);  //FIXME: passa attività!
-//
-//        conn = DBConnection.connect("../database/unicoachdb.db");
-//
-//        //Cancella l'utente inserito
-//        String deleteUserSql = "DELETE FROM Utente WHERE Nome = ?";
-//        PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
-//        deleteUserStatement.setString(1, "testNome");
-//        deleteUserStatement.executeUpdate();
-//        deleteUserStatement.close();
-//
-//    }
 
     @Test
     public void testAddActivity() throws SQLException, MessagingException {
