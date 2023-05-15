@@ -264,7 +264,7 @@ public class StudentGateway implements Gateway {
         String sql = """
                 SELECT Nome, Data, CFU, Voto, TipoEsame
                 FROM Esame
-                WHERE Studente = ?""";
+                WHERE Studente = ? AND Voto <> -1""";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, studente.getId());
         ResultSet resultSet = statement.executeQuery();
@@ -272,7 +272,7 @@ public class StudentGateway implements Gateway {
         int somma = 0;
 
 
-        System.out.println("Esami conseguiti");
+        System.out.println("Esami superati:");
 
         while (resultSet.next()) {
             String nome = resultSet.getString("Nome");
@@ -293,8 +293,31 @@ public class StudentGateway implements Gateway {
 
         System.out.println("CFU convalidati " + somma + "/180");
 
-        resultSet.close();
+        String sql1 = """
+                SELECT Nome, CFU, TipoEsame
+                FROM Esame
+                WHERE Studente = ? AND Voto = -1""";
+        PreparedStatement statement1 = connection.prepareStatement(sql1);
+        statement.setString(1, studente.getId());
+        ResultSet resultSet1 = statement.executeQuery();
 
+        System.out.println("\nEsami pianificati:");
+
+        while (resultSet1.next()) {
+            String nome = resultSet1.getString("Nome");
+            int cfu = resultSet1.getInt("CFU");
+            String tipoEsame = resultSet1.getString("TipoEsame");
+
+            System.out.println("\nNome esame: " + nome);
+            System.out.println("CFU: " + cfu);
+            System.out.println("Tipo di valutazione: " + tipoEsame + "\n");
+
+            somma += cfu;
+
+        }
+
+        resultSet.close();
+        resultSet1.close();
     }
 
     private Connection connection = null;
