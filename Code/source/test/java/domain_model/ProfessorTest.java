@@ -278,17 +278,17 @@ public class ProfessorTest {
         loginManager.addUser(professorTest);
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest.getId()  + "\n0";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
+        input = courseTest.getId()  + "\n0";
+        in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
         // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         studentTest.chooseCourses();
 
-        professorTest.setGrade(studentTest, 22, "dataTest");
+        professorTest.setGrade(studentTest, 22, "dataTest", false);
         int grade = professorTest.getGrade(studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
