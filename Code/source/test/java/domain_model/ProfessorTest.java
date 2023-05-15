@@ -136,6 +136,8 @@ public class ProfessorTest {
 
         assertEquals(average, professor.getAverage(student), 0.0001f);
 
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
         //Elimino i corsi in IscrizioneCorso
         String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
         PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
@@ -157,7 +159,7 @@ public class ProfessorTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId() + "\n0";
+        String input = courseTest1.getId()  + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
@@ -167,7 +169,7 @@ public class ProfessorTest {
         student1.chooseCourses();
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest1.getId() + "\n0";
+        input = courseTest1.getId()  + "\n0\n";
         in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
@@ -177,7 +179,7 @@ public class ProfessorTest {
         student2.chooseCourses();
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest1.getId() + "\n0";
+        input = courseTest1.getId()  + "\n0\n";
         in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
@@ -193,6 +195,8 @@ public class ProfessorTest {
         float average = ( 22 * 6 + 28 * 6 + 21 * 6 ) / 18f;
 
         assertEquals(average, professor.getAverage(), 0.0001f);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
 
         //Elimino i corsi in IscrizioneCorso
         String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";

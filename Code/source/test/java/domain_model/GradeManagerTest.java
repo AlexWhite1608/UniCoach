@@ -156,6 +156,20 @@ public class GradeManagerTest {
 
         // Mostra i voti di tutti gli studenti iscritti al corso
         professor.displayExamsGraph(courseTest1);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest1.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest2.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest3.getId());
+        deleteCourseStatement.executeUpdate();
+        deleteCourseStatement.setString(1, courseTest4.getId());
+        deleteCourseStatement.executeUpdate();
     }
 
     @Test
@@ -243,6 +257,8 @@ public class GradeManagerTest {
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
         professor.displayExamsGraph();
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
 
         //Elimino i corsi in IscrizioneCorso
         String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
