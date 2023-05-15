@@ -17,23 +17,9 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
-    //FIXME: ora che abbiamo messo l'attributo corso nel professore ci serve ancora setCourseID? TOGLIALA È INUTILE
-    public void setCourseId(Professor professor) throws SQLException {
-        connection = DBConnection.connect("../database/unicoachdb.db");
-
-        String docSql = "SELECT Codice FROM Corso WHERE Docente = ?";
-        PreparedStatement docStatement = connection.prepareStatement(docSql);
-        docStatement.setString(1, professor.getId());
-        ResultSet docRs = docStatement.executeQuery();
-
-        if (docRs.next()) {
-            this.courseID = docRs.getString("Codice");
-        } else {
-            throw new SQLException("Nessun corso trovato per il professore " + professor.getId());
-        }
-
-        docRs.close();
-        docStatement.close();
+    //FIXME: l'ho modificata, non deve più accedere al db, però è inutile lo stesso, forse non ha nemmeno senso porprio l'attributo courseID
+    public void setCourseId(Professor professor) {
+        this.courseID = professor.getCourse().getId();
     }
 
     public void addProfessor(Professor professor) throws SQLException {

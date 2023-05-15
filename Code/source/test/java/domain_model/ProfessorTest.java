@@ -158,7 +158,7 @@ public class ProfessorTest {
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        professor.getProfessorGateway().setCourseId(professor);
+
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest1.getId()  + "\n0\n";
@@ -229,7 +229,7 @@ public class ProfessorTest {
 
         student.chooseCourses();
 
-        testProfessor.getProfessorGateway().setCourseId(testProfessor);
+
 
         testProfessor.setGrade(student, 30, "dataTest");
 
@@ -276,8 +276,6 @@ public class ProfessorTest {
 
         studentTest.chooseCourses();
 
-        professorTest.getProfessorGateway().setCourseId(professorTest);
-
         professorTest.setGrade(studentTest, 22, "dataTest");
         int grade = professorTest.getGrade(studentTest);
 
@@ -310,8 +308,8 @@ public class ProfessorTest {
 //        Student studentTest = new Student("12346", "Alessandro", "Bianco", "alessandro.bianco1608@gmail.com");
 //        Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 //
-//        //Collega il corso al professore
-//        professorTest.getProfessorGateway().setCourseId(professorTest);
+//
+//
 //
 //        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 //
@@ -343,8 +341,6 @@ public class ProfessorTest {
         Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-
-        professorTest.getProfessorGateway().setCourseId(professorTest);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
@@ -406,7 +402,6 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        professorTest.getProfessorGateway().setCourseId(professorTest);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
@@ -473,7 +468,6 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        professorTest.getProfessorGateway().setCourseId(professorTest);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");

@@ -58,6 +58,7 @@ public class Professor extends User implements Subject{
 
     public void setCourse(Course course) {
         this.course = course;
+        this.professorGateway.setCourseId(this);
     }
 
     public int getGrade(Student student) throws SQLException {
