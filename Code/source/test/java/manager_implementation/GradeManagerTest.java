@@ -252,12 +252,12 @@ public class GradeManagerTest {
         professor3.setGrade(student1,30, "TestData");
         professor3.setGrade(student2,20, "TestData");
         professor3.setGrade(student3,26, "TestData");
-        professor3.setGrade(student4,36, "TestData");
+        professor3.setGrade(student4,19, "TestData");
 
         professor4.setGrade(student1,25, "TestData");
         professor4.setGrade(student2,22, "TestData");
         professor4.setGrade(student3,24, "TestData");
-        professor4.setGrade(student4,35, "TestData");
+        professor4.setGrade(student4,20, "TestData");
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
         professor.displayExamsGraph();
