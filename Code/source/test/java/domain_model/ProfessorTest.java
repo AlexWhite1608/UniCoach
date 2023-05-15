@@ -158,6 +158,8 @@ public class ProfessorTest {
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        professor.getProfessorGateway().setCourseId(professor);
+
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest1.getId()  + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());

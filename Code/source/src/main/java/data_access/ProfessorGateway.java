@@ -17,7 +17,7 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
-    //FIXME: ora che abbiamo messo l'attributo corso nel professore ci serve ancora setCourseID?
+    //FIXME: ora che abbiamo messo l'attributo corso nel professore ci serve ancora setCourseID? TOGLIALA È INUTILE
     public void setCourseId(Professor professor) throws SQLException {
         connection = DBConnection.connect("../database/unicoachdb.db");
 
