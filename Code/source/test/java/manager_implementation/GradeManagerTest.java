@@ -1,6 +1,10 @@
-package domain_model;
+package manager_implementation;
 
 import data_access.DBConnection;
+import domain_model.Course;
+import domain_model.ExamType;
+import domain_model.Professor;
+import domain_model.Student;
 import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
