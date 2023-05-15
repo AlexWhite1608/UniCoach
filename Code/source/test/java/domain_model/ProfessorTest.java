@@ -208,59 +208,7 @@ public class ProfessorTest {
         deleteCourseStatement.close();
     }
 
-
-//FIXME: QUESTO METODO È TUTTO DA RIFARE
-/*
     @Test
-    public void testAddExam() throws SQLException {
-        Student student = new Student("12345", "TestNome", "TestCognome");
-        Professor testProfessor = new Professor("12345", "TestNome", "TestCognome");
-        Course courseTest = new Course("TestCorso", 6, testProfessor, ExamType.WRITTEN_AND_ORAL_TEST);
-
-
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest.getId() + "\n0";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student.chooseCourses();
-
-
-
-        testProfessor.setGrade(student, 30, "dataTest");
-
-        conn = DBConnection.connect("../database/unicoachdb.db");
-
-        // Verifica che l'esame venga inserito correttamente
-        String sql = "SELECT * FROM Esame WHERE Codice = ?";
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, examTest.getId());
-
-        ResultSet result = statement.executeQuery();
-
-        assertTrue(result.next());
-        assertEquals(examTest.getId(), result.getString("Codice"));
-        assertEquals("TestCorso", result.getString("Nome"));
-        assertEquals("testData", result.getString("Data"));
-        assertEquals(6, result.getInt("CFU"));
-        assertEquals(30, result.getInt("Voto"));
-        assertEquals(courseTest.getId(), result.getString("Corso"));
-        assertEquals(courseTest.getExamType().getDisplayName(), result.getString("TipoEsame"));
-
-        //Si verifica anche che l'esame sia stato inserito nel libretto:
-        assertEquals(student.getUniTranscript().getExam(examTest.getId()), examTest);
-
-        statement.close();
-
-    }
-*/
-
-    @Test
-
     public void testSetGetGrade() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
         Student studentTest = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
