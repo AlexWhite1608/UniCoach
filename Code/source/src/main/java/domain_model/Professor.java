@@ -54,9 +54,9 @@ public class Professor extends User implements Subject{
                 if (sendEmail) {
                     //Manda email allo studente
                     String msg = "Gentile " + student.getName() + " " + student.getSurname() + " ti comunichiamo che l'esito della prova" +
-                            " di esame relativa all'attività didattica " + exam.getName() + " da te sostenuta il + " + data + "è " + grade + "/30";
+                            " di esame relativa all'attività didattica " + exam.getName() + " da te sostenuta il " + data + " è " + grade + "/30";
 
-                    sendEmail(student, "", "Pubblicazione voto appello " + exam.getName());
+                    sendEmail(student, msg, "Pubblicazione voto appello " + exam.getName());
                 }
             } else {
                 System.out.println("Lo studente selezionato non è iscritto al corso");

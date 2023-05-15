@@ -261,7 +261,7 @@ public class ProfessorTest {
 
     @Test
 
-    public void testGetGrade() throws SQLException, MessagingException {
+    public void testSetGetGrade() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
         Student studentTest = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
@@ -288,7 +288,7 @@ public class ProfessorTest {
 
         studentTest.chooseCourses();
 
-        professorTest.setGrade(studentTest, 22, "dataTest", false);
+        professorTest.setGrade(studentTest, 22, "dataTest", true);
         int grade = professorTest.getGrade(studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -317,8 +317,8 @@ public class ProfessorTest {
     @Test
     public void testAddActivity() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         //Eseguo registrazione professore per la mandare la mail
@@ -377,8 +377,8 @@ public class ProfessorTest {
     @Test
     public void testScheduleLesson() throws SQLException, InvalidAttributesException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
 
@@ -443,8 +443,8 @@ public class ProfessorTest {
     @Test
     public void testRemoveLesson() throws SQLException, MessagingException, InvalidAttributesException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "nibbiojr@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "alessandro.bianco1608@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
 
