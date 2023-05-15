@@ -80,7 +80,7 @@ public class ProfessorGateway implements Gateway{
 
     public void setGrade(Exam exam, int grade, String date) throws SQLException{
         String sqlCont = """
-                SELECT Esame
+                SELECT * FROM Esame
                 WHERE Codice = ?""";
         connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statementCont = connection.prepareStatement(sqlCont);
