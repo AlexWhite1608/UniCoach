@@ -43,10 +43,24 @@ public class Professor extends User implements Subject{
         professorGateway.displayActivities(this);
     }
 
-    public void setGrade(Student student, int grade, String data) throws SQLException {
+    public void setGrade(Student student, int grade, String data, boolean sendEmail) throws SQLException, MessagingException {
         //Aggiunge l'esame al libretto dello studente
         Exam exam = student.getUniTranscript().findExam(this.course);
 
+        if(exam != null) {
+            professorGateway.setGrade(exam,grade,data);
+
+            if(sendEmail){
+                //Manda email allo studente
+                String msg = "Gentile " + student.getName() + " " + student.getSurname() + " ti comunichiamo che l'esito della prova" +
+                        " di esame relativa all'attività didattica " + exam.getName() + " da te sostenuta il + " + data + "è " + grade + "/30";
+
+                sendEmail(student, "", "Pubblicazione voto appello " + exam.getName());
+            }
+
+
+        } else {
+            System.out.println("Lo studente selezionato non è iscritto al corso");
         if(grade >=1 && grade <= 30){
             if(exam != null) {
                 professorGateway.setGrade(exam,grade,data);

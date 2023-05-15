@@ -126,7 +126,7 @@ public class GradeManagerTest {
     }
 
     @Test
-    public void testStudentGraph() throws SQLException {
+    public void testStudentGraph() throws SQLException, MessagingException {
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -149,10 +149,10 @@ public class GradeManagerTest {
 
         student.chooseCourses();
 
-        professor.setGrade(student,25, "TestData");
-        professor2.setGrade(student, 24, "TestData");
-        professor3.setGrade(student, 29, "TestData");
-        professor4.setGrade(student, 27, "TestData");
+        professor.setGrade(student,25, "TestData", false);
+        professor2.setGrade(student, 24, "TestData", false);
+        professor3.setGrade(student, 29, "TestData", false);
+        professor4.setGrade(student, 27, "TestData", false);
 
 
         student.displayExamsGraph();
@@ -177,7 +177,7 @@ public class GradeManagerTest {
     }
 
     @Test
-    public void testCourseGraph() throws SQLException {
+    public void testCourseGraph() throws SQLException, MessagingException {
         Student student1 = new Student("12345", "TestNome", "TestCognome");
         Student student2 = new Student("12346", "TestNome", "TestCognome");
         Student student3 = new Student("12347", "TestNome", "TestCognome");
@@ -192,10 +192,10 @@ public class GradeManagerTest {
         simulateUserInput(student3, courseTest1);
         simulateUserInput(student4, courseTest1);
 
-        professor.setGrade(student1,25, "TestData");
-        professor.setGrade(student2,21, "TestData");
-        professor.setGrade(student3,29, "TestData");
-        professor.setGrade(student4,30, "TestData");
+        professor.setGrade(student1,25, "TestData", false);
+        professor.setGrade(student2,21, "TestData", false);
+        professor.setGrade(student3,29, "TestData", false);
+        professor.setGrade(student4,30, "TestData", false);
 
         // Mostra i voti di tutti gli studenti iscritti al corso
         professor.displayExamsGraph(courseTest1);
@@ -210,7 +210,7 @@ public class GradeManagerTest {
     }
 
     @Test
-    public void testAllCoursesAvg() throws SQLException {
+    public void testAllCoursesAvg() throws SQLException, MessagingException {
         Student student1 = new Student("12345", "TestNome", "TestCognome");
         Student student2 = new Student("12346", "TestNome", "TestCognome");
         Student student3 = new Student("12347", "TestNome", "TestCognome");
@@ -239,25 +239,25 @@ public class GradeManagerTest {
         simulateUserInput(student4, courseList);
 
         // Si inseriscono i voti degli esami
-        professor.setGrade(student1,25, "TestData");
-        professor.setGrade(student2,21, "TestData");
-        professor.setGrade(student3,29, "TestData");
-        professor.setGrade(student4,30, "TestData");
+        professor.setGrade(student1,25, "TestData", false);
+        professor.setGrade(student2,21, "TestData", false);
+        professor.setGrade(student3,29, "TestData", false);
+        professor.setGrade(student4,30, "TestData", false);
 
-        professor2.setGrade(student1,18, "TestData");
-        professor2.setGrade(student2,26, "TestData");
-        professor2.setGrade(student3,30, "TestData");
-        professor2.setGrade(student4,30, "TestData");
+        professor2.setGrade(student1,18, "TestData", false);
+        professor2.setGrade(student2,26, "TestData", false);
+        professor2.setGrade(student3,30, "TestData", false);
+        professor2.setGrade(student4,30, "TestData", false);
 
-        professor3.setGrade(student1,30, "TestData");
-        professor3.setGrade(student2,20, "TestData");
-        professor3.setGrade(student3,26, "TestData");
-        professor3.setGrade(student4,19, "TestData");
+        professor3.setGrade(student1,30, "TestData", false);
+        professor3.setGrade(student2,20, "TestData", false);
+        professor3.setGrade(student3,26, "TestData", false);
+        professor3.setGrade(student4,19, "TestData", false);
 
-        professor4.setGrade(student1,25, "TestData");
-        professor4.setGrade(student2,22, "TestData");
-        professor4.setGrade(student3,24, "TestData");
-        professor4.setGrade(student4,20, "TestData");
+        professor4.setGrade(student1,25, "TestData", false);
+        professor4.setGrade(student2,22, "TestData", false);
+        professor4.setGrade(student3,24, "TestData", false);
+        professor4.setGrade(student4,20, "TestData", false);
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
         professor.displayExamsGraph();

@@ -110,7 +110,7 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testAverageStudent() throws SQLException {
+    public void testAverageStudent() throws SQLException, MessagingException {
         Student student = new Student("12346", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -129,8 +129,8 @@ public class ProfessorTest {
 
         student.chooseCourses();
 
-        professor.setGrade(student,25, "TestData");
-        professor2.setGrade(student,24, "TestData");
+        professor.setGrade(student,25, "TestData", false);
+        professor2.setGrade(student,24, "TestData", false);
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
@@ -150,7 +150,7 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testAverageCourse() throws SQLException {
+    public void testAverageCourse() throws SQLException, MessagingException {
         Student student1 = new Student("12345", "TestNome", "TestCognome");
         Student student2 = new Student("12346", "TestNome", "TestCognome");
         Student student3 = new Student("12347", "TestNome", "TestCognome");
@@ -190,9 +190,9 @@ public class ProfessorTest {
 
         student3.chooseCourses();
 
-        professor.setGrade(student1,22 , "dataTest");
-        professor.setGrade(student2, 28 , "dataTest");
-        professor.setGrade(student3,21, "dataTast");
+        professor.setGrade(student1,22 , "dataTest", false);
+        professor.setGrade(student2, 28 , "dataTest", false);
+        professor.setGrade(student3,21, "dataTast", false);
 
         float average = ( 22 * 6 + 28 * 6 + 21 * 6 ) / 18f;
 
@@ -230,6 +230,7 @@ public class ProfessorTest {
         student.chooseCourses();
 
 
+
         testProfessor.setGrade(student, 30, "dataTest");
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -259,10 +260,22 @@ public class ProfessorTest {
 */
 
     @Test
-    public void testSetGetGrade() throws SQLException {
-        Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
-        Student studentTest = new Student("12345", "TestNome", "TestCognome");
+
+    public void testGetGrade() throws SQLException, MessagingException {
+        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
+        Student studentTest = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
+
+        LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
+
+        // Simuliamo l'inserimento della password dell'utente
+        String input = "fldiejclqrzckthd\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        loginManager.addUser(professorTest);
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest.getId()  + "\n0";
@@ -275,7 +288,7 @@ public class ProfessorTest {
 
         studentTest.chooseCourses();
 
-        professorTest.setGrade(studentTest, 22, "dataTest"); //TODO: testare se ha inviato l'email
+        professorTest.setGrade(studentTest, 22, "dataTest");
         int grade = professorTest.getGrade(studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");

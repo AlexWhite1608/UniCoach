@@ -5,6 +5,8 @@ import manager_implementation.CoursesManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.mail.MessagingException;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,7 +103,7 @@ public class StudentTest {
 
 
     @Test
-    public void testGetGrade() throws SQLException {
+    public void testGetGrade() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
@@ -118,7 +120,7 @@ public class StudentTest {
 
         studentTest.chooseCourses();
 
-        professorTest.setGrade(studentTest, 22, "dataTest");
+        professorTest.setGrade(studentTest, 22, "dataTest", false);
         int grade = studentTest.getGrade(courseTest, studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
@@ -144,7 +146,7 @@ public class StudentTest {
     }
 
     @Test
-    public void testAverageAndDisplayTranscript() throws SQLException {
+    public void testAverageAndDisplayTranscript() throws SQLException, MessagingException {
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
@@ -164,8 +166,8 @@ public class StudentTest {
 
         student.chooseCourses();
 
-        professor.setGrade(student, 25, "dataTest");
-        professor2.setGrade(student,  24, "dataTest");
+        professor.setGrade(student, 25, "dataTest", false);
+        professor2.setGrade(student,  24, "dataTest", false);
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
