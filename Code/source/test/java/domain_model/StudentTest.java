@@ -135,6 +135,12 @@ public class StudentTest {
         assertEquals(grade, result.getInt("Voto"));
 
         statement.close();
+
+        //Elimino i corsi in IscrizioneCorso
+        String deleteCourseSql = "DELETE FROM IscrizioneCorso WHERE IdCorso = ?";
+        PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
+        deleteCourseStatement.setString(1, courseTest.getId());
+        deleteCourseStatement.executeUpdate();
     }
 
     @Test
