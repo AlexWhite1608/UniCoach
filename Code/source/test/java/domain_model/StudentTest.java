@@ -234,11 +234,7 @@ public void testChooseCourses() throws SQLException {
     Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
-    //Imposta i corsi ai professori
-    professor.getProfessorGateway().setCourseId(professor);
-    professor2.getProfessorGateway().setCourseId(professor2);
-    professor3.getProfessorGateway().setCourseId(professor3);
-    professor4.getProfessorGateway().setCourseId(professor4);
+
 
     // Simuliamo l'input utente con tutti i courseTest.getId()
     String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n0\n";

@@ -13,13 +13,9 @@ import java.util.List;
 
 public class ProfessorGateway implements Gateway{
 
-    public ProfessorGateway(Professor professor) throws SQLException {
+    public ProfessorGateway(Professor professor) {
         connection = DBConnection.connect("../database/unicoachdb.db");
-    }
-
-    //FIXME: l'ho modificata, non deve più accedere al db, però è inutile lo stesso, forse non ha nemmeno senso porprio l'attributo courseID
-    public void setCourseId(Professor professor) {
-        this.courseID = professor.getCourse().getId();
+        this.professor = professor;
     }
 
     public void addProfessor(Professor professor) throws SQLException {
@@ -48,7 +44,7 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
-        gradeStatement.setString(1, this.courseID);
+        gradeStatement.setString(1, this.professor.getCourse().getId());
         gradeStatement.setString(2, student.getId());
         ResultSet gradeRs = gradeStatement.executeQuery();
 
@@ -144,7 +140,7 @@ public class ProfessorGateway implements Gateway{
         connection = DBConnection.connect("../database/unicoachdb.db");
 
         PreparedStatement averageStatement = connection.prepareStatement(average);
-        averageStatement.setString(1, this.courseID);
+        averageStatement.setString(1, this.professor.getCourse().getId());
 
         ResultSet averageRs = averageStatement.executeQuery();
 
@@ -278,6 +274,7 @@ public class ProfessorGateway implements Gateway{
     }
 
     private Connection connection = null;
-    private String courseID;
+
+    private Professor professor;
 
 }
