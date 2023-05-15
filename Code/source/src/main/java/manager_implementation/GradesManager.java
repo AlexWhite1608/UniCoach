@@ -58,7 +58,7 @@ public class GradesManager {
         Graphics2D graphics = image.createGraphics();
 
         // Crea un oggetto ChartPanel per il grafico
-        ChartPanel chartPanel = new ChartPanel(chart);
+        ChartPanel  chartPanel = new ChartPanel(chart);
         chartPanel.setSize(width, height);
         chartPanel.paint(graphics);
 
