@@ -1,6 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
+import manager_implementation.Activity;
 import manager_implementation.CoursesManager;
 import org.junit.After;
 import org.junit.Before;
@@ -100,6 +101,34 @@ public class StudentTest {
 
         statement.close();
     }
+
+    @Test
+    public void testAddActivity() throws SQLException {
+        Student student =  new Student("12345", "TestNome", "TestCognome");
+        Activity activity = student.addActivity("TestEvento", "TestData", 8, 10);
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+        String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioStudenti WHERE Id = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1,activity.getId());
+        ResultSet result = statement.executeQuery();
+
+        assertTrue(result.next());
+        assertEquals(activity.getName(), result.getString("Attività"));
+        assertEquals(activity.getDate(), result.getString("Data"));
+        assertEquals(activity.getStartTime(), result.getInt("OraInizio"));
+        assertEquals(activity.getEndTime(), result.getInt("OraFine"));
+        assertEquals(student.getId(), result.getString("Matricola"));
+
+        String deleteActivitySql = "DELETE FROM CalendarioStudenti WHERE Attività = ?";
+        PreparedStatement deleteActivityStatement = conn.prepareStatement(deleteActivitySql);
+        deleteActivityStatement.setString(1, activity.getName());
+        deleteActivityStatement.executeUpdate();
+        deleteActivityStatement.close();
+
+        statement.close();
+    }
+
 
 
     @Test

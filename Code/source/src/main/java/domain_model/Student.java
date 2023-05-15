@@ -71,6 +71,12 @@ public class Student extends User implements Observer {
         studentGateway.addActivity(activity, this);
     }
 
+    public Activity addActivity(String name, String date, int startTime, int endTime) throws SQLException{
+        Activity activity = new Activity(name, date, startTime, endTime);
+        studentGateway.addActivity(activity, this);
+        return activity;
+    }
+
     @Override
     public void attach(Course course) {
         Professor professor = course.getProfessor();
