@@ -8,10 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 
-//TODO: la classe deve gestire la suddivisione dello studio dello studente?
 public class StudyTimeManager {
 
-    public static void setDailyStudyTime() {
+    //executeOnce si usa quando si testa per farlo eseguire una volta sola, poi si lascia sempre false!
+    public static void setDailyStudyTime(boolean executeOnce) {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -21,11 +21,16 @@ public class StudyTimeManager {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
+                if (executeOnce) {
+                    timer.cancel(); // Interrompe il timer dopo la prima esecuzione
+                }
             }
         };
 
         timer.scheduleAtFixedRate(timerTask, delay, period);
     }
+
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
     private static void compileForm() throws SQLException {
@@ -87,6 +92,7 @@ public class StudyTimeManager {
             Map<StudyType, Integer> values = entry.getValue();
 
             for(Map.Entry<StudyType, Integer> value : values.entrySet()){
+
                 //FIXME: ora inserisco come Codice l'id del corso, ma bisogna mettere l'id dell'esame??
                 statement.setString(1, course.getId());
                 statement.setString(2, value.getKey().getDisplayName());
