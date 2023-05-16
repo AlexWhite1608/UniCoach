@@ -6,6 +6,13 @@ public class Activity {
 
     public Activity() {}
 
+    public Activity(Activity activity) {
+        this.id = activity.getId();
+        this.name = activity.getName();
+        this.date = activity.getDate();
+        this.endTime = activity.getEndTime();
+        this.startTime = activity.getStartTime();
+    }
     public Activity(String name, String date, int startTime, int endTime) {
         this.name = name;
         this.date = date;

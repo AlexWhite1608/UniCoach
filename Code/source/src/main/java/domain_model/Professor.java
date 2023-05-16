@@ -140,10 +140,12 @@ public class Professor extends User implements Subject{
 
         this.addActivity(addExamActivity);
 
+        Activity addExamActivityCopy = new Activity(addExamActivity);
+
         //Notifica gli studenti del nuovo esame
         notifyObservers(msg, subject, addExamActivity);
 
-        return addExamActivity;
+        return addExamActivityCopy;
     }
 
     public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
@@ -204,7 +206,7 @@ public class Professor extends User implements Subject{
             activityList.add(activity);
 
             this.addActivity(activity);
-            this.notifyObservers(activity);
+            this.notifyObservers(new Activity(activity));
 
             tmpGiorno += 7;
 
