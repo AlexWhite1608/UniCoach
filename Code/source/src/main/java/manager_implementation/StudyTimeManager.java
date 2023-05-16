@@ -54,7 +54,7 @@ public class StudyTimeManager {
                 System.out.println("Digita cosa hai studiato per " + course.getName() + " (Lezione, Ripasso, Progetto, Studio per esame): ");
                 String studyTypeString = scanner.nextLine();
 
-                //TODO: fai controllo che abbia scritto per bene lo study type!
+                //TODO: fai controllo che abbia scritto per bene lo study type e le ore di studio!
 
                 StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
 
