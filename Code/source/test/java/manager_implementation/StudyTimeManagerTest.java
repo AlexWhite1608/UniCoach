@@ -80,8 +80,8 @@ public class StudyTimeManagerTest {
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
         // Simuliamo l'input del corso
-        String input1 = courseTest1.getId() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
-        String input2 = courseTest2.getId() + "\n" + "Progetto\n" + String.valueOf(2) + "\n0";
+        String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
+        String input2 = courseTest2.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n0";
         InputStream in = new ByteArrayInputStream((input1 + input2).getBytes());
         System.setIn(in);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
