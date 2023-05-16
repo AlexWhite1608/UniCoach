@@ -1,5 +1,7 @@
 package manager_implementation;
 
+import domain_model.ExamType;
+
 //TODO: aggiungere/togliere roba
 public enum StudyType {
     LECTURE("Lezione"),
@@ -15,5 +17,14 @@ public enum StudyType {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public static StudyType getStudyTypeFromString(String input) {
+        for (StudyType studyType : StudyType.values()) {
+            if (studyType.getDisplayName().equalsIgnoreCase(input)) {
+                return studyType;
+            }
+        }
+        return null;  // Ritorna null se la stringa non corrisponde a nessun elemento dell'enum
     }
 }

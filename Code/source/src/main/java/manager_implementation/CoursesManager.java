@@ -28,7 +28,7 @@ public class CoursesManager {
 
             while (!input.equals("0")) {
                 System.out.println("Digita il codice del corso successivo o premi 0 per uscire");
-                Course course = findCourse(input);
+                Course course = findCourseById(input);
 
                 if (course != null) {
                     selectedCourses.add(course);
@@ -46,9 +46,18 @@ public class CoursesManager {
         }
     }
 
-    private static Course findCourse(String courseId) {
+    private static Course findCourseById(String courseId) {
         for(Course course : courses){
             if(Objects.equals(course.getId(), courseId))
+                return course;
+        }
+
+        return null;
+    }
+
+    public static Course findCourseByName(String courseName) {
+        for(Course course : courses){
+            if(Objects.equals(course.getName(), courseName))
                 return course;
         }
 
