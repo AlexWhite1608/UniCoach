@@ -48,8 +48,6 @@ public class StudyTimeManager {
         while (!courseName.equals("0")) {
             Course course = CoursesManager.findCourseByName(courseName);
 
-            System.out.println("Digita il nome successivo (oppure premi 0 per terminare): ");
-
             if(course != null){
                 System.out.println("Digita cosa hai studiato per " + course.getName() + " (Lezione, Ripasso, Progetto, Studio per esame): ");
                 String studyTypeString = scanner.nextLine();
@@ -70,6 +68,8 @@ public class StudyTimeManager {
                 continue;
             }
 
+            System.out.println("Digita il nome successivo (oppure premi 0 per terminare): ");
+
             courseName = scanner.nextLine();
         }
 
@@ -80,7 +80,7 @@ public class StudyTimeManager {
 
     private static void insertInfoInDb(Map<Course, Map<StudyType, Integer>> studyInfo) throws SQLException {
 
-        String sql = "INSERT INTO TabellaOreStudio (Codice, TipoStudio, Ore)" +
+        String sql = "INSERT INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
                      "ON DUPLICATE KEY UPDATE Ore = Ore + VALUES(Ore)";
 
