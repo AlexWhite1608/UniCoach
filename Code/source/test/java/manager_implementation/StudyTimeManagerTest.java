@@ -12,7 +12,11 @@ import org.junit.Test;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class StudyTimeManagerTest {
 
@@ -93,7 +97,35 @@ public class StudyTimeManagerTest {
         System.setOut(new PrintStream(outContent));
 
         //FIXME: si dovrebbe testare il metodo setDailyStudyTime() e non compileForm()!
+        //StudyTimeManager.setDailyStudyTime(true);
         StudyTimeManager.compileForm();
+
+        conn = DBConnection.connect("../database/unicoachdb.db");
+
+        //Verifico che le informazioni inserite siano corrette per un corso soltanto
+        String sql = "SELECT * FROM OreStudio WHERE Codice = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, courseTest1.getId());
+        ResultSet resultCourse1 = statement.executeQuery();
+
+        resultCourse1.next();
+        assertEquals("Lezione", resultCourse1.getString("TipoStudio"));
+        assertEquals(1, resultCourse1.getInt("Ore"));
+        resultCourse1.next();
+        assertEquals("Progetto", resultCourse1.getString("TipoStudio"));
+        assertEquals(2, resultCourse1.getInt("Ore"));
+
+        statement.close();
+
+        //Elimino le informazioni dalla tabella OreStudio
+        String deleteSql = "DELETE FROM OreStudio WHERE Codice = ?";
+        PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+        deleteStatement.setString(1, courseTest1.getId());
+        deleteStatement.executeUpdate();
+        deleteStatement.setString(1, courseTest2.getId());
+        deleteStatement.executeUpdate();
+        deleteStatement.close();
+
     }
 
     private Connection conn;
