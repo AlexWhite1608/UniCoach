@@ -33,7 +33,7 @@ public class StudyTimeManager {
 
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
-    private static void compileForm() throws SQLException {
+    public static void compileForm() throws SQLException {
         //TODO: Per ciascuna materia alla quale lo studente è iscritto, deve inserire giornalmente lo studio e aggiornare le ore già presenti
 
         //Per ogni corso memorizzo quante ore ho studiato per ciascuna tipologia
@@ -58,6 +58,7 @@ public class StudyTimeManager {
 
                 System.out.println("Digita le ore impiegate nell'attività: ");
                 int hours = scanner.nextInt();
+                scanner.nextLine();
 
                 //Inserisco le informazioni nella Map
                 dedicatedStudy.put(studyType, hours);
@@ -80,9 +81,9 @@ public class StudyTimeManager {
 
     private static void insertInfoInDb(Map<Course, Map<StudyType, Integer>> studyInfo) throws SQLException {
 
-        String sql = "INSERT INTO OreStudio (Codice, TipoStudio, Ore)" +
+        String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
-                     "ON DUPLICATE KEY UPDATE Ore = Ore + VALUES(Ore)";
+                     "ON CONFLICT (Codice, TipoStudio) DO UPDATE SET Ore = Ore + excluded.Ore";
 
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -116,5 +117,5 @@ public class StudyTimeManager {
     }
 
     private static int period = 1000;   // Tempo in millisecondi tra esecuzioni successive del task
-    private static int delay = 500;     // Tempo in millisecondi prima che il task venga eseguito.
+    private static int delay = 600;     // Tempo in millisecondi prima che il task venga eseguito.
 }
