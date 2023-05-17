@@ -8,6 +8,7 @@ import domain_model.Student;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -21,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -216,6 +218,27 @@ public class GradesManager {
         return avgCourseDataset;
     }
 
+    //Ritorna la media degli esami svolti dagli studenti iscritti al corso fornito
+    private static float getAvgCourse(Course course) throws SQLException {
+        List<Course> courseList = CoursesManager.getCourses();
+
+        //Mappa ciascun nome del corso con tutti i voti degli esami svolti per quel corso
+        Map<String, List<Integer>> studentGrades = new HashMap<>();
+
+        //Assegna a ciascun corso tutti i voti degli esami svolti dagli studenti iscritti
+        getExamsGradesFromCourses(courseList, studentGrades);
+
+        //Calcola la media dei voti per ciascun corso
+        Map<String, Float> averageForEachCourse = new HashMap<>();
+        for (Map.Entry<String, List<Integer>> entry : studentGrades.entrySet()) {
+            String courseName = entry.getKey();
+            float average = (float) calculateAverage(entry.getValue());
+            averageForEachCourse.put(courseName, average);
+        }
+
+        return averageForEachCourse.get(course.getName());
+    }
+
     //FIXME: sarebbe meglio non fare query in questa classe!
     private static void getExamsGradesFromCourses(List<Course> courseList, Map<String, List<Integer>> studentGrades) throws SQLException {
 
@@ -243,16 +266,30 @@ public class GradesManager {
         statement.close();
     }
 
-    public static void visualizeStudyTypeData(DefaultPieDataset dataset, Course course) {
-        //TODO: bisogna inserire la media del corso da qualche parte!
+    public static void visualizeStudyTypeData(DefaultPieDataset dataset, Course course) throws SQLException {
 
         JFreeChart chart = ChartFactory.createPieChart(
                 "Grafico rapporto studio/media voti " + course.getName(),
                 dataset,
-                true,             // legenda
+                true,
                 true,
                 false
         );
+
+        //TODO: bisogna inserire la media del corso in una label!
+        float avgCourse = getAvgCourse(course);
+
+//        PieSectionLabelGenerator labelGenerator = new CustomLabelGenerator("{0} - {1} ore", new DecimalFormat("0"));
+//        chart.getPlot().setLabelGenerator(labelGenerator);
+//
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelFont(new Font("Arial", Font.PLAIN, 12));
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelPaint(Color.BLACK);
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelBackgroundPaint(new Color(255, 255, 255, 200));
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelOutlinePaint(Color.BLACK);
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelShadowPaint(Color.WHITE);
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelOutlineStroke(null);
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelLinkPaint(Color.BLACK);
+//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setMaximumLabelWidth(0.25);
 
         // Crea una finestra per mostrare il grafico
         JFrame frame = new JFrame("Grafico rapporto studio/media voti");
@@ -261,7 +298,7 @@ public class GradesManager {
         frame.setVisible(true);
 
         // Specifica il percorso e il nome del file di output
-        String outputPath = "../graph/pie_chart_" + course.getId() + ".png";    //FIXME: cambia percorso!!
+        String outputPath = "../graph/pie_chart_" + course.getId() + ".png";
 
         // Specifica le dimensioni per l'immagine del grafico
         int width = 800;
