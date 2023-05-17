@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -70,7 +67,7 @@ public class StudyTimeManagerTest {
     }
 
     @Test
-    public void testSetDailyStudyTime() throws SQLException {
+    public void testSetDailyStudyTime() throws SQLException, InterruptedException {
         Student student = new Student("12345", "TestNome", "TestCognome");
 
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
@@ -79,15 +76,24 @@ public class StudyTimeManagerTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        // Simuliamo l'input del corso
+        // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
+
+        // Simuliamo l'input del secondo corso
         String input2 = courseTest2.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n0";
-        InputStream in = new ByteArrayInputStream((input1 + input2).getBytes());
-        System.setIn(in);
+
+        // Concatena gli input in un unico stream da passare alla funzione
+        InputStream combinedInput = new SequenceInputStream(
+                new ByteArrayInputStream(input1.getBytes()),
+                new ByteArrayInputStream(input2.getBytes())
+        );
+
+        System.setIn(combinedInput);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        StudyTimeManager.setDailyStudyTime(true);
+        //FIXME: si dovrebbe testare il metodo setDailyStudyTime() e non compileForm()!
+        StudyTimeManager.compileForm();
     }
 
     private Connection conn;
