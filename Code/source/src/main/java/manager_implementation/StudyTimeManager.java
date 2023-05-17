@@ -2,15 +2,18 @@ package manager_implementation;
 
 import data_access.DBConnection;
 import domain_model.Course;
+import domain_model.Professor;
+import org.jfree.data.general.DefaultPieDataset;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 public class StudyTimeManager {
 
-    //executeOnce si usa quando si testa per farlo eseguire una volta sola, poi si lascia sempre false!
+    //FIXME: non so come testarlo
     public static void setDailyStudyTime(boolean executeOnce) {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -34,7 +37,6 @@ public class StudyTimeManager {
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
     public static void compileForm() throws SQLException {
-        //TODO: Per ciascuna materia alla quale lo studente è iscritto, deve inserire giornalmente lo studio e aggiornare le ore già presenti
 
         //Per ogni corso memorizzo quante ore ho studiato per ciascuna tipologia
         Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
@@ -106,6 +108,45 @@ public class StudyTimeManager {
 
         statement.close();
         DBConnection.disconnect();
+    }
+
+    //Il professore richiede le informazioni di studio degli studenti iscritti al suo corso -> numero di ore spese confrontato con il voto ottenuto?
+    public static void getCourseStudyInfo(Course course) throws SQLException {
+
+        String sql = """
+                SELECT TipoStudio, SUM(Ore) AS TotaleOre
+                FROM OreStudio
+                WHERE Codice = ?
+                GROUP BY TipoStudio""";
+
+        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, course.getId());
+        ResultSet resultSet = statement.executeQuery();
+
+        Map<StudyType, Integer> studyHoursByType = new HashMap<>();
+        while (resultSet.next()) {
+            String studyTypeString = resultSet.getString("TipoStudio");
+            int totalHours = resultSet.getInt("TotaleOre");
+
+            StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
+            studyHoursByType.put(studyType, totalHours);
+        }
+
+        resultSet.close();
+        statement.close();
+        DBConnection.disconnect();
+
+        //TODO: in qualche modo fare i grafici con le informazioni contenute in studyHoursByType (richiama GradesManager)
+
+        //Costruisco il dataset del grafico a torta e lo passo alla funzione delegata a costruire il grafico
+        DefaultPieDataset dataset = GradesManager.buildStudyTypeDataset(studyHoursByType);
+        GradesManager.visualizeStudyTypeData(dataset, course);
+    }
+
+    //Il professore richiede le informazioni di studio degli studenti per tutti i corsi -> numero di ore spese confrontato con il voto ottenuto?
+    public static void getAllCoursesStudyInfo() {
+        //TODO: in qualche modo fare anche i grafici!
     }
 
     public static void setPeriod(int period) {

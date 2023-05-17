@@ -128,5 +128,6 @@ public class StudyTimeManagerTest {
 
     }
 
+
     private Connection conn;
 }

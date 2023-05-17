@@ -9,6 +9,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -240,6 +241,60 @@ public class GradesManager {
         }
 
         statement.close();
+    }
+
+    public static void visualizeStudyTypeData(DefaultPieDataset dataset, Course course) {
+        //TODO: bisogna inserire la media del corso da qualche parte!
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Grafico rapporto studio/media voti " + course.getName(),
+                dataset,
+                true,             // legenda
+                true,
+                false
+        );
+
+        // Crea una finestra per mostrare il grafico
+        JFrame frame = new JFrame("Grafico rapporto studio/media voti");
+        frame.setPreferredSize(new Dimension(500, 400));
+        frame.pack();
+        frame.setVisible(true);
+
+        // Specifica il percorso e il nome del file di output
+        String outputPath = "../graph/pie_chart_" + course.getId() + ".png";    //FIXME: cambia percorso!!
+
+        // Specifica le dimensioni per l'immagine del grafico
+        int width = 800;
+        int height = 600;
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+
+        // Crea un oggetto ChartPanel per il grafico
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setSize(width, height);
+        chartPanel.paint(graphics);
+
+        // Salva l'immagine del grafico
+        try {
+            File outputFile = new File(outputPath);
+            ImageIO.write(image, "png", outputFile);
+            System.out.println("Grafico salvato come: " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Errore durante il salvataggio dell'immagine del grafico: " + e.getMessage());
+        }
+    }
+
+    //Costruisce dataset per grafico a torta usato in StudyTimeManager.getCourseStudyInfo()
+    public static DefaultPieDataset buildStudyTypeDataset(Map<StudyType, Integer> studyHoursByType) {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (Map.Entry<StudyType, Integer> entry : studyHoursByType.entrySet()) {
+            StudyType studyType = entry.getKey();
+            int hours = entry.getValue();
+            dataset.setValue(studyType.getDisplayName(), hours);
+        }
+
+        return dataset;
     }
 
     //TODO: spostalo in un package utility
