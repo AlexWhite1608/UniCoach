@@ -90,6 +90,7 @@ public class StudyTimeManager {
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
                      "ON CONFLICT (Codice, TipoStudio) DO UPDATE SET Ore = Ore + excluded.Ore";
+        //TODO: va verificato il conflitto nel test
 
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -152,6 +153,11 @@ public class StudyTimeManager {
     //Il professore richiede le informazioni di studio degli studenti per tutti i corsi -> numero di ore spese confrontato con il voto ottenuto?
     public static void getAllCoursesStudyInfo() {
         //TODO: in qualche modo fare anche i grafici!
+    }
+
+    //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
+    public static void getStudentStudyInfo(Student student){
+
     }
 
     public static void setPeriod(int period) {

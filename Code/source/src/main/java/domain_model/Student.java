@@ -95,6 +95,10 @@ public class Student extends User implements Observer {
         professor.unsubscribe(this);
     }
 
+    public void getStudyInfo() {
+        StudyTimeManager.getStudentStudyInfo(this);
+    }
+
     private UniTranscript uniTranscript;
     private List<Subject> subjects;
     private StudentGateway studentGateway = new StudentGateway();
