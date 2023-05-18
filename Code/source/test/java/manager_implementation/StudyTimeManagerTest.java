@@ -72,6 +72,7 @@ public class StudyTimeManagerTest {
         }
     }
 
+    //TODO tastare lato studente, altrimenti togliere il secondo corso
     @Test
     public void testSetDailyStudyTime() throws SQLException, InterruptedException, MessagingException {
         Student student = new Student("12345", "TestNome", "TestCognome");
@@ -88,6 +89,7 @@ public class StudyTimeManagerTest {
         selectedCourses.add(courseTest2);
         student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
+        professor.setGrade(student, 25, "testData", false);
         // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
 
