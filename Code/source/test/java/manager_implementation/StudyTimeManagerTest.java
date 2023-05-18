@@ -121,21 +121,6 @@ public class StudyTimeManagerTest {
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
-        //Verifico che le informazioni inserite siano corrette per un corso soltanto
-        String sql = "SELECT * FROM OreStudio WHERE Codice = ?";
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, student.getUniTranscript().findExamByName(courseTest1.getName()).getId());
-        ResultSet resultCourse1 = statement.executeQuery();
-
-//        resultCourse1.next();
-//        assertEquals("Progetto", resultCourse1.getString("TipoStudio"));
-//        assertEquals(1, resultCourse1.getInt("Ore"));
-//        resultCourse1.next();
-//        assertEquals("lezione", resultCourse1.getString("TipoStudio"));
-//        assertEquals(2, resultCourse1.getInt("Ore"));
-
-        statement.close();
-
         //Elimino le informazioni dalla tabella OreStudio
         String deleteSql = "DELETE FROM OreStudio WHERE Codice = ?";
         PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
