@@ -90,33 +90,23 @@ public class StudyTimeManagerTest {
         student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
         professor.setGrade(student, 25, "testData", false);
-        // Simuliamo l'input del primo corso
-        String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
+        professor.setGrade(student, 25, "testData", false);
+        String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
         // Simuliamo l'input del secondo corso
-        String input2 = courseTest2.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n";
+        String input2 = courseTest2.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(1) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
         // Inseriamo gli altri study type per il primo corso
         String input3 = courseTest1.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n";
         String input4 = courseTest1.getName() + "\n" + "Studio per esame\n" + String.valueOf(3) + "\n";
-        String input5 = courseTest1.getName() + "\n" + "Ripasso\n" + String.valueOf(2) + "\n0";
+        String input5 = courseTest1.getName() + "\n" + "Ripasso\n" + String.valueOf(2) + "\n";
 
-        // Creazione degli InputStream separati per ogni input
-        InputStream inputStream1 = new ByteArrayInputStream(input1.getBytes());
-        InputStream inputStream2 = new ByteArrayInputStream(input2.getBytes());
-        InputStream inputStream3 = new ByteArrayInputStream(input3.getBytes());
-        InputStream inputStream4 = new ByteArrayInputStream(input4.getBytes());
-        InputStream inputStream5 = new ByteArrayInputStream(input5.getBytes());
+        // Concatena gli input in un unico stream da passare alla funzione
+        InputStream combinedInput = new SequenceInputStream(
+                new ByteArrayInputStream(input1.getBytes()),
+                new ByteArrayInputStream(input2.getBytes())
 
-        // Creazione dell'elenco degli InputStream
-        Arrays Arrays = null;
-        List<InputStream> inputStreams = Arrays.asList(inputStream1, inputStream2, inputStream3, inputStream4, inputStream5);
-
-        // Enumerazione degli InputStream
-        Enumeration<InputStream> enumeration = Collections.enumeration(inputStreams);
-
-        // Creazione del SequenceInputStream
-        InputStream combinedInput = new SequenceInputStream(enumeration);
+        );
 
         System.setIn(combinedInput);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();

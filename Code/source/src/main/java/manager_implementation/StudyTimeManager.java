@@ -40,8 +40,7 @@ public class StudyTimeManager {
     public static void compileForm(Student student) throws SQLException {
 
         //Per ogni corso memorizzo quante ore ho studiato per ciascuna tipologia
-
-        Map<Exam, Map<StudyType, Integer>> studyInfo = new HashMap<>();
+        Map<Exam, List<Map<StudyType, Integer>>> studyInfo = new HashMap<>();
 
         //Inserimento delle informazioni di studio
         Scanner scanner = new Scanner(System.in);
@@ -55,20 +54,34 @@ public class StudyTimeManager {
                 System.out.println("Digita cosa hai studiato per " + exam.getName() + " (Lezione, Ripasso, Progetto, Studio per esame): ");
                 String studyTypeString = scanner.nextLine();
 
-                //TODO: fai controllo che abbia scritto per bene lo study type e le ore di studio!
+                List<Map<StudyType, Integer>> dedicatedStudyList = new ArrayList<>();
 
-                StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
+                while(!studyTypeString.equals("0")){
+                    //TODO: fai controllo che abbia scritto per bene lo study type e le ore di studio!
 
-                System.out.println("Digita le ore impiegate nell'attività: ");
-                int hours = scanner.nextInt();
-                scanner.nextLine();
+                    StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
 
-                //Inserisco le informazioni nelle Mappe
-                //FIXME: controlla che la chiave (nome esame) non sia già stata inserita, altrimenti aggiorna il valore corrispondente!
-                Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
-                dedicatedStudy.put(studyType, hours);
+                    System.out.println("Digita le ore impiegate nell'attività: ");
+                    int hours = scanner.nextInt();
+                    scanner.nextLine();
 
-                studyInfo.put(exam, dedicatedStudy);
+                    //Inserisco le informazioni nella Mappa
+                    Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
+
+                    dedicatedStudy.put(studyType, hours);
+                    dedicatedStudyList.add(dedicatedStudy);
+
+                    System.out.println("Digita cosa hai studiato per " + exam.getName() + " (Lezione, Ripasso, Progetto, Studio per esame) oppure digita 0 per terminare: ");
+                    studyTypeString = scanner.nextLine();
+                }
+
+                // Verifica se l'exam esiste già in studyInfo
+                if(studyInfo.containsKey(exam)){
+                    List<Map<StudyType, Integer>> existingStudyList = studyInfo.get(exam);
+                    existingStudyList.addAll(dedicatedStudyList);
+                } else {
+                    studyInfo.put(exam, dedicatedStudyList);
+                }
 
             } else {
                 System.out.println("Il corso inserito non esiste");
@@ -76,16 +89,19 @@ public class StudyTimeManager {
             }
 
             System.out.println("Digita il nome successivo (oppure premi 0 per terminare): ");
-
-            examName = scanner.nextLine();
+            if (scanner.hasNextLine()) {
+                examName = scanner.nextLine();
+            } else {
+                break;
+            }
         }
 
         // Inserisco le informazioni di studio da studyInfo al database
         insertInfoInDb(studyInfo);
-
     }
 
-    private static void insertInfoInDb(Map<Exam, Map<StudyType, Integer>> studyInfo) throws SQLException {
+
+    private static void insertInfoInDb(Map<Exam, List<Map<StudyType, Integer>>> studyInfo) throws SQLException {
 
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
@@ -95,19 +111,17 @@ public class StudyTimeManager {
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        for(Map.Entry<Exam, Map<StudyType, Integer>> entry : studyInfo.entrySet()) {
+        for(Map.Entry<Exam, List<Map<StudyType, Integer>>> entry : studyInfo.entrySet()) {
             Exam exam = entry.getKey();
-            Map<StudyType, Integer> values = entry.getValue();
+            for (Map<StudyType, Integer> it : entry.getValue()){
+                for(Map.Entry<StudyType, Integer> value : it.entrySet()){
+                    statement.setString(1, exam.getId());
+                    statement.setString(2, value.getKey().getDisplayName());
+                    statement.setInt(3, value.getValue());
 
-            for(Map.Entry<StudyType, Integer> value : values.entrySet()){
-
-                statement.setString(1, exam.getId());
-                statement.setString(2, value.getKey().getDisplayName());
-                statement.setInt(3, value.getValue());
-
-                statement.executeUpdate();
+                    statement.executeUpdate();
+                }
             }
-
         }
 
         statement.close();
