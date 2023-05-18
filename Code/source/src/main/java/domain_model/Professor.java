@@ -184,6 +184,10 @@ public class Professor extends User implements Subject{
         StudyTimeManager.getCourseStudyInfo(course);
     }
 
+    public void getStudentStudyInfo(Student student) {
+        StudyTimeManager.getStudentStudyInfo(student);
+    }
+
     public static void getAllCoursesStudyInfo() {
         StudyTimeManager.getAllCoursesStudyInfo();
     }

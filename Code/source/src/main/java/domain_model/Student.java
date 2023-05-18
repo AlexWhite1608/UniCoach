@@ -4,6 +4,7 @@ import data_access.StudentGateway;
 import manager_implementation.Activity;
 import manager_implementation.CoursesManager;
 import manager_implementation.GradesManager;
+import manager_implementation.StudyTimeManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
