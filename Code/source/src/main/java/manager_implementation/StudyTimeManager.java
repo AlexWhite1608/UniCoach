@@ -116,7 +116,9 @@ public class StudyTimeManager {
         String sql = """
                 SELECT TipoStudio, SUM(Ore) AS TotaleOre
                 FROM OreStudio
-                WHERE Codice = ?
+                WHERE Codice = (SELECT Codice
+                                FROM Esame
+                                WHERE Corso = ?)
                 GROUP BY TipoStudio""";
 
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
