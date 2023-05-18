@@ -4,6 +4,7 @@ import data_access.DBConnection;
 import domain_model.Course;
 import domain_model.Exam;
 import domain_model.Student;
+import domain_model.UniTranscript;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+//FIXME: usare il gateway per accedere al database
 public class StudyTimeManager {
 
     //FIXME: non so come testarlo
@@ -126,7 +128,6 @@ public class StudyTimeManager {
         statement.close();
         DBConnection.disconnect();
     }
-
     //Il professore richiede le informazioni di studio degli studenti iscritti al suo corso -> numero di ore spese confrontato con il voto ottenuto?
     public static void getCourseStudyInfo(Course course) throws SQLException {
 
@@ -166,9 +167,33 @@ public class StudyTimeManager {
         //TODO: in qualche modo fare anche i grafici!
     }
 
+    //FIXME: forse non è map<exam, List< Map<..>>> ma è solo Map<exam, Map<..>>
     //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
-    public static void getStudentStudyInfo(Student student){
+    public static void getStudentStudyInfo(Student student) throws SQLException {
+        String sql = """
+                SELECT TipoStudio, Ore
+                FROM OreStudio
+                WHERE Codice = ?""";
 
+        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+        PreparedStatement statement = connection.prepareStatement(sql);
+        UniTranscript uniTranscript = student.getUniTranscript();
+        Map<Exam, List<Map<StudyType, Integer>>> dataset = new HashMap<>();
+        List<Map<StudyType,Integer>> mapTmp1 = new ArrayList<>();
+        Map<StudyType,Integer> mapTmp2 = new HashMap<>();
+
+        for(Exam exam : uniTranscript.getExamList()){
+            statement.setString(1, exam.getId());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                StudyType studyType = StudyType.getStudyTypeFromString(resultSet.getString("TipoStudio"));
+                Integer hours = resultSet.getInt("Ore");
+                mapTmp2.put(studyType, hours);
+                mapTmp1.add(mapTmp2);
+            }
+            dataset.put(exam, mapTmp1);
+        }
     }
 
     public static void setPeriod(int period) {

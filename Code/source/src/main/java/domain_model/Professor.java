@@ -184,7 +184,7 @@ public class Professor extends User implements Subject{
         StudyTimeManager.getCourseStudyInfo(course);
     }
 
-    public void getStudentStudyInfo(Student student) {
+    public void getStudentStudyInfo(Student student) throws SQLException {
         StudyTimeManager.getStudentStudyInfo(student);
     }
 

@@ -95,7 +95,7 @@ public class Student extends User implements Observer {
         professor.unsubscribe(this);
     }
 
-    public void getStudyInfo() {
+    public void getStudyInfo() throws SQLException {
         StudyTimeManager.getStudentStudyInfo(this);
     }
 
