@@ -106,7 +106,6 @@ public class StudyTimeManager {
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
                      "ON CONFLICT (Codice, TipoStudio) DO UPDATE SET Ore = Ore + excluded.Ore";
-        //TODO: va verificato il conflitto nel test
 
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -156,8 +155,6 @@ public class StudyTimeManager {
         resultSet.close();
         statement.close();
         DBConnection.disconnect();
-
-        //TODO: in qualche modo fare i grafici con le informazioni contenute in studyHoursByType (richiama GradesManager)
 
         //Costruisco il dataset del grafico a torta e lo passo alla funzione delegata a costruire il grafico
         DefaultPieDataset dataset = GradesManager.buildStudyTypeDataset(studyHoursByType);

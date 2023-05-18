@@ -91,10 +91,12 @@ public class StudyTimeManagerTest {
 
         professor.setGrade(student, 25, "testData", false);
         professor.setGrade(student, 25, "testData", false);
+
+        // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
-        // Simuliamo l'input del secondo corso
-        String input2 = courseTest2.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(1) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
+        // Simuliamo un nuovo giorno, dove si studia lo stesso corso in modo da sommare le nuove ore
+        String input2 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(3) + "\n" + "Progetto\n" + String.valueOf(1) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
         // Inseriamo gli altri study type per il primo corso
         String input3 = courseTest1.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n";
