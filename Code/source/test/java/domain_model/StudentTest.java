@@ -229,7 +229,6 @@ public void testChooseCourses() throws SQLException {
     Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
 
-
     // Simuliamo l'input utente con tutti i courseTest.getId()
     String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n0\n";
     InputStream in = new ByteArrayInputStream(input.getBytes());

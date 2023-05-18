@@ -11,6 +11,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -281,16 +283,13 @@ public class GradesManager {
         //TODO: bisogna inserire la media del corso in una label!
         float avgCourse = getAvgCourse(course);
 
-//        // Aggiungi una label aggiuntiva al grafico a torta
-//        Marker start = new ValueMarker(3400000.0);
-//        start.setPaint(Color.RED);
-//        start.setLabel("Current Value");
-//        start.setLabelAnchor(RectangleAnchor.BOTTOM_LEFT);
-//        start.setLabelTextAnchor(TextAnchor.TOP_LEFT);
-//        start.setLabelFont(new Font("Arial", Font.PLAIN, 12));
-//        start.setLabelPaint(Color.BLACK);
-//
-//        ((PiePlot) chart.getPlot()).addRangeMarker(start);
+        // Aggiungi una label aggiuntiva al grafico a torta
+        TextTitle label = new TextTitle("Media del corso: " + avgCourse);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setPosition(RectangleEdge.BOTTOM);
+
+        // Aggiunta della label al grafico
+        chart.addSubtitle(label);
 
         // Crea una finestra per mostrare il grafico
         JFrame frame = new JFrame("Grafico rapporto studio/media voti");
@@ -339,7 +338,8 @@ public class GradesManager {
     private static double calculateAverage(List<Integer> list) {
         int sum = 0;
         for (int value : list) {
-            sum += value;
+            if(value != -1)
+                sum += value;
         }
         return (float) sum / list.size();
     }

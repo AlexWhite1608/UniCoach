@@ -40,7 +40,7 @@ public class StudyTimeManager {
     public static void compileForm(Student student) throws SQLException {
 
         //Per ogni corso memorizzo quante ore ho studiato per ciascuna tipologia
-        Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
+
         Map<Exam, Map<StudyType, Integer>> studyInfo = new HashMap<>();
 
         //Inserimento delle informazioni di studio
@@ -63,8 +63,11 @@ public class StudyTimeManager {
                 int hours = scanner.nextInt();
                 scanner.nextLine();
 
-                //Inserisco le informazioni nella Map
+                //Inserisco le informazioni nelle Mappe
+                //FIXME: controlla che la chiave (nome esame) non sia già stata inserita, altrimenti aggiorna il valore corrispondente!
+                Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
                 dedicatedStudy.put(studyType, hours);
+
                 studyInfo.put(exam, dedicatedStudy);
 
             } else {
