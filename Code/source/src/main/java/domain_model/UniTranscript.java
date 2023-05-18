@@ -54,6 +54,14 @@ public class UniTranscript {
         return null;
     }
 
+    public Exam findExamByName(String examName) {
+        for(Exam e : examList){
+            if(Objects.equals(e.getName(), examName))
+                return e;
+        }
+        return null;
+    }
+
     public int getSize() {
         return this.examList.size();
     }

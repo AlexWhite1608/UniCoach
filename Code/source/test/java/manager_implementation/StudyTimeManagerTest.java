@@ -14,6 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -46,13 +48,13 @@ public class StudyTimeManagerTest {
         deleteProfessorStatement.executeUpdate();
         deleteProfessorStatement.close();
 
-
         //Elimina gli esami inseriti
         String deleteExamSql = "DELETE FROM Esame WHERE Nome = ?";
         PreparedStatement deleteExamStatement = conn.prepareStatement(deleteExamSql);
         deleteExamStatement.setString(1, "TestCorso1");
         deleteExamStatement.executeUpdate();
         deleteExamStatement.setString(1, "TestCorso2");
+        deleteExamStatement.executeUpdate();
         deleteExamStatement.close();
 
 
@@ -80,6 +82,12 @@ public class StudyTimeManagerTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        //TODO Magari farlo anche in altri test invece di richiamare choose course
+        List<Course> selectedCourses = new ArrayList<>();
+        selectedCourses.add(courseTest1);
+        selectedCourses.add(courseTest2);
+        student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
+
         // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n";
 
@@ -98,14 +106,14 @@ public class StudyTimeManagerTest {
 
         //FIXME: si dovrebbe testare il metodo setDailyStudyTime() e non compileForm()!
         //StudyTimeManager.setDailyStudyTime(true);
-        StudyTimeManager.compileForm();
+        StudyTimeManager.compileForm(student);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
         //Verifico che le informazioni inserite siano corrette per un corso soltanto
         String sql = "SELECT * FROM OreStudio WHERE Codice = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, courseTest1.getId());
+        statement.setString(1, student.getUniTranscript().findExamByName(courseTest1.getName()).getId());
         ResultSet resultCourse1 = statement.executeQuery();
 
         resultCourse1.next();
@@ -120,9 +128,16 @@ public class StudyTimeManagerTest {
         //Elimino le informazioni dalla tabella OreStudio
         String deleteSql = "DELETE FROM OreStudio WHERE Codice = ?";
         PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
-        deleteStatement.setString(1, courseTest1.getId());
+        deleteStatement.setString(1, student.getUniTranscript().findExamByName(courseTest1.getName()).getId());
         deleteStatement.executeUpdate();
-        deleteStatement.setString(1, courseTest2.getId());
+        deleteStatement.setString(1, student.getUniTranscript().findExamByName(courseTest2.getName()).getId());
+        deleteStatement.executeUpdate();
+        deleteStatement.close();
+
+        //Elimino le informazioni dalla tabella IscrizioneCorso
+        deleteSql = "DELETE FROM IscrizioneCorso WHERE IdStudente = ?";
+        deleteStatement = conn.prepareStatement(deleteSql);
+        deleteStatement.setString(1, student.getId());
         deleteStatement.executeUpdate();
         deleteStatement.close();
 

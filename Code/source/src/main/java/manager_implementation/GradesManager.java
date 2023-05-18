@@ -9,6 +9,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -279,17 +281,16 @@ public class GradesManager {
         //TODO: bisogna inserire la media del corso in una label!
         float avgCourse = getAvgCourse(course);
 
-//        PieSectionLabelGenerator labelGenerator = new CustomLabelGenerator("{0} - {1} ore", new DecimalFormat("0"));
-//        chart.getPlot().setLabelGenerator(labelGenerator);
+//        // Aggiungi una label aggiuntiva al grafico a torta
+//        Marker start = new ValueMarker(3400000.0);
+//        start.setPaint(Color.RED);
+//        start.setLabel("Current Value");
+//        start.setLabelAnchor(RectangleAnchor.BOTTOM_LEFT);
+//        start.setLabelTextAnchor(TextAnchor.TOP_LEFT);
+//        start.setLabelFont(new Font("Arial", Font.PLAIN, 12));
+//        start.setLabelPaint(Color.BLACK);
 //
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelFont(new Font("Arial", Font.PLAIN, 12));
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelPaint(Color.BLACK);
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelBackgroundPaint(new Color(255, 255, 255, 200));
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelOutlinePaint(Color.BLACK);
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelShadowPaint(Color.WHITE);
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelOutlineStroke(null);
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelLinkPaint(Color.BLACK);
-//        ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setMaximumLabelWidth(0.25);
+//        ((PiePlot) chart.getPlot()).addRangeMarker(start);
 
         // Crea una finestra per mostrare il grafico
         JFrame frame = new JFrame("Grafico rapporto studio/media voti");

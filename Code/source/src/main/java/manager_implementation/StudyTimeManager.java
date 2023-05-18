@@ -2,7 +2,8 @@ package manager_implementation;
 
 import data_access.DBConnection;
 import domain_model.Course;
-import domain_model.Professor;
+import domain_model.Exam;
+import domain_model.Student;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.sql.Connection;
@@ -14,13 +15,13 @@ import java.util.*;
 public class StudyTimeManager {
 
     //FIXME: non so come testarlo
-    public static void setDailyStudyTime(boolean executeOnce) {
+    public static void setDailyStudyTime(Student student, boolean executeOnce) {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    compileForm();
+                    compileForm(student);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -36,22 +37,22 @@ public class StudyTimeManager {
 
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
-    public static void compileForm() throws SQLException {
+    public static void compileForm(Student student) throws SQLException {
 
         //Per ogni corso memorizzo quante ore ho studiato per ciascuna tipologia
         Map<StudyType, Integer> dedicatedStudy = new HashMap<>();
-        Map<Course, Map<StudyType, Integer>> studyInfo = new HashMap<>();
+        Map<Exam, Map<StudyType, Integer>> studyInfo = new HashMap<>();
 
         //Inserimento delle informazioni di studio
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digita il nome della materia che hai studiato oggi: ");
-        String courseName = scanner.nextLine();
+        String examName = scanner.nextLine();
 
-        while (!courseName.equals("0")) {
-            Course course = CoursesManager.findCourseByName(courseName);
+        while (!examName.equals("0")) {
+            Exam exam = student.getUniTranscript().findExamByName(examName);
 
-            if(course != null){
-                System.out.println("Digita cosa hai studiato per " + course.getName() + " (Lezione, Ripasso, Progetto, Studio per esame): ");
+            if(exam != null){
+                System.out.println("Digita cosa hai studiato per " + exam.getName() + " (Lezione, Ripasso, Progetto, Studio per esame): ");
                 String studyTypeString = scanner.nextLine();
 
                 //TODO: fai controllo che abbia scritto per bene lo study type e le ore di studio!
@@ -64,7 +65,7 @@ public class StudyTimeManager {
 
                 //Inserisco le informazioni nella Map
                 dedicatedStudy.put(studyType, hours);
-                studyInfo.put(course, dedicatedStudy);
+                studyInfo.put(exam, dedicatedStudy);
 
             } else {
                 System.out.println("Il corso inserito non esiste");
@@ -73,7 +74,7 @@ public class StudyTimeManager {
 
             System.out.println("Digita il nome successivo (oppure premi 0 per terminare): ");
 
-            courseName = scanner.nextLine();
+            examName = scanner.nextLine();
         }
 
         // Inserisco le informazioni di studio da studyInfo al database
@@ -81,7 +82,7 @@ public class StudyTimeManager {
 
     }
 
-    private static void insertInfoInDb(Map<Course, Map<StudyType, Integer>> studyInfo) throws SQLException {
+    private static void insertInfoInDb(Map<Exam, Map<StudyType, Integer>> studyInfo) throws SQLException {
 
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                      "VALUES (?, ?, ?)" +
@@ -90,14 +91,13 @@ public class StudyTimeManager {
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        for(Map.Entry<Course, Map<StudyType, Integer>> entry : studyInfo.entrySet()) {
-            Course course = entry.getKey();
+        for(Map.Entry<Exam, Map<StudyType, Integer>> entry : studyInfo.entrySet()) {
+            Exam exam = entry.getKey();
             Map<StudyType, Integer> values = entry.getValue();
 
             for(Map.Entry<StudyType, Integer> value : values.entrySet()){
 
-                //FIXME: ora inserisco come Codice l'id del corso, ma bisogna mettere l'id dell'esame??
-                statement.setString(1, course.getId());
+                statement.setString(1, exam.getId());
                 statement.setString(2, value.getKey().getDisplayName());
                 statement.setInt(3, value.getValue());
 
