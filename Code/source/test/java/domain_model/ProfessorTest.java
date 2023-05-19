@@ -288,10 +288,8 @@ public class ProfessorTest {
 
         //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
         String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
-        //TODO: verificare che sia stato inserito anche nel calendario studenti
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, activity.getId());
-
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
