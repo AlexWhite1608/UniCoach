@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-//TODO: la classe deve gestire i corsi dello studente, quindi farglieli scegliere
 public class CoursesManager {
 
     public static void addCourse(Course course) {
@@ -43,7 +42,7 @@ public class CoursesManager {
         }
     }
 
-    //Restituisce l'oggetto corso a partire dal sui id
+    //Restituisce l'oggetto corso a partire dal suo id
     private static Course findCourseById(String courseId) {
         for(Course course : courses){
             if(Objects.equals(course.getId(), courseId))
@@ -51,7 +50,6 @@ public class CoursesManager {
         }
         return null;
     }
-
 
     //FIXME: vediamo se toglierlo dato che non viene usato
     public static Course findCourseByName(String courseName) {
