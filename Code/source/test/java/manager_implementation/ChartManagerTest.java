@@ -5,21 +5,17 @@ import domain_model.Course;
 import domain_model.ExamType;
 import domain_model.Professor;
 import domain_model.Student;
-import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import user_login.LoginManager;
 
 import javax.mail.MessagingException;
-import javax.naming.directory.InvalidAttributesException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +24,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-public class GradeManagerTest {
+public class ChartManagerTest {
     @Before
     public void setUp() {
         conn = DBConnection.connect("../database/unicoachdb.db");
