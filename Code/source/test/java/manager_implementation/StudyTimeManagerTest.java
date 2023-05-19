@@ -98,10 +98,16 @@ public class StudyTimeManagerTest {
         // Simuliamo un nuovo giorno, dove si studia lo stesso corso in modo da sommare le nuove ore
         String input2 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(3) + "\n" + "Progetto\n" + String.valueOf(1) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
+        // Simuliamo l'input del secondo corso
+        String input3 = courseTest2.getName() + "\n" + "Lezione\n" + String.valueOf(2) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
+
+        // Simuliamo un nuovo giorno, dove si studia lo stesso corso in modo da sommare le nuove ore
+        String input4 = courseTest2.getName() + "\n" + "Lezione\n" + String.valueOf(3) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(3) + "\n" + "Studio per esame\n" + String.valueOf(2) + "\n0\n";
+
         // Concatena gli input in un unico stream da passare alla funzione
         InputStream combinedInput = new SequenceInputStream(
-                new ByteArrayInputStream(input1.getBytes()),
-                new ByteArrayInputStream(input2.getBytes())
+                new ByteArrayInputStream((input1 + input2).getBytes()),
+                new ByteArrayInputStream((input3 + input4).getBytes())
 
         );
 

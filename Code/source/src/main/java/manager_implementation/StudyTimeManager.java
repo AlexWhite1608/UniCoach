@@ -18,6 +18,7 @@ import java.util.*;
 public class StudyTimeManager {
 
     //FIXME: non so come testarlo
+    //Serve per richiamare a scadenza periodica il metodo compileForm()
     public static void setDailyStudyTime(Student student, boolean executeOnce) {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -37,7 +38,6 @@ public class StudyTimeManager {
 
         timer.scheduleAtFixedRate(timerTask, delay, period);
     }
-
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
     public static void compileForm(Student student) throws SQLException {
@@ -103,7 +103,7 @@ public class StudyTimeManager {
         insertInfoInDb(studyInfo);
     }
 
-
+    //Inserisce le informazioni contenute in studyInfo nel db (tabella OreStudio)
     private static void insertInfoInDb(Map<Exam, List<Map<StudyType, Integer>>> studyInfo) throws SQLException {
 
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
@@ -129,6 +129,7 @@ public class StudyTimeManager {
         statement.close();
         DBConnection.disconnect();
     }
+
     //Il professore richiede le informazioni di studio degli studenti iscritti al suo corso -> numero di ore spese confrontato con il voto ottenuto?
     public static void getCourseStudyInfo(Course course) throws SQLException {
 
@@ -168,7 +169,6 @@ public class StudyTimeManager {
         //TODO: in qualche modo fare anche i grafici!
     }
 
-    //FIXME: forse non è map<exam, List< Map<..>>> ma è solo Map<exam, Map<..>>
     //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
     public static void getStudentStudyInfo(Student student) throws SQLException {
         String sql = """
@@ -202,7 +202,6 @@ public class StudyTimeManager {
         DefaultCategoryDataset dataset = GradesManager.getStudentInfoDataset(info);
         GradesManager.displayStudentStudyInfo(dataset, student);
     }
-
 
     public static void setPeriod(int period) {
         StudyTimeManager.period = period;
