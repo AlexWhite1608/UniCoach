@@ -1,5 +1,7 @@
 package domain_model;
 
+import utility.RandomStringGenerator;
+
 public class Exam{
 
     public Exam(Course course) {

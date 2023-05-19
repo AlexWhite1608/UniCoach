@@ -1,6 +1,7 @@
 package domain_model;
 
-import java.security.SecureRandom;
+import utility.RandomStringGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
