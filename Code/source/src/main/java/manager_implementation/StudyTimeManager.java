@@ -17,28 +17,6 @@ import java.util.*;
 //FIXME: usare il gateway per accedere al database
 public class StudyTimeManager {
 
-    //FIXME: non so come testarlo
-    //Serve per richiamare a scadenza periodica il metodo compileForm()
-    public static void setDailyStudyTime(Student student, boolean executeOnce) {
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    compileForm(student);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                if (executeOnce) {
-                    timer.cancel(); // Interrompe il timer dopo la prima esecuzione
-                }
-            }
-        };
-
-        timer.scheduleAtFixedRate(timerTask, delay, period);
-    }
-
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
     public static void compileForm(Student student) throws SQLException {
 
@@ -160,13 +138,8 @@ public class StudyTimeManager {
         DBConnection.disconnect();
 
         //Costruisco il dataset del grafico a torta e lo passo alla funzione delegata a costruire il grafico
-        DefaultPieDataset dataset = GradesManager.buildStudyTypeDataset(studyHoursByType);
-        GradesManager.displayStudyTypeData(dataset, course);
-    }
-
-    //Il professore richiede le informazioni di studio degli studenti per tutti i corsi -> numero di ore spese confrontato con il voto ottenuto?
-    public static void getAllCoursesStudyInfo() {
-        //TODO: in qualche modo fare anche i grafici!
+        DefaultPieDataset dataset = ChartManager.buildStudyTypeDataset(studyHoursByType);
+        ChartManager.displayStudyTypeData(dataset, course);
     }
 
     //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
@@ -199,18 +172,7 @@ public class StudyTimeManager {
             info.put(exam, studyTypeList);
         }
 
-        DefaultCategoryDataset dataset = GradesManager.getStudentInfoDataset(info);
-        GradesManager.displayStudentStudyInfo(dataset, student);
+        DefaultCategoryDataset dataset = ChartManager.getStudentInfoDataset(info);
+        ChartManager.displayStudentStudyInfo(dataset, student);
     }
-
-    public static void setPeriod(int period) {
-        StudyTimeManager.period = period;
-    }
-
-    public static void setDelay(int delay) {
-        StudyTimeManager.delay = delay;
-    }
-
-    private static int period = 1000;   // Tempo in millisecondi tra esecuzioni successive del task
-    private static int delay = 600;     // Tempo in millisecondi prima che il task venga eseguito.
 }

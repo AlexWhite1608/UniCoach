@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 //TODO: ottimizza la classe mettendo come attributi chart, frame e così via
-public class GradesManager {
+public class ChartManager {
 
     //Grafica gli esami svolti da quello studente con la media
     public static void displayExamsGraph(Student student) throws SQLException {

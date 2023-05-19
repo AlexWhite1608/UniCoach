@@ -2,8 +2,8 @@ package domain_model;
 
 import data_access.StudentGateway;
 import manager_implementation.Activity;
+import manager_implementation.ChartManager;
 import manager_implementation.CoursesManager;
-import manager_implementation.GradesManager;
 import manager_implementation.StudyTimeManager;
 
 import java.sql.SQLException;
@@ -60,7 +60,7 @@ public class Student extends User implements Observer {
     }
 
     public void displayExamsGraph() throws SQLException {
-        GradesManager.displayExamsGraph(this);
+        ChartManager.displayExamsGraph(this);
     }
 
     public StudentGateway getStudentGateway() {

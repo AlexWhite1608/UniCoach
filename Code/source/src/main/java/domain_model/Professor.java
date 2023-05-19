@@ -2,7 +2,7 @@ package domain_model;
 
 import data_access.ProfessorGateway;
 import manager_implementation.Activity;
-import manager_implementation.GradesManager;
+import manager_implementation.ChartManager;
 import manager_implementation.StudyTimeManager;
 
 import java.sql.SQLException;
@@ -167,17 +167,17 @@ public class Professor extends User implements Subject{
 
     //Grafica gli esami svolti da quello studente con la media
     public void displayExamsGraph(Student student) throws SQLException {
-        GradesManager.displayExamsGraph(student);
+        ChartManager.displayExamsGraph(student);
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
     public void displayExamsGraph(Course course) throws SQLException {
-        GradesManager.displayExamsGraph(course);
+        ChartManager.displayExamsGraph(course);
     }
 
     //Grafica la media di ogni corso presente
     public void displayExamsGraph() throws SQLException {
-        GradesManager.displayExamsGraph();
+        ChartManager.displayExamsGraph();
     }
 
     public void getCourseStudyInfo(Course course) throws SQLException {
@@ -186,10 +186,6 @@ public class Professor extends User implements Subject{
 
     public void getStudentStudyInfo(Student student) throws SQLException {
         StudyTimeManager.getStudentStudyInfo(student);
-    }
-
-    public static void getAllCoursesStudyInfo() {
-        StudyTimeManager.getAllCoursesStudyInfo();
     }
 
     public Course getCourse() {
