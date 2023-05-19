@@ -90,18 +90,13 @@ public class StudyTimeManagerTest {
         student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
         professor.setGrade(student, 25, "testData", false);
-        professor.setGrade(student, 25, "testData", false);
+        professor2.setGrade(student, 27, "testData", false);
 
         // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
 
         // Simuliamo un nuovo giorno, dove si studia lo stesso corso in modo da sommare le nuove ore
         String input2 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(3) + "\n" + "Progetto\n" + String.valueOf(1) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
-
-        // Inseriamo gli altri study type per il primo corso
-        String input3 = courseTest1.getName() + "\n" + "Progetto\n" + String.valueOf(2) + "\n";
-        String input4 = courseTest1.getName() + "\n" + "Studio per esame\n" + String.valueOf(3) + "\n";
-        String input5 = courseTest1.getName() + "\n" + "Ripasso\n" + String.valueOf(2) + "\n";
 
         // Concatena gli input in un unico stream da passare alla funzione
         InputStream combinedInput = new SequenceInputStream(
@@ -120,6 +115,9 @@ public class StudyTimeManagerTest {
 
         //Il professore visualizza le informazioni sullo studyTime del suo corso
         professor.getCourseStudyInfo(courseTest1);
+
+        //Lo studente visualizza le proprie informazioni voti esame/study type
+        student.getStudyInfo();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

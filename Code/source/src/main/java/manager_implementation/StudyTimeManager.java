@@ -5,6 +5,7 @@ import domain_model.Course;
 import domain_model.Exam;
 import domain_model.Student;
 import domain_model.UniTranscript;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.sql.Connection;
@@ -159,7 +160,7 @@ public class StudyTimeManager {
 
         //Costruisco il dataset del grafico a torta e lo passo alla funzione delegata a costruire il grafico
         DefaultPieDataset dataset = GradesManager.buildStudyTypeDataset(studyHoursByType);
-        GradesManager.visualizeStudyTypeData(dataset, course);
+        GradesManager.displayStudyTypeData(dataset, course);
     }
 
     //Il professore richiede le informazioni di studio degli studenti per tutti i corsi -> numero di ore spese confrontato con il voto ottenuto?
@@ -175,12 +176,13 @@ public class StudyTimeManager {
                 FROM OreStudio
                 WHERE Codice = ?""";
 
+        Map<Exam, List<Map<StudyType, Integer>>> info = new HashMap<>();
+        List<Map<StudyType,Integer>> studyTypeList = new ArrayList<>();
+        Map<StudyType,Integer> studyTypeMap = new HashMap<>();
+
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
         UniTranscript uniTranscript = student.getUniTranscript();
-        Map<Exam, List<Map<StudyType, Integer>>> dataset = new HashMap<>();
-        List<Map<StudyType,Integer>> mapTmp1 = new ArrayList<>();
-        Map<StudyType,Integer> mapTmp2 = new HashMap<>();
 
         for(Exam exam : uniTranscript.getExamList()){
             statement.setString(1, exam.getId());
@@ -188,12 +190,15 @@ public class StudyTimeManager {
 
             while (resultSet.next()){
                 StudyType studyType = StudyType.getStudyTypeFromString(resultSet.getString("TipoStudio"));
-                Integer hours = resultSet.getInt("Ore");
-                mapTmp2.put(studyType, hours);
-                mapTmp1.add(mapTmp2);
+                int hours = resultSet.getInt("Ore");
+                studyTypeMap.put(studyType, hours);
+                studyTypeList.add(studyTypeMap);
             }
-            dataset.put(exam, mapTmp1);
+            info.put(exam, studyTypeList);
         }
+
+        DefaultCategoryDataset dataset = GradesManager.getStudentInfoDataset(info);
+        GradesManager.displayStudentStudyInfo(dataset, student);
     }
 
     public static void setPeriod(int period) {
