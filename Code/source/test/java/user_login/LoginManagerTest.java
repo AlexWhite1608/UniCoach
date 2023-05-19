@@ -22,8 +22,6 @@ public class LoginManagerTest extends TestCase {
         loginManager = new LoginManager("../database/unicoachdb.db");
     }
 
-
-
     @After
     public void tearDown() throws SQLException {
 

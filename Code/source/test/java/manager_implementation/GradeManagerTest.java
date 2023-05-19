@@ -275,8 +275,6 @@ public class GradeManagerTest {
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.setString(1, courseTest4.getId());
         deleteCourseStatement.executeUpdate();
-
     }
-
     private Connection conn;
 }

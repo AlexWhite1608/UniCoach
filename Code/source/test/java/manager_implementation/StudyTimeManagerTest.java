@@ -142,8 +142,6 @@ public class StudyTimeManagerTest {
         deleteStatement.setString(1, student.getId());
         deleteStatement.executeUpdate();
         deleteStatement.close();
-
     }
-
     private Connection conn;
 }
