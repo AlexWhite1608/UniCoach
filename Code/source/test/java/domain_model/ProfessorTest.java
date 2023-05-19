@@ -121,16 +121,10 @@ public class ProfessorTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n0\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student.chooseCourses();
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest1);
+        courseList.add(courseTest2);
+        student.getStudentGateway().linkStudentToCourse(courseList, student);
 
         professor.setGrade(student,25, "TestData", false);
         professor2.setGrade(student,24, "TestData", false);
@@ -160,32 +154,11 @@ public class ProfessorTest {
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()  + "\n0\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student1.chooseCourses();
-
-        input = courseTest1.getId()  + "\n0\n";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student2.chooseCourses();
-
-        input = courseTest1.getId()  + "\n0\n";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student3.chooseCourses();
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest1);
+        student1.getStudentGateway().linkStudentToCourse(courseList, student1);
+        student2.getStudentGateway().linkStudentToCourse(courseList, student2);
+        student3.getStudentGateway().linkStudentToCourse(courseList, student3);
 
         professor.setGrade(student1,22 , "dataTest", false);
         professor.setGrade(student2, 28 , "dataTest", false);
@@ -222,17 +195,7 @@ public class ProfessorTest {
 
         loginManager.addUser(professorTest);
 
-//        // Simuliamo l'input utente con tutti i courseTest.getId()
-//        input = courseTest.getId()  + "\n0";
-//        in = new ByteArrayInputStream(input.getBytes());
-//        System.setIn(in);
-//
-//        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-//        outContent = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outContent));
-//
-//        studentTest.chooseCourses();
-
+        //Colleghiamo il corso allo studente
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest);
         studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
