@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -221,16 +222,20 @@ public class ProfessorTest {
 
         loginManager.addUser(professorTest);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest.getId()  + "\n0";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
+//        // Simuliamo l'input utente con tutti i courseTest.getId()
+//        input = courseTest.getId()  + "\n0";
+//        in = new ByteArrayInputStream(input.getBytes());
+//        System.setIn(in);
+//
+//        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
+//        outContent = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(outContent));
+//
+//        studentTest.chooseCourses();
 
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        studentTest.chooseCourses();
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest);
+        studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorTest.setGrade(studentTest, 22, "dataTest", true);
         int grade = professorTest.getGrade(studentTest);
