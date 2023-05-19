@@ -1,7 +1,5 @@
 package manager_implementation;
 
-import domain_model.RandomStringGenerator;
-
 public class Activity {
 
     public Activity() {}
