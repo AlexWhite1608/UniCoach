@@ -329,7 +329,6 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
-
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 

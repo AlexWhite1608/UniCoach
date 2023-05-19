@@ -2,7 +2,6 @@ package data_access;
 
 import domain_model.*;
 import manager_implementation.Activity;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,24 +23,20 @@ public class StudentGateway implements Gateway {
         statement.setString(2, student.getName());
         statement.setString(3, student.getSurname());
         statement.setString(4, student.getEmail());
-
         statement.executeUpdate();
         statement.close();
     }
 
     public List<Exam> getExams(Student student) throws SQLException{
-
         String sql = """
                 SELECT Codice
                 FROM Esame
                 WHERE Studente = ?""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, student.getId());
         ResultSet gradeRs = statement.executeQuery();
-
         List<Exam> examList = new ArrayList<>();
 
         while(gradeRs.next()){
@@ -50,13 +45,11 @@ public class StudentGateway implements Gateway {
         }
 
         return examList;
-
     }
 
     // Ritorna il voto dello studente all'esame del corso fornito
     public int getGrade(Course course, Student student) throws SQLException{
         int grade;
-
         String gradeSQL = """
                 SELECT Voto
                 FROM Esame
@@ -64,7 +57,6 @@ public class StudentGateway implements Gateway {
                 """;
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(gradeSQL);
         statement.setString(1, course.getId());
         statement.setString(2, student.getId());
@@ -78,10 +70,8 @@ public class StudentGateway implements Gateway {
 
         gradeRs.close();
         statement.close();
-
         return grade;
     }
-
 
     //Ritorna la media dello studente
     public float getAverage(Student student) throws SQLException {
@@ -92,11 +82,8 @@ public class StudentGateway implements Gateway {
             WHERE Esame.Studente = ?;""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement averageStatement = connection.prepareStatement(average);
-
         averageStatement.setString(1, student.getId());
-
         ResultSet averageRs = averageStatement.executeQuery();
 
         float finalAverage;
@@ -109,7 +96,6 @@ public class StudentGateway implements Gateway {
 
         averageRs.close();
         averageStatement.close();
-
         return finalAverage;
     }
 
@@ -119,15 +105,12 @@ public class StudentGateway implements Gateway {
                 INSERT INTO CalendarioStudenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
-
         statement.setString(1, activity.getName());
         statement.setString(2, activity.getDate());
         statement.setInt(3, activity.getStartTime());
         statement.setInt(4, activity.getEndTime());
         statement.setString(5, student.getId());
-
         statement.executeUpdate();
         statement.close();
 
@@ -135,7 +118,6 @@ public class StudentGateway implements Gateway {
                 SELECT Id FROM CalendarioStudenti ORDER BY Id DESC LIMIT 1""";   //FIXME: ho fatto che l'attività nella tabella CalendarioStudenti prende lo stesso id della stessa attività in CalendarioDocenti
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement selectStatement = connection.prepareStatement(select);
         ResultSet resultSet = selectStatement.executeQuery();
 
@@ -146,14 +128,12 @@ public class StudentGateway implements Gateway {
 
         resultSet.close();
         selectStatement.close();
-
     }
 
     @Override
     public void removeActivity(Activity activity, User user) throws SQLException {
         String deleteLesson = "DELETE FROM CalendarioStudenti WHERE Data = ? AND Attività = ? AND Matricola = ? ";
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement deleteStatement = connection.prepareStatement(deleteLesson);
         deleteStatement.setString(1, activity.getDate());
         deleteStatement.setString(2, activity.getName());
@@ -169,10 +149,8 @@ public class StudentGateway implements Gateway {
                 ORDER BY CAST(Data as date) ASC""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, student.getId());
-
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -199,7 +177,6 @@ public class StudentGateway implements Gateway {
         String sql = "SELECT * FROM Corso";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
 
@@ -218,14 +195,12 @@ public class StudentGateway implements Gateway {
         }
 
         resultSet.close();
-
     }
 
     //FIXME: dal debug di testAverageAndDisplayTranscipt si vede che a fine di questo metodo la tabella Esami viene svuotata
     public void linkStudentToCourse(List<Course> courses, Student studente) throws SQLException{
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";
         PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
         statementInsert.setString(1, studente.getId());
@@ -255,12 +230,9 @@ public class StudentGateway implements Gateway {
         statementInsert.close();
     }
 
-
-
     public void displayTranscript(Student studente) throws SQLException {
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         String sql = """
                 SELECT Nome, Data, CFU, Voto, TipoEsame
                 FROM Esame
@@ -270,7 +242,6 @@ public class StudentGateway implements Gateway {
         ResultSet resultSet = statement.executeQuery();
 
         int somma = 0;
-
 
         System.out.println("Esami superati:");
 
@@ -288,11 +259,9 @@ public class StudentGateway implements Gateway {
             System.out.println("Tipo di valutazione: " + tipoEsame + "\n");
 
             somma += cfu;
-
         }
 
         System.out.println("CFU convalidati " + somma + "/180");
-
         String sql1 = """
                 SELECT Nome, CFU, TipoEsame
                 FROM Esame
@@ -313,7 +282,6 @@ public class StudentGateway implements Gateway {
             System.out.println("Tipo di valutazione: " + tipoEsame + "\n");
 
             somma += cfu;
-
         }
 
         resultSet.close();

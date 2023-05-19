@@ -42,7 +42,6 @@ public class ProfessorGateway implements Gateway{
                 WHERE Corso = ? AND Studente = ?""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement gradeStatement = connection.prepareStatement(gradeSQL);
         gradeStatement.setString(1, this.professor.getCourse().getId());
         gradeStatement.setString(2, student.getId());
@@ -64,10 +63,10 @@ public class ProfessorGateway implements Gateway{
         String sqlCont = """
                 SELECT * FROM Esame
                 WHERE Codice = ?""";
+
         connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statementCont = connection.prepareStatement(sqlCont);
         statementCont.setString(1, exam.getId());
-
         ResultSet control = statementCont.executeQuery();
 
         if(control.getInt("Voto") == -1) {
@@ -77,7 +76,6 @@ public class ProfessorGateway implements Gateway{
                 WHERE Codice = ?""";
 
             connection = DBConnection.connect("../database/unicoachdb.db");
-
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, date);
             statement.setInt(2, grade);
@@ -105,7 +103,6 @@ public class ProfessorGateway implements Gateway{
                 WHERE Esame.Studente = ?;""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement averageStatement = connection.prepareStatement(average);
         averageStatement.setString(1, student.getId());
         ResultSet averageRs = averageStatement.executeQuery();
@@ -124,11 +121,6 @@ public class ProfessorGateway implements Gateway{
         return finalAverage;
     }
 
-    //FIXME: ma ci serve davvero sto metodo?
-    public void getAverage(List<Student> students) throws SQLException {
-
-    }
-
     // Ritorna la media del corso (tutti i voti degli studenti iscritti / numeri iscritti)
     public float getAverage() throws SQLException {
         String average = """
@@ -138,10 +130,8 @@ public class ProfessorGateway implements Gateway{
             WHERE Corso.Codice = ?;""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement averageStatement = connection.prepareStatement(average);
         averageStatement.setString(1, this.professor.getCourse().getId());
-
         ResultSet averageRs = averageStatement.executeQuery();
 
         float finalAverage;
@@ -154,7 +144,6 @@ public class ProfessorGateway implements Gateway{
 
         averageRs.close();
         averageStatement.close();
-
         return finalAverage;
     }
 
@@ -164,15 +153,12 @@ public class ProfessorGateway implements Gateway{
                 INSERT INTO CalendarioDocenti(Attività, Data, OraInizio, OraFine, Matricola) VALUES (?, ?, ?, ?, ?)""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
-
         statement.setString(1, activity.getName());
         statement.setString(2, activity.getDate());
         statement.setInt(3, activity.getStartTime());
         statement.setInt(4, activity.getEndTime());
         statement.setString(5, user.getId());
-
         statement.executeUpdate();
         statement.close();
 
@@ -180,7 +166,6 @@ public class ProfessorGateway implements Gateway{
                 SELECT Id FROM CalendarioDocenti ORDER BY Id DESC LIMIT 1""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement selectStatement = connection.prepareStatement(select);
         ResultSet resultSet = selectStatement.executeQuery();
 
@@ -191,7 +176,6 @@ public class ProfessorGateway implements Gateway{
 
         resultSet.close();
         selectStatement.close();
-
     }
 
     @Override
@@ -212,10 +196,8 @@ public class ProfessorGateway implements Gateway{
         String findCourseSql = "SELECT * FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement selectStatement = connection.prepareStatement(findCourseSql);
         String data = String.valueOf(giorno) + "/" + String.valueOf(mese) + "/" + String.valueOf(anno);
-
         selectStatement.setString(1, data);
         selectStatement.setString(2, professor.getId());
         ResultSet resultSet = selectStatement.executeQuery();
@@ -225,7 +207,6 @@ public class ProfessorGateway implements Gateway{
             Activity removeLesson = new Activity();
             removeLesson.setName("Lezione " + professor.getCourse().getName());
             removeLesson.setDate(data);
-
             removeActivity(removeLesson, professor);
 
             //Elimina anche la lezione visualizzata nel calendario dello studente
@@ -247,10 +228,8 @@ public class ProfessorGateway implements Gateway{
                 ORDER BY CAST(Data as date) ASC""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, professor.getId());
-
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {

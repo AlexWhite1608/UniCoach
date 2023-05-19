@@ -3,12 +3,9 @@ package data_access;
 import java.sql.*;
 
 public class DBConnection {
-
     private static Connection conn;
     private static final String dbPath = "Code/database/unicoachdb.db";
-
     public static Connection connect() {
-
         try {
             // Verifica se la connessione esiste già
             if (conn != null && !conn.isClosed()) {

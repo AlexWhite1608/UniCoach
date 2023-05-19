@@ -125,7 +125,6 @@ public class StudentTest {
         deleteActivityStatement.setString(1, activity.getName());
         deleteActivityStatement.executeUpdate();
         deleteActivityStatement.close();
-
         statement.close();
     }
 
@@ -136,7 +135,6 @@ public class StudentTest {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest.getId() + "\n0";

@@ -129,7 +129,6 @@ public class Professor extends User implements Subject{
 
     //FIXME: ora questo metodo ritorna l'oggetto Activity ma non è troppo corretto
     public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
-
         String subject = "Nuova data esame professor " + course.getName() + " " + this.getSurname();
         String msg = "Di seguito la data del prossimo esame: \n" + date;
 
@@ -141,12 +140,10 @@ public class Professor extends User implements Subject{
 
         this.addActivity(addExamActivity);
 
-        Activity addExamActivityCopy = new Activity(addExamActivity);
-
         //Notifica gli studenti del nuovo esame
-        notifyObservers(msg, subject, addExamActivity);
+        notifyObservers(msg, subject, new Activity(addExamActivity));
 
-        return addExamActivityCopy;
+        return addExamActivity;
     }
 
     public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
