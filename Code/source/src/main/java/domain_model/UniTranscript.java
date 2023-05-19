@@ -33,12 +33,6 @@ public class UniTranscript {
         return null;
     }
 
-    public void displayExams(){
-        for(Exam i : examList){
-            System.out.println(i.getName());
-        }
-    }
-
     public Exam findExam(String examId) {
         for(Exam e : examList){
             if(Objects.equals(e.getId(), examId))

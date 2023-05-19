@@ -6,8 +6,6 @@ public enum ExamType {
     WRITTEN_TEST("Esame scritto"),
     WRITTEN_AND_ORAL_TEST("Esame scritto e orale");
 
-    private final String displayName;
-
     ExamType(String displayName) {
         this.displayName = displayName;
     }
@@ -24,4 +22,6 @@ public enum ExamType {
         }
         return null;  // Ritorna null se la stringa non corrisponde a nessun elemento dell'enum
     }
+
+    private final String displayName;
 }

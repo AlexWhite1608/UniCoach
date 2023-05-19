@@ -19,13 +19,6 @@ public abstract class User {
         this.email = n + "." + s + "@gmail.com";  //FIXME: gestire email per bene
     }
 
-    public void displayAttributes() {
-        System.out.println("\nID: " + id);
-        System.out.println("Name: " + name);
-        System.out.println("Surname: " + surname);
-        System.out.println("Email: " + email);
-    }
-
     public abstract void displayActivities() throws SQLException;
 
     public String getName() {
@@ -42,10 +35,6 @@ public abstract class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {

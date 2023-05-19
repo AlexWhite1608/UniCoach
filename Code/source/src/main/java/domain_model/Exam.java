@@ -14,17 +14,6 @@ public class Exam{
         this.date = null;
     }
 
-    public Exam(Course course, String date) {
-        this.id = RandomStringGenerator.generateRandomString(8);
-        this.course = course;
-        this.name = course.getName();
-        this.CFU = course.getCFU();
-        this.examType = course.getExamType();
-        this.grade = -1;
-        this.date = date;
-    }
-
-
     public String getId() {
         return id;
     }
@@ -37,16 +26,8 @@ public class Exam{
         return grade;
     }
 
-    public boolean isPraise() {
-        return praise;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public boolean isPassed() {
-        return isPassed;
     }
 
     public int getCFU() {
@@ -64,10 +45,9 @@ public class Exam{
     public void setGrade(int grade) {
         this.grade = grade;
     }
+
     private String id;
-
     private String name;
-
     private int grade = 0;
     private boolean praise = false;
     private String date = "";
@@ -75,5 +55,4 @@ public class Exam{
     private int CFU;
     private ExamType examType;
     private Course course;
-
 }

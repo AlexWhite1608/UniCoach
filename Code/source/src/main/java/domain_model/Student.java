@@ -20,11 +20,6 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
-    @Override
-    public void displayActivities() throws SQLException {
-        studentGateway.displayActivities(this);
-    }
-
     public Student(String id, String name, String surname) throws SQLException {
         super(id, name, surname);
 
@@ -34,12 +29,18 @@ public class Student extends User implements Observer {
         studentGateway.addStudent(this);
     }
 
+    //Lo studente sceglie i corsi ai quali iscriversi
     public void chooseCourses() {
         CoursesManager.chooseCourses(this);
     }
 
     public void displayUniTranscript() throws SQLException{
         studentGateway.displayTranscript(this);
+    }
+
+    @Override
+    public void displayActivities() throws SQLException {
+        studentGateway.displayActivities(this);
     }
 
     public UniTranscript getUniTranscript() {
@@ -59,23 +60,29 @@ public class Student extends User implements Observer {
         return studentGateway.getAverage(student);
     }
 
+    //Mostra il grafico dei voti ottenuti dallo studente
     public void displayExamsGraph() throws SQLException {
         ChartManager.displayExamsGraph(this);
+    }
+
+    //Mostra le ore di studio per ciascun esame dato
+    public void getStudyInfo() throws SQLException {
+        StudyTimeManager.getStudentStudyInfo(this);
     }
 
     public StudentGateway getStudentGateway() {
         return studentGateway;
     }
 
-    @Override
-    public void update(Activity activity) throws SQLException {
-        studentGateway.addActivity(activity, this);
-    }
-
     public Activity addActivity(String name, String date, int startTime, int endTime) throws SQLException{
         Activity activity = new Activity(name, date, startTime, endTime);
         studentGateway.addActivity(activity, this);
         return activity;
+    }
+
+    @Override
+    public void update(Activity activity) throws SQLException {
+        studentGateway.addActivity(activity, this);
     }
 
     @Override
@@ -95,12 +102,7 @@ public class Student extends User implements Observer {
         professor.unsubscribe(this);
     }
 
-    public void getStudyInfo() throws SQLException {
-        StudyTimeManager.getStudentStudyInfo(this);
-    }
-
     private UniTranscript uniTranscript;
     private List<Subject> subjects;
     private StudentGateway studentGateway = new StudentGateway();
-
 }
