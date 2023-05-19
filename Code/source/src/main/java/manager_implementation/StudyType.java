@@ -1,6 +1,5 @@
 package manager_implementation;
 
-import domain_model.ExamType;
 
 //TODO: aggiungere/togliere roba
 public enum StudyType {

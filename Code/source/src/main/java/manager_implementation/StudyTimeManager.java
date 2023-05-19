@@ -7,7 +7,6 @@ import domain_model.Student;
 import domain_model.UniTranscript;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -98,7 +97,6 @@ public class StudyTimeManager {
                     statement.setString(1, exam.getId());
                     statement.setString(2, value.getKey().getDisplayName());
                     statement.setInt(3, value.getValue());
-
                     statement.executeUpdate();
                 }
             }
@@ -123,8 +121,8 @@ public class StudyTimeManager {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, course.getId());
         ResultSet resultSet = statement.executeQuery();
-
         Map<StudyType, Integer> studyHoursByType = new HashMap<>();
+
         while (resultSet.next()) {
             String studyTypeString = resultSet.getString("TipoStudio");
             int totalHours = resultSet.getInt("TotaleOre");
@@ -150,7 +148,6 @@ public class StudyTimeManager {
             WHERE Codice = ?""";
 
         Map<Exam, List<Map<StudyType, Integer>>> info = new HashMap<>();
-
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
         UniTranscript uniTranscript = student.getUniTranscript();

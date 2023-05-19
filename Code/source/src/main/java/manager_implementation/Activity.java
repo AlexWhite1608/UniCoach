@@ -63,5 +63,4 @@ public class Activity {
     private String date;
     private int startTime;
     private int endTime;
-
 }

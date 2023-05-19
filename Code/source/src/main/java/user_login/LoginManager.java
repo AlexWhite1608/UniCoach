@@ -27,7 +27,6 @@ public class LoginManager {
         String userPassword = scanner.nextLine();
         user.setPassword(userPassword);
 
-
         String sql = "INSERT OR IGNORE INTO Utente (Id, Nome, Cognome, Email, Password, Tipologia) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getId());
@@ -66,29 +65,8 @@ public class LoginManager {
         return loggedIn;
     }
 
-    public void getAllUsers() throws SQLException {
-        String sql = "SELECT * FROM Utente";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet rs = statement.executeQuery();
-
-        while (rs.next()){
-            System.out.println("----- Utente -----");
-            System.out.println("Nome: " + rs.getString("Nome"));
-            System.out.println("Cognome: " + rs.getString("Cognome"));
-            System.out.println("Email: " + rs.getString("Email"));
-            System.out.println("Password: " + rs.getString("Password"));
-            System.out.println("Tipologia: " + rs.getString("Tipologia"));
-            System.out.println("---------");
-        }
-
-        rs.close();
-        statement.close();
-    }
-
     public void logout(User user) {
         //FIXME: da implementare meglio
         System.out.println(user.getName() + " " + user.getSurname() + " log out");
     }
-
-
 }

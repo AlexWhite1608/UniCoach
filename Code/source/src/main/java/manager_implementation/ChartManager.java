@@ -13,7 +13,6 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -74,7 +73,6 @@ public class ChartManager {
         } catch (IOException e) {
             System.err.println("Errore durante il salvataggio dell'immagine del grafico: " + e.getMessage());
         }
-
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
@@ -269,7 +267,6 @@ public class ChartManager {
         }
 
         return studentDataset;
-
     }
 
     //Ritorna il dataset per il grafico delle informazioni di tutti gli studenti iscritti al corso fornito
@@ -291,7 +288,6 @@ public class ChartManager {
     private static DefaultCategoryDataset getAvgCoursesDataset() throws SQLException {
 
         DefaultCategoryDataset avgCourseDataset = new DefaultCategoryDataset();
-
         List<Course> courseList = CoursesManager.getCourses();
 
         //Mappa ciascun nome del corso con tutti i voti degli esami svolti per quel corso
@@ -324,7 +320,6 @@ public class ChartManager {
             int hours = entry.getValue();
             dataset.setValue(studyType.getDisplayName(), hours);
         }
-
         return dataset;
     }
 
@@ -345,7 +340,6 @@ public class ChartManager {
                 }
             }
         }
-
         return dataset;
     }
 
@@ -375,9 +369,7 @@ public class ChartManager {
     private static void getExamsGradesFromCourses(List<Course> courseList, Map<String, List<Integer>> studentGrades) throws SQLException {
 
         String sql = "SELECT Voto FROM Esame WHERE Corso = ?";
-
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
-
         PreparedStatement statement = connection.prepareStatement(sql);
 
         for(Course course : courseList){
@@ -389,12 +381,9 @@ public class ChartManager {
             while (examsRs.next()){
                 examsGrades.add(examsRs.getInt("Voto"));
             }
-
             studentGrades.put(course.getName(), examsGrades);
-
             examsRs.close();
         }
-
         statement.close();
     }
 
@@ -408,5 +397,4 @@ public class ChartManager {
         }
         return (float) sum / list.size();
     }
-
 }

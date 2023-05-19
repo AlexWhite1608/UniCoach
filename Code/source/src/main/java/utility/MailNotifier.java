@@ -3,7 +3,6 @@ package utility;
 import domain_model.Observer;
 import domain_model.Professor;
 import domain_model.Student;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

@@ -2,7 +2,6 @@ package manager_implementation;
 
 import domain_model.Course;
 import domain_model.Student;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +15,11 @@ public class CoursesManager {
         courses.add(course);
     }
 
+    //Permette allo studente di scegliere i corsi da seguire tra tutti i corsi possibili
     public static void chooseCourses(Student student) {
         try {
             System.out.println("Tutti i corsi disponibili sono i seguenti: ");
             student.getStudentGateway().displayCourses();
-
             Scanner scanner = new Scanner(System.in);
             System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
             String input = scanner.nextLine();
@@ -35,10 +34,8 @@ public class CoursesManager {
                 } else {
                     System.out.println("Codice del corso non valido");
                 }
-
                 input = scanner.nextLine();
             }
-
             student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
         } catch (SQLException e) {
@@ -46,21 +43,22 @@ public class CoursesManager {
         }
     }
 
+    //Restituisce l'oggetto corso a partire dal sui id
     private static Course findCourseById(String courseId) {
         for(Course course : courses){
             if(Objects.equals(course.getId(), courseId))
                 return course;
         }
-
         return null;
     }
 
+
+    //FIXME: vediamo se toglierlo dato che non viene usato
     public static Course findCourseByName(String courseName) {
         for(Course course : courses){
             if(Objects.equals(course.getName(), courseName))
                 return course;
         }
-
         return null;
     }
 
