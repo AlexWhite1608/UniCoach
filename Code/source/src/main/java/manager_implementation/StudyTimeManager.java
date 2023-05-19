@@ -172,34 +172,37 @@ public class StudyTimeManager {
     //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
     public static void getStudentStudyInfo(Student student) throws SQLException {
         String sql = """
-                SELECT TipoStudio, Ore
-                FROM OreStudio
-                WHERE Codice = ?""";
+            SELECT TipoStudio, Ore
+            FROM OreStudio
+            WHERE Codice = ?""";
 
         Map<Exam, List<Map<StudyType, Integer>>> info = new HashMap<>();
-        List<Map<StudyType,Integer>> studyTypeList = new ArrayList<>();
-        Map<StudyType,Integer> studyTypeMap = new HashMap<>();
 
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
         UniTranscript uniTranscript = student.getUniTranscript();
 
-        for(Exam exam : uniTranscript.getExamList()){
+        for (Exam exam : uniTranscript.getExamList()) {
+            List<Map<StudyType, Integer>> studyTypeList = new ArrayList<>();
+            Map<StudyType, Integer> studyTypeMap = new HashMap<>();
+
             statement.setString(1, exam.getId());
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 StudyType studyType = StudyType.getStudyTypeFromString(resultSet.getString("TipoStudio"));
                 int hours = resultSet.getInt("Ore");
                 studyTypeMap.put(studyType, hours);
-                studyTypeList.add(studyTypeMap);
             }
+
+            studyTypeList.add(studyTypeMap);
             info.put(exam, studyTypeList);
         }
 
         DefaultCategoryDataset dataset = GradesManager.getStudentInfoDataset(info);
         GradesManager.displayStudentStudyInfo(dataset, student);
     }
+
 
     public static void setPeriod(int period) {
         StudyTimeManager.period = period;
