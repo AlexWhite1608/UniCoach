@@ -4,15 +4,14 @@ import data_access.ProfessorGateway;
 import manager_implementation.Activity;
 import manager_implementation.ChartManager;
 import manager_implementation.StudyTimeManager;
+import utility.MailNotifier;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
 import javax.mail.*;
-import javax.mail.internet.*;
 import javax.naming.directory.InvalidAttributesException;
-import java.util.Properties;
 
 public class Professor extends User implements Subject{
 
@@ -25,7 +24,6 @@ public class Professor extends User implements Subject{
         professorGateway.addProfessor(this);
 
         course = null;
-
     }
 
     public Professor(String id, String name, String surname) throws SQLException {
@@ -44,8 +42,8 @@ public class Professor extends User implements Subject{
         professorGateway.displayActivities(this);
     }
 
+    //Aggiunge l'esame al libretto dello studente
     public void setGrade(Student student, int grade, String data, boolean sendEmail) throws SQLException, MessagingException {
-        //Aggiunge l'esame al libretto dello studente
         Exam exam = student.getUniTranscript().findExam(this.course);
         if (grade >= 1 && grade <= 30) {
 
@@ -57,7 +55,7 @@ public class Professor extends User implements Subject{
                     String msg = "Gentile " + student.getName() + " " + student.getSurname() + " ti comunichiamo che l'esito della prova" +
                             " di esame relativa all'attività didattica " + exam.getName() + " da te sostenuta il " + data + " è " + grade + "/30";
 
-                    sendEmail(student, msg, "Pubblicazione voto appello " + exam.getName());
+                    MailNotifier.sendEmail(student, msg, "Pubblicazione voto appello " + exam.getName(), this);
                 }
             } else {
                 System.out.println("Lo studente selezionato non è iscritto al corso");
@@ -65,69 +63,30 @@ public class Professor extends User implements Subject{
         } else {
             System.out.println("Il voto inserito non è valido");
         }
-
-
     }
 
+    //Imposta il corso al professore
     public void setCourse(Course course) {
         this.course = course;
     }
 
+    //Ottiene il voto dello studente fornito
     public int getGrade(Student student) throws SQLException {
         return professorGateway.getGrade(student);
     }
 
+    //Ritorna la media dello studente fornito
     public float getAverage(Student student) throws SQLException {
         return professorGateway.getAverage(student);
     }
 
+    //Ritorna la media del corso
     public float getAverage() throws SQLException {
         return professorGateway.getAverage();
     }
 
-    //FIXME: questo metodo andrebbe spostato dalla classe professor?
-    private void sendEmail(Observer dest, String msg, String subject) throws MessagingException {
-        Properties prop = new Properties();
-
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", true);
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        prop.put("mail.smtp.ssl.protocols", "TLSv1.2");
-
-        String professorEmail = this.getEmail();
-        String professorPassword = this.getPassword();
-
-        Session session = Session.getDefaultInstance(prop, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(professorEmail, professorPassword);
-            }
-        });
-
-        Message message = prepareMessage(session, professorEmail, ((Student) dest).getEmail(), msg, subject);
-
-        Transport.send(message);
-        System.out.println("Email inviata correttamente");
-    }
-
-    //FIXME: questo metodo andrebbe spostato dalla classe professor?
-    private Message prepareMessage(Session s, String email, String dest, String msg, String subject){
-        try {
-            Message message = new MimeMessage(s);
-            message.setFrom(new InternetAddress(email));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(dest));
-            message.setSubject(subject);
-            message.setText(msg);
-            return message;
-        }catch(MessagingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     //FIXME: ora questo metodo ritorna l'oggetto Activity ma non è troppo corretto
+    //Aggiunge la nuova data dell'esame
     public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
         String subject = "Nuova data esame professor " + course.getName() + " " + this.getSurname();
         String msg = "Di seguito la data del prossimo esame: \n" + date;
@@ -146,6 +105,7 @@ public class Professor extends User implements Subject{
         return addExamActivity;
     }
 
+    //Aggiunge le eventuali note/homework della lezione
     public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
         String subject = "Resoconto lezione di "+ course.getName()+ " del " + date;
 
@@ -177,22 +137,17 @@ public class Professor extends User implements Subject{
         ChartManager.displayExamsGraph();
     }
 
+    //Visualizza le informazioni di studio degli studenti iscritti al corso; numero di ore spese confrontato con il voto ottenuto
     public void getCourseStudyInfo(Course course) throws SQLException {
         StudyTimeManager.getCourseStudyInfo(course);
     }
 
+    //Vede le informazioni sullo studio dello studente fornito
     public void getStudentStudyInfo(Student student) throws SQLException {
         StudyTimeManager.getStudentStudyInfo(student);
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public List<Observer> getObservers() {
-        return observers;
-    }
-
+    //Programma le lezioni del professore per il trimestre
     public List<Activity> scheduleLessons(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
 
         if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
@@ -239,16 +194,18 @@ public class Professor extends User implements Subject{
         }
 
         for(Observer obs : observers){
-            this.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni di" + course.getName());
+            MailNotifier.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni di" + course.getName(), this);
         }
 
         return activityList;
     }
 
+    //Rimuove la lezione del giorno fornito
     public void removeLesson(int giorno, int mese, int anno) throws SQLException {    //TODO: deve rimuovere la lezione anche dal calendario dello studente!!
         professorGateway.removeLesson(giorno, mese, anno, this);
     }
 
+    //Aggiunge un'attività
     private void addActivity(Activity activity) throws SQLException {
         professorGateway.addActivity(activity, this);
     }
@@ -257,7 +214,7 @@ public class Professor extends User implements Subject{
     public void notifyObservers(String msg, String subject, Activity activity) throws MessagingException, SQLException {
 
         for(Observer observer : observers){
-            sendEmail(observer, msg, subject);
+            MailNotifier.sendEmail(observer, msg, subject, this);
             observer.update(activity);
         }
     }
@@ -283,6 +240,13 @@ public class Professor extends User implements Subject{
         return professorGateway;
     }
 
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
 
     private List<Observer> observers;
     private ProfessorGateway professorGateway;

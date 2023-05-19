@@ -22,7 +22,6 @@ public class Course {
         CoursesManager.addCourse(this);
     }
 
-    //FIXME: Vedere se serve questo costruttore
     public Course(String id, String name, int CFU, Professor professor, ExamType examType) throws SQLException {
         this.id = id;
         this.name = name;
@@ -36,7 +35,7 @@ public class Course {
         CoursesManager.addCourse(this);
     }
 
-    //Aggiunge il corso al db quando viene istanziato
+    //Aggiunge il corso al db
     private void addCourse() throws SQLException {
         Connection connection = DBConnection.connect("../database/unicoachdb.db");
 
@@ -53,7 +52,7 @@ public class Course {
         courseStatement.executeUpdate();
         courseStatement.close();
 
-        connection = DBConnection.disconnect();
+        DBConnection.disconnect();
     }
 
     public ExamType getExamType() {
