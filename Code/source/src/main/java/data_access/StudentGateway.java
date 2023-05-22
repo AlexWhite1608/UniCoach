@@ -115,7 +115,7 @@ public class StudentGateway implements Gateway {
         statement.close();
 
         String select = """
-                SELECT Id FROM CalendarioStudenti ORDER BY Id DESC LIMIT 1""";   //FIXME: ho fatto che l'attività nella tabella CalendarioStudenti prende lo stesso id della stessa attività in CalendarioDocenti
+                SELECT Id FROM CalendarioStudenti ORDER BY Id DESC LIMIT 1""";
 
         connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement selectStatement = connection.prepareStatement(select);

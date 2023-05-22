@@ -1,6 +1,7 @@
 package manager_implementation;
 
 import data_access.DBConnection;
+import data_access.ManagerGateway;
 import domain_model.Course;
 import domain_model.Exam;
 import domain_model.Student;
@@ -13,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-//FIXME: usare il gateway per accedere al database
 public class StudyTimeManager {
 
     // Qui lo studente inserisce i dati relativi allo studio giornaliero
@@ -82,58 +82,13 @@ public class StudyTimeManager {
 
     //Inserisce le informazioni contenute in studyInfo nel db (tabella OreStudio)
     private static void insertInfoInDb(Map<Exam, List<Map<StudyType, Integer>>> studyInfo) throws SQLException {
-
-        String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
-                     "VALUES (?, ?, ?)" +
-                     "ON CONFLICT (Codice, TipoStudio) DO UPDATE SET Ore = Ore + excluded.Ore";
-
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
-        PreparedStatement statement = connection.prepareStatement(sql);
-
-        for(Map.Entry<Exam, List<Map<StudyType, Integer>>> entry : studyInfo.entrySet()) {
-            Exam exam = entry.getKey();
-            for (Map<StudyType, Integer> it : entry.getValue()){
-                for(Map.Entry<StudyType, Integer> value : it.entrySet()){
-                    statement.setString(1, exam.getId());
-                    statement.setString(2, value.getKey().getDisplayName());
-                    statement.setInt(3, value.getValue());
-                    statement.executeUpdate();
-                }
-            }
-        }
-
-        statement.close();
-        DBConnection.disconnect();
+        ManagerGateway.insertInfoInDb(studyInfo);
     }
 
     //Il professore richiede le informazioni di studio degli studenti iscritti al suo corso -> numero di ore spese confrontato con il voto ottenuto?
     public static void getCourseStudyInfo(Course course) throws SQLException {
 
-        String sql = """
-                SELECT TipoStudio, SUM(Ore) AS TotaleOre
-                FROM OreStudio
-                WHERE Codice = (SELECT Codice
-                                FROM Esame
-                                WHERE Corso = ?)
-                GROUP BY TipoStudio""";
-
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, course.getId());
-        ResultSet resultSet = statement.executeQuery();
-        Map<StudyType, Integer> studyHoursByType = new HashMap<>();
-
-        while (resultSet.next()) {
-            String studyTypeString = resultSet.getString("TipoStudio");
-            int totalHours = resultSet.getInt("TotaleOre");
-
-            StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
-            studyHoursByType.put(studyType, totalHours);
-        }
-
-        resultSet.close();
-        statement.close();
-        DBConnection.disconnect();
+        Map<StudyType, Integer> studyHoursByType = ManagerGateway.getCourseStudyInfo(course);
 
         //Costruisco il dataset del grafico a torta e lo passo alla funzione delegata a costruire il grafico
         DefaultPieDataset dataset = ChartManager.buildStudyTypeDataset(studyHoursByType);
@@ -142,32 +97,7 @@ public class StudyTimeManager {
 
     //Serve sia allo studente che al professore per vedere quanto ha studiato con istogramma
     public static void getStudentStudyInfo(Student student) throws SQLException {
-        String sql = """
-            SELECT TipoStudio, Ore
-            FROM OreStudio
-            WHERE Codice = ?""";
-
-        Map<Exam, List<Map<StudyType, Integer>>> info = new HashMap<>();
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
-        PreparedStatement statement = connection.prepareStatement(sql);
-        UniTranscript uniTranscript = student.getUniTranscript();
-
-        for (Exam exam : uniTranscript.getExamList()) {
-            List<Map<StudyType, Integer>> studyTypeList = new ArrayList<>();
-            Map<StudyType, Integer> studyTypeMap = new HashMap<>();
-
-            statement.setString(1, exam.getId());
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                StudyType studyType = StudyType.getStudyTypeFromString(resultSet.getString("TipoStudio"));
-                int hours = resultSet.getInt("Ore");
-                studyTypeMap.put(studyType, hours);
-            }
-
-            studyTypeList.add(studyTypeMap);
-            info.put(exam, studyTypeList);
-        }
+        Map<Exam, List<Map<StudyType, Integer>>> info = ManagerGateway.getStudentStudyInfo(student);
 
         DefaultCategoryDataset dataset = ChartManager.getStudentInfoDataset(info);
         ChartManager.displayStudentStudyInfo(dataset, student);
