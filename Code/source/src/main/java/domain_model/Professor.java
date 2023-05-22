@@ -85,7 +85,6 @@ public class Professor extends User implements Subject{
         return professorGateway.getAverage();
     }
 
-    //FIXME: ora questo metodo ritorna l'oggetto Activity ma non è troppo corretto
     //Aggiunge la nuova data dell'esame
     public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
         String subject = "Nuova data esame professor " + course.getName() + " " + this.getSurname();

@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//TODO: ottimizza la classe mettendo come attributi chart, frame e così via
 public class ChartManager {
 
     //Grafica gli esami svolti da quello studente con la media
@@ -349,7 +348,6 @@ public class ChartManager {
         return averageForEachCourse.get(course.getName());
     }
 
-    //FIXME: sarebbe meglio non fare query in questa classe!
     //Ritorna i voti di ciascun esame svolto nei corsi forniti in input
     private static void getExamsGradesFromCourses(List<Course> courseList, Map<String, List<Integer>> studentGrades) throws SQLException {
 

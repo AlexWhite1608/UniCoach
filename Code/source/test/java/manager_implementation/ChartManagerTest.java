@@ -95,7 +95,6 @@ public class ChartManagerTest {
         }
     }
 
-    //TODO: si potrebbe usare anche negli altri test??
     private static void simulateUserInput(Student student, Course course) {
         String input = course.getId() + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -107,7 +106,6 @@ public class ChartManagerTest {
         student.chooseCourses();
     }
 
-    //TODO: si potrebbe usare anche negli altri test??
     private static void simulateUserInput(Student student, List<Course> courseList) {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));

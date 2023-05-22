@@ -51,7 +51,6 @@ public class CoursesManager {
         return null;
     }
 
-    //FIXME: vediamo se toglierlo dato che non viene usato
     public static Course findCourseByName(String courseName) {
         for(Course course : courses){
             if(Objects.equals(course.getName(), courseName))
