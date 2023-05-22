@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import user_login.LoginManager;
-
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
 import java.io.ByteArrayInputStream;
@@ -17,8 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -82,6 +81,12 @@ public class ProfessorTest {
         PreparedStatement deleteUserStatement = conn.prepareStatement(deleteUserSql);
         deleteUserStatement.setString(1, "TestNome");
         deleteUserStatement.executeUpdate();
+        deleteUserStatement.setString(1, "TestNome1");
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.setString(1, "TestNome2");
+        deleteUserStatement.executeUpdate();
+        deleteUserStatement.setString(1, "TestNome3");
+        deleteUserStatement.executeUpdate();
         deleteUserStatement.close();
 
         if (conn != null) {
@@ -91,43 +96,35 @@ public class ProfessorTest {
 
     @Test
     public void testAddProfessor() throws SQLException {
-        Professor professor = new Professor("12345", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome1", "TestCognome1");
 
         // Verifica che lo professore sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, "12345");
-
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
-        assertEquals("TestNome", result.getString("Nome"));
-        assertEquals("TestCognome", result.getString("Cognome"));
+        assertEquals("TestNome1", result.getString("Nome"));
+        assertEquals("TestCognome1", result.getString("Cognome"));
         assertEquals("12345", result.getString("Matricola"));
 
         statement.close();
-
     }
 
     @Test
     public void testAverageStudent() throws SQLException, MessagingException {
         Student student = new Student("12346", "TestNome", "TestCognome");
-        Professor professor = new Professor("12345", "TestNome", "TestCognome");
-        Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
+        Professor professor = new Professor("12345", "TestNome1", "TestCognome1");
+        Professor professor2 = new Professor("12346", "TestNome2", "TestCognome2");
 
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n0\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student.chooseCourses();
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest1);
+        courseList.add(courseTest2);
+        student.getStudentGateway().linkStudentToCourse(courseList, student);
 
         professor.setGrade(student,25, "TestData", false);
         professor2.setGrade(student,24, "TestData", false);
@@ -146,49 +143,22 @@ public class ProfessorTest {
         deleteCourseStatement.setString(1, courseTest2.getId());
         deleteCourseStatement.executeUpdate();
         deleteCourseStatement.close();
-
     }
 
     @Test
     public void testAverageCourse() throws SQLException, MessagingException {
-        Student student1 = new Student("12345", "TestNome", "TestCognome");
-        Student student2 = new Student("12346", "TestNome", "TestCognome");
-        Student student3 = new Student("12347", "TestNome", "TestCognome");
+        Student student1 = new Student("12345", "TestNome1", "TestCognome");
+        Student student2 = new Student("12346", "TestNome2", "TestCognome");
+        Student student3 = new Student("12347", "TestNome3", "TestCognome");
 
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
-
-
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest1.getId()  + "\n0\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student1.chooseCourses();
-
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest1.getId()  + "\n0\n";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student2.chooseCourses();
-
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest1.getId()  + "\n0\n";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        student3.chooseCourses();
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest1);
+        student1.getStudentGateway().linkStudentToCourse(courseList, student1);
+        student2.getStudentGateway().linkStudentToCourse(courseList, student2);
+        student3.getStudentGateway().linkStudentToCourse(courseList, student3);
 
         professor.setGrade(student1,22 , "dataTest", false);
         professor.setGrade(student2, 28 , "dataTest", false);
@@ -210,14 +180,14 @@ public class ProfessorTest {
 
     @Test
     public void testSetGetGrade() throws SQLException, MessagingException {
-        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Professor professorTest = new Professor("12345", "TestNome1", "TestCognome1", "professor.unicoach@gmail.com");
+        Student studentTest = new Student("12345", "TestNome2", "TestCognome2", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         // Simuliamo l'inserimento della password dell'utente
-        String input = "fldiejclqrzckthd\n";
+        String input = "knpjdyxlkuzjetfx\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -225,16 +195,10 @@ public class ProfessorTest {
 
         loginManager.addUser(professorTest);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        input = courseTest.getId()  + "\n0";
-        in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        studentTest.chooseCourses();
+        //Colleghiamo il corso allo studente
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest);
+        studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorTest.setGrade(studentTest, 22, "dataTest", true);
         int grade = professorTest.getGrade(studentTest);
@@ -264,16 +228,16 @@ public class ProfessorTest {
 
     @Test
     public void testAddActivity() throws SQLException, MessagingException {
-        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Professor professorTest = new Professor("12345", "TestNome1", "TestCognome1", "professor.unicoach@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome2", "TestCognome2", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome3", "TestCognome3", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         //Prepara la password simulata
-        String simulatedInput1 = "fldiejclqrzckthd\n";
+        String simulatedInput1 = "knpjdyxlkuzjetfx\n";
         InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
         System.setIn(inputStream1);
 
@@ -292,10 +256,8 @@ public class ProfessorTest {
 
         //Verifico che l'attività sia stata correttamente inserita nel calendario del professore
         String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioDocenti WHERE Id = ?";
-        //TODO: verificare che sia stato inserito anche nel calendario studenti
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, activity.getId());
-
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
@@ -319,21 +281,20 @@ public class ProfessorTest {
         deleteActivityStatement.setString(1, activity.getName());
         deleteActivityStatement.executeUpdate();
         deleteActivityStatement.close();
-
     }
 
     @Test
     public void testScheduleLesson() throws SQLException, InvalidAttributesException, MessagingException {
-        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Professor professorTest = new Professor("12345", "TestNome1", "TestCognome1", "professor.unicoach@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome2", "TestCognome2", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome3", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         //Prepara la password simulata
-        String simulatedInput1 = "fldiejclqrzckthd\n";
+        String simulatedInput1 = "knpjdyxlkuzjetfx\n";
         InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
         System.setIn(inputStream1);
 
@@ -354,7 +315,6 @@ public class ProfessorTest {
         PreparedStatement statement = conn.prepareStatement(sql);
         for (Activity activity : activityList) {
             statement.setString(1, activity.getId());
-
             ResultSet result = statement.executeQuery();
 
             assertTrue(result.next());
@@ -389,17 +349,16 @@ public class ProfessorTest {
 
     @Test
     public void testRemoveLesson() throws SQLException, MessagingException, InvalidAttributesException {
-        Professor professorTest = new Professor("12345", "TestNome", "TestCognome", "riccardo.becciolini00@gmail.com");
-        Student studentTest1 = new Student("12345", "TestNome", "TestCognome", "unicoach2023@gmail.com");
-        Student studentTest2 = new Student("12346", "TestNome", "TestCognome", "unicoach2023@gmail.com");
+        Professor professorTest = new Professor("12345", "TestNome1", "TestCognome1", "professor.unicoach@gmail.com");
+        Student studentTest1 = new Student("12345", "TestNome2", "TestCognome2", "unicoach2023@gmail.com");
+        Student studentTest2 = new Student("12346", "TestNome3", "TestCognome3", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
-
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         //Prepara la password simulata
-        String simulatedInput1 = "fldiejclqrzckthd\n";
+        String simulatedInput1 = "knpjdyxlkuzjetfx\n";
         InputStream inputStream1 = new ByteArrayInputStream(simulatedInput1.getBytes());
         System.setIn(inputStream1);
 
@@ -462,7 +421,6 @@ public class ProfessorTest {
         }
 
         deleteStatement.close();
-
     }
 
     private Connection conn;

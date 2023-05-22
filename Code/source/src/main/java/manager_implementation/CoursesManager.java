@@ -2,6 +2,7 @@ package manager_implementation;
 
 import domain_model.Course;
 import domain_model.Student;
+import domain_model.Exam;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class CoursesManager {
             while (!input.equals("0")) {
                 System.out.println("Digita il codice del corso successivo o premi 0 per uscire");
                 Course course = findCourseById(input);
+                Exam exam = student.getUniTranscript().findExam(course);
 
                 if (course != null) {
                     selectedCourses.add(course);

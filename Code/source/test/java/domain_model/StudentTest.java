@@ -80,7 +80,6 @@ public class StudentTest {
         if (conn != null) {
             conn = DBConnection.disconnect();
         }
-
     }
 
     @Test
@@ -128,24 +127,16 @@ public class StudentTest {
         statement.close();
     }
 
-
-
     @Test
     public void testGetGrade() throws SQLException, MessagingException {
         Professor professorTest = new Professor("12345", "TestNome", "TestCognome");
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        // Simuliamo l'input utente con tutti i courseTest.getId()
-        String input = courseTest.getId() + "\n0";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        // Catturiamo l'output su console tramite ByteArrayOutputStream e PrintStream
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        studentTest.chooseCourses();
+        //Colleghiamo il corso allo studente
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(courseTest);
+        studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorTest.setGrade(studentTest, 22, "dataTest", false);
         int grade = studentTest.getGrade(courseTest, studentTest);
@@ -154,15 +145,12 @@ public class StudentTest {
 
         // Verifica che l'esame venga inserito correttamente
         String sql = "SELECT Voto FROM Esame WHERE Corso = ?";
-
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, courseTest.getId());
-
         ResultSet result = statement.executeQuery();
 
         assertTrue(result.next());
         assertEquals(grade, result.getInt("Voto"));
-
         statement.close();
 
         //Elimino i corsi in IscrizioneCorso
@@ -177,10 +165,8 @@ public class StudentTest {
         Student student = new Student("12345", "TestNome", "TestCognome");
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
-
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
-
 
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest1.getId()  + "\n" + courseTest2.getId() + "\n0";
@@ -220,15 +206,13 @@ public void testChooseCourses() throws SQLException {
     Professor professor2 = new Professor("12346", "TestNome", "TestCognome");
     Professor professor3 = new Professor("12347", "TestNome", "TestCognome");
     Professor professor4 = new Professor("12348", "TestNome", "TestCognome");
-
     Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
-
-    // Simuliamo l'input utente con tutti i courseTest.getId()
-    String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n0\n";
+    // Simuliamo l'input utente con tutti i courseTest.getId(), l'ultimo è ripetuto così da testare anche il controllo
+    String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n" + courseTest3.getId() +"\n0\n";
     InputStream in = new ByteArrayInputStream(input.getBytes());
     System.setIn(in);
 
@@ -289,7 +273,6 @@ public void testChooseCourses() throws SQLException {
 
     //Verifico che gli esami sono stati inseriti nella lista UniTranscipt dello studente
     assertEquals(student.getUniTranscript().getSize(),3);
-
     statement2.close();
 
     //Elimino i corsi in IscrizioneCorso
@@ -297,9 +280,6 @@ public void testChooseCourses() throws SQLException {
     PreparedStatement deleteCourseStatement = conn.prepareStatement(deleteCourseSql);
     deleteCourseStatement.setString(1, student.getId());
     deleteCourseStatement.executeUpdate();
-
 }
-
-
     private Connection conn;
 }
