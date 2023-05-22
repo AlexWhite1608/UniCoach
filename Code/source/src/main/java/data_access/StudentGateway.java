@@ -199,7 +199,6 @@ public class StudentGateway implements Gateway {
 
     //FIXME: dal debug di testAverageAndDisplayTranscipt si vede che a fine di questo metodo la tabella Esami viene svuotata
     public void linkStudentToCourse(List<Course> courses, Student studente) throws SQLException{
-
         connection = DBConnection.connect("../database/unicoachdb.db");
         String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";
         PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
@@ -209,21 +208,28 @@ public class StudentGateway implements Gateway {
         PreparedStatement statementInsertExam = connection.prepareStatement(sqlInsertExam);
         statementInsertExam.setString(3, studente.getId());
 
-        for(Course course : courses) {
-            statementInsert.setString(2, course.getId());
-            statementInsert.executeUpdate();
-            studente.attach(course);
+        for (Course course : courses) {
+            Exam examControl = studente.getUniTranscript().findExam(course);
 
-            Exam exam = new Exam(course);
-            studente.getUniTranscript().addExam(exam);
-            statementInsertExam.setString(1, exam.getId());
-            statementInsertExam.setString(2, exam.getName());
-            statementInsertExam.setString(4, exam.getDate());
-            statementInsertExam.setInt(5, exam.getCFU());
-            statementInsertExam.setInt(6, exam.getGrade());
-            statementInsertExam.setString(7, exam.getCourse().getId());
-            statementInsertExam.setString(8, exam.getExamType());
-            statementInsertExam.executeUpdate();
+            //Controlla che l'esame scelto non sia già presente negli esami pianificati dello studente
+            if (examControl == null) {
+                statementInsert.setString(2, course.getId());
+                statementInsert.executeUpdate();
+                studente.attach(course);
+
+                Exam exam = new Exam(course);
+                studente.getUniTranscript().addExam(exam);
+                statementInsertExam.setString(1, exam.getId());
+                statementInsertExam.setString(2, exam.getName());
+                statementInsertExam.setString(4, exam.getDate());
+                statementInsertExam.setInt(5, exam.getCFU());
+                statementInsertExam.setInt(6, exam.getGrade());
+                statementInsertExam.setString(7, exam.getCourse().getId());
+                statementInsertExam.setString(8, exam.getExamType());
+                statementInsertExam.executeUpdate();
+            } else {
+                System.out.println("L'esame " + course.getName() + " è già presente nella tua lista di esami pianificati");
+            }
         }
 
         statementInsertExam.close();
