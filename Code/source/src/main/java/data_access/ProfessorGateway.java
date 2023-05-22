@@ -3,6 +3,7 @@ package data_access;
 import domain_model.*;
 import manager_implementation.Activity;
 
+import javax.mail.MessagingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -179,7 +180,14 @@ public class ProfessorGateway implements Gateway{
     }
 
     @Override
-    public void removeActivity(Activity activity, User user) throws SQLException {
+    public void removeActivity(Activity activity, User user) throws SQLException, MessagingException {
+        //rimuove l'attività a tutti gli studenti iscritti al corso
+        for (Observer observer : professor.getObservers()) {
+            ((Student) observer).getStudentGateway().removeActivity(activity,(Student)observer);
+        }
+
+        professor.notifyObservers("La lezione del " + activity.getDate() + " è stata annullata", "Lezione annullata");
+
         String deleteLesson = "DELETE FROM CalendarioDocenti WHERE Data = ? AND Attività = ? AND Matricola = ? ";
         connection = DBConnection.connect("../database/unicoachdb.db");
 
@@ -190,7 +198,7 @@ public class ProfessorGateway implements Gateway{
         deleteStatement.executeUpdate();
     }
 
-    public void removeLesson(int giorno, int mese, int anno, Professor professor) throws SQLException {
+    public void removeLesson(int giorno, int mese, int anno, Professor professor) throws SQLException, MessagingException {
 
         //Ricerco la lezione nel database
         String findCourseSql = "SELECT * FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
