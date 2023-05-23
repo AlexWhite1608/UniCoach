@@ -4,7 +4,6 @@ import controller.Controller;
 import domain_model.Professor;
 import domain_model.Student;
 import domain_model.User;
-import user_login.LoginManager;
 import utility.RandomStringGenerator;
 
 import java.io.BufferedReader;
