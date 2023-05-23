@@ -1,5 +1,6 @@
 package menu;
 
+import controller.Controller;
 import domain_model.Professor;
 import domain_model.Student;
 import domain_model.User;
@@ -16,7 +17,6 @@ public class FacadeMenu {
     public void displayMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        controller c = new controller();    //TODO: implementa il controller
         boolean terminate = false;
         int choice;
         User user = null;
@@ -43,12 +43,12 @@ public class FacadeMenu {
 
                     if(userType == 1){
                         user = new Professor(RandomStringGenerator.generateRandomString(6), name, surname, mail);
-                        loginManager.addUser(user);
+                        controller.addUser(user);
 
                         professorMenu.displayMenu();
                     } else if (userType == 2) {
                         user = new Student(RandomStringGenerator.generateRandomString(6), name, surname, mail);
-                        loginManager.addUser(user);
+                        controller.addUser(user);
 
                         studentMenu.displayMenu();
                     } else {
@@ -61,7 +61,7 @@ public class FacadeMenu {
                 case 2:
 
                     if (user != null) {
-                        loginManager.login(user);
+                        controller.login(user);
 
                         if(user instanceof Professor)
                             professorMenu.displayMenu();
@@ -84,5 +84,5 @@ public class FacadeMenu {
 
     private StudentMenu studentMenu;
     private ProfessorMenu professorMenu;
-    private final LoginManager loginManager = new LoginManager();
+    private final Controller controller = new Controller();
 }
