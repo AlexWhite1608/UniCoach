@@ -45,9 +45,12 @@ public class FacadeMenu {
                         user = new Professor(RandomStringGenerator.generateRandomString(6), name, surname, mail);
                         loginManager.addUser(user);
 
+                        professorMenu.displayMenu();
                     } else if (userType == 2) {
                         user = new Student(RandomStringGenerator.generateRandomString(6), name, surname, mail);
                         loginManager.addUser(user);
+
+                        studentMenu.displayMenu();
                     } else {
                         System.out.println("Errore");
                         break;
@@ -59,6 +62,12 @@ public class FacadeMenu {
 
                     if (user != null) {
                         loginManager.login(user);
+
+                        if(user instanceof Professor)
+                            professorMenu.displayMenu();
+                        else if(user instanceof Student)
+                            studentMenu.displayMenu();
+
                     } else {
                         System.out.println("Utente non registrato!");
                         break;
