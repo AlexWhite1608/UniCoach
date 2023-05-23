@@ -84,5 +84,5 @@ public class FacadeMenu {
 
     private StudentMenu studentMenu;
     private ProfessorMenu professorMenu;
-    private LoginManager loginManager = new LoginManager()
+    private final LoginManager loginManager = new LoginManager();
 }
