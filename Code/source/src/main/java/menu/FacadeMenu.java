@@ -21,8 +21,8 @@ public class FacadeMenu {
         User user = null;
 
         while (!terminate) {
-            System.out.println("Benvenuto su UniCoach!");
-            System.out.println("Digita:\n 1 se non hai ancora un account \n2 Esegui il login \n3 Esci");
+            System.out.println("Benvenuto su UniCoach!\n");
+            System.out.println("Digita:\n1 Se non hai ancora un account \n2 Esegui il login \n3 Esci");
             choice = scanner.nextInt();
 
             switch (choice) {
