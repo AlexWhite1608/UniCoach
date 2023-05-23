@@ -1,5 +1,7 @@
 package domain_model;
 
+import utility.RandomStringGenerator;
+
 import java.sql.SQLException;
 
 public abstract class User {
@@ -18,6 +20,8 @@ public abstract class User {
 
         this.email = n + "." + s + "@gmail.com";
     }
+
+
 
     public abstract void displayActivities() throws SQLException;
 
