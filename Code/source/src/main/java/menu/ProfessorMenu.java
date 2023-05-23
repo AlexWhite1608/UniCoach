@@ -2,19 +2,14 @@ package menu;
 
 import controller.Controller;
 import domain_model.Professor;
-import domain_model.User;
-
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ProfessorMenu {
 
     public void displayMenu(Professor professor) throws SQLException, MessagingException, InvalidAttributesException {
-        //TODO: azioni professore
         Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
         int choice;

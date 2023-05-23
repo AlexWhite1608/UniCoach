@@ -51,7 +51,9 @@ public class FacadeMenu {
                         user = new Student(RandomStringGenerator.generateRandomString(6), name, surname, mail);
                         controller.addUser(user);
 
-                        studentMenu.displayMenu();
+                        //TODO: se è la prima volta che entra deve scegliere i corsi!!
+
+                        studentMenu.displayMenu((Student) user);
                     } else {
                         System.out.println("Errore");
                         break;
@@ -72,7 +74,7 @@ public class FacadeMenu {
                         if(user instanceof Professor)
                             professorMenu.displayMenu((Professor) user);
                         else if(user instanceof Student)
-                            studentMenu.displayMenu();
+                            studentMenu.displayMenu((Student) user);
 
                     } else {
                         System.out.println("Utente non registrato!");

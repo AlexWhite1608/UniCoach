@@ -1,13 +1,16 @@
 package controller;
 
+import domain_model.Course;
 import domain_model.Professor;
+import domain_model.Student;
 import domain_model.User;
+import manager_implementation.Activity;
+import manager_implementation.CoursesManager;
 import manager_implementation.StudyTimeManager;
 import user_login.LoginManager;
 
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
-import javax.swing.*;
 import java.sql.SQLException;
 
 public class Controller {
@@ -74,6 +77,47 @@ public class Controller {
 
     public void displayCourseStudyInfo(Professor professor) throws SQLException {
         professor.getCourseStudyInfo(professor.getCourse());
+    }
+
+    public void chooseCourses(Student student) {
+        student.chooseCourses();
+    }
+
+    public void displayStudentTranscript(Student student) throws SQLException {
+        student.displayUniTranscript();
+    }
+
+    public void displayActivities(Student student) throws SQLException {
+        student.displayActivities();
+    }
+
+    public Activity addActivity(Student student, String name, String date, int startTime, int endTime) throws SQLException {
+        return student.addActivity(name, date, startTime, endTime);
+    }
+
+    public int getGrade(Student student, String courseName) throws SQLException {
+        Course course = CoursesManager.findCourseByName(courseName);
+
+        if(course != null)
+            return student.getGrade(course);
+        else
+            return -1;
+    }
+
+    public float getStudentAvg(Student student) throws SQLException {
+        return student.getAverage();
+    }
+
+    public void displayExamsGraph(Student student) throws SQLException {
+        student.displayExamsGraph();
+    }
+
+    public void insertStudyTime(Student student) throws SQLException {
+        StudyTimeManager.compileForm(student);
+    }
+
+    public void getStudyInfo(Student student) throws SQLException {
+        student.getStudyInfo();
     }
 
     final LoginManager loginManager = new LoginManager();
