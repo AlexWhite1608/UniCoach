@@ -6,6 +6,8 @@ import domain_model.Student;
 import domain_model.User;
 import utility.RandomStringGenerator;
 
+import javax.mail.MessagingException;
+import javax.naming.directory.InvalidAttributesException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
@@ -13,7 +15,7 @@ import java.util.Scanner;
 
 public class FacadeMenu {
 
-    public void displayMenu() throws SQLException {
+    public void displayMenu() throws SQLException, MessagingException, InvalidAttributesException {
         Scanner scanner = new Scanner(System.in);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean terminate = false;
@@ -44,7 +46,7 @@ public class FacadeMenu {
                         user = new Professor(RandomStringGenerator.generateRandomString(6), name, surname, mail);
                         controller.addUser(user);
 
-                        professorMenu.displayMenu();
+                        professorMenu.displayMenu((Professor) user);
                     } else if (userType == 2) {
                         user = new Student(RandomStringGenerator.generateRandomString(6), name, surname, mail);
                         controller.addUser(user);
@@ -68,7 +70,7 @@ public class FacadeMenu {
                         }
 
                         if(user instanceof Professor)
-                            professorMenu.displayMenu();
+                            professorMenu.displayMenu((Professor) user);
                         else if(user instanceof Student)
                             studentMenu.displayMenu();
 

@@ -9,6 +9,7 @@ import utility.MailNotifier;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.mail.*;
 import javax.naming.directory.InvalidAttributesException;
@@ -233,6 +234,14 @@ public class Professor extends User implements Subject{
     @Override
     public void unsubscribe(Observer o) {
         observers.remove(o);
+    }
+
+    public Student getStudentFromId(String id){
+        for(Observer observer : observers){
+            if(Objects.equals(id, ((Student) observer).getId()))
+                return (Student) observer;
+        }
+        return null;
     }
 
     public ProfessorGateway getProfessorGateway() {

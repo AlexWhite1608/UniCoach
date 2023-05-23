@@ -1,14 +1,19 @@
 package menu;
 
+import controller.Controller;
+import domain_model.Professor;
 import domain_model.User;
 
+import javax.mail.MessagingException;
+import javax.naming.directory.InvalidAttributesException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ProfessorMenu {
 
-    public void displayMenu(){
+    public void displayMenu(Professor professor) throws SQLException, MessagingException, InvalidAttributesException {
         //TODO: azioni professore
         Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
@@ -19,31 +24,113 @@ public class ProfessorMenu {
             choice = scanner.nextInt();
 
             switch (choice) {
-                case 1:
+                case 1:     //Visualizza le attività
+                    controller.displayActivities(professor);
+                break;
 
-                case 2:
+                case 2:     //Inserisci date esame
+                    System.out.println("Inserire la data: ");
+                    String dateExam = scanner.nextLine();
 
-                case 3:
+                    System.out.println("Inserire l'ora di inizio: ");
+                    int startExam = scanner.nextInt();
 
-                case 4:
+                    System.out.println("Inserire l'ora di fine: ");
+                    int endExam = scanner.nextInt();
 
-                case 5:
+                    controller.addExamDate(professor, dateExam, startExam, endExam);
+                    break;
 
-                case 6:
+                case 3:     //Inserisci date lezioni
+                    System.out.println("Inserire il giorno: ");
+                    int day = scanner.nextInt();
 
-                case 7:
+                    System.out.println("Inserire il mese: ");
+                    int month = scanner.nextInt();
 
-                case 8:
+                    System.out.println("Inserire l'anno: ");
+                    int year = scanner.nextInt();
 
-                case 9:
+                    System.out.println("Inserire l'ora di inizio: ");
+                    int startLesson = scanner.nextInt();
 
-                case 10:
+                    System.out.println("Inserire l'ora di fine: ");
+                    int endLesson = scanner.nextInt();
 
-                case 11:
+                    controller.scheduleLessons(professor, day, month, year, startLesson, endLesson);
+                    break;
 
-                case 12:
+                case 4:     //Aggiungi note alla lezione
+                    System.out.println("Inserire la data: ");
+                    String dateNotes = scanner.nextLine();
 
-                case 13:
+                    System.out.println("Inserire le note: ");
+                    String notes = scanner.nextLine();
+
+                    controller.addLectureNotes(professor, dateNotes, notes);
+
+                case 5:     //Inserisci voto studente
+                    System.out.println("Inserire la matricola dello studente: ");
+                    String studentId = scanner.nextLine();
+
+                    System.out.println("Inserire la data dell'esame svolto: ");
+                    String examDate = scanner.nextLine();
+
+                    System.out.println("Inserire il voto: ");
+                    int studentGrade = scanner.nextInt();
+
+                    controller.setGrade(professor, studentId, examDate, studentGrade);
+                    break;
+
+                case 6:     //Ottieni voto studente
+                    System.out.println("Inserire la matricola dello studente: ");
+                    studentId = scanner.nextLine();
+
+                    int grade = controller.getGrade(professor, studentId);
+
+                    System.out.println("Lo studente con matricola " + studentId + " ha preso: " + grade);
+                    break;
+
+                case 7:     //Ottieni media studente
+                    System.out.println("Inserire la matricola dello studente: ");
+                    studentId = scanner.nextLine();
+
+                    float avg = controller.getAverageStudent(professor, studentId);
+
+                    System.out.println("Lo studente con matricola " + studentId + " ha media: " + avg);
+                    break;
+
+                case 8:     //Ottieni media corso
+                    float avgCourse = controller.getAverageCourse(professor);
+
+                    System.out.println("La media del corso vale: " + avgCourse);
+                    break;
+
+                case 9:     //Visualizza esami studente
+                    System.out.println("Inserire la matricola dello studente: ");
+                    studentId = scanner.nextLine();
+
+                    controller.displayStudentExamsGraph(professor, studentId);
+                    break;
+
+                case 10:    //Visualizza esami corso
+                    controller.displayCourseExamsGraph(professor);
+                    break;
+
+                case 11:    //Visualizza tutti i corsi
+                    controller.displayAllCoursesGraph(professor);
+                    break;
+
+                case 12:    //Visualizza study time studente
+                    System.out.println("Inserire la matricola dello studente: ");
+                    studentId = scanner.nextLine();
+
+                    controller.displayStudentStudyTime(professor, studentId);
+                    break;
+
+                case 13:    //Visualizza study time corso
+                    controller.displayCourseStudyInfo(professor);
+                    break;
             }
         }
 
@@ -65,4 +152,6 @@ public class ProfessorMenu {
             12: Visualizza study time studente
             13: Visualizza study time corso
             """;
+
+    private final Controller controller = new Controller();
 }
