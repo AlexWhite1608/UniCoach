@@ -61,7 +61,12 @@ public class FacadeMenu {
                 case 2:
 
                     if (user != null) {
-                        controller.login(user);
+                        if(controller.login(user))
+                            System.out.println("Login effettuato!");
+                        else {
+                            System.out.println("Credenziali errate");
+                            break;
+                        }
 
                         if(user instanceof Professor)
                             professorMenu.displayMenu();

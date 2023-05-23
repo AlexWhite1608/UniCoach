@@ -12,13 +12,15 @@ public class Controller {
         loginManager.addUser(user);
     }
 
-    public void login(User user) throws SQLException {
-        loginManager.login(user);
+    public boolean login(User user) throws SQLException {
+        return loginManager.login(user);
     }
 
     public void logout(User user) {
         loginManager.logout(user);
     }
+
+
 
     final LoginManager loginManager = new LoginManager();
 }
