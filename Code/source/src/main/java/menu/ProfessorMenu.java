@@ -13,6 +13,7 @@ public class ProfessorMenu {
         Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
         int choice;
+        controller = new Controller(professor);
 
         while (!terminate){
             System.out.println("Scegli l'azione da compiere tra: \n" + actionList);
@@ -20,7 +21,7 @@ public class ProfessorMenu {
 
             switch (choice) {
                 case 1:     //Visualizza le attività
-                    controller.displayActivities(professor);
+                    controller.displayActivities();
                 break;
 
                 case 2:     //Inserisci date esame
@@ -33,7 +34,7 @@ public class ProfessorMenu {
                     System.out.println("Inserire l'ora di fine: ");
                     int endExam = scanner.nextInt();
 
-                    controller.addExamDate(professor, dateExam, startExam, endExam);
+                    controller.addExamDate(dateExam, startExam, endExam);
                     break;
 
                 case 3:     //Inserisci date lezioni
@@ -52,7 +53,7 @@ public class ProfessorMenu {
                     System.out.println("Inserire l'ora di fine: ");
                     int endLesson = scanner.nextInt();
 
-                    controller.scheduleLessons(professor, day, month, year, startLesson, endLesson);
+                    controller.scheduleLessons(day, month, year, startLesson, endLesson);
                     break;
 
                 case 4:     //Aggiungi note alla lezione
@@ -62,7 +63,7 @@ public class ProfessorMenu {
                     System.out.println("Inserire le note: ");
                     String notes = scanner.nextLine();
 
-                    controller.addLectureNotes(professor, dateNotes, notes);
+                    controller.addLectureNotes(dateNotes, notes);
 
                 case 5:     //Inserisci voto studente
                     System.out.println("Inserire la matricola dello studente: ");
@@ -74,14 +75,14 @@ public class ProfessorMenu {
                     System.out.println("Inserire il voto: ");
                     int studentGrade = scanner.nextInt();
 
-                    controller.setGrade(professor, studentId, examDate, studentGrade);
+                    controller.setGrade(studentId, examDate, studentGrade);
                     break;
 
                 case 6:     //Ottieni voto studente
                     System.out.println("Inserire la matricola dello studente: ");
                     studentId = scanner.nextLine();
 
-                    int grade = controller.getGrade(professor, studentId);
+                    int grade = controller.getGradeFromProfessor(studentId);
 
                     System.out.println("Lo studente con matricola " + studentId + " ha preso: " + grade);
                     break;
@@ -90,13 +91,13 @@ public class ProfessorMenu {
                     System.out.println("Inserire la matricola dello studente: ");
                     studentId = scanner.nextLine();
 
-                    float avg = controller.getAverageStudent(professor, studentId);
+                    float avg = controller.getAverageStudent(studentId);
 
                     System.out.println("Lo studente con matricola " + studentId + " ha media: " + avg);
                     break;
 
                 case 8:     //Ottieni media corso
-                    float avgCourse = controller.getAverageCourse(professor);
+                    float avgCourse = controller.getAverageCourse();
 
                     System.out.println("La media del corso vale: " + avgCourse);
                     break;
@@ -105,26 +106,26 @@ public class ProfessorMenu {
                     System.out.println("Inserire la matricola dello studente: ");
                     studentId = scanner.nextLine();
 
-                    controller.displayStudentExamsGraph(professor, studentId);
+                    controller.displayStudentExamsGraph(studentId);
                     break;
 
                 case 10:    //Visualizza esami corso
-                    controller.displayCourseExamsGraph(professor);
+                    controller.displayCourseExamsGraph();
                     break;
 
                 case 11:    //Visualizza tutti i corsi
-                    controller.displayAllCoursesGraph(professor);
+                    controller.displayAllCoursesGraph();
                     break;
 
                 case 12:    //Visualizza study time studente
                     System.out.println("Inserire la matricola dello studente: ");
                     studentId = scanner.nextLine();
 
-                    controller.displayStudentStudyTime(professor, studentId);
+                    controller.displayStudentStudyTime(studentId);
                     break;
 
                 case 13:    //Visualizza study time corso
-                    controller.displayCourseStudyInfo(professor);
+                    controller.displayCourseStudyInfo();
                     break;
             }
         }
@@ -148,5 +149,5 @@ public class ProfessorMenu {
             13: Visualizza study time corso
             """;
 
-    private final Controller controller = new Controller();
+    private Controller controller = null;
 }

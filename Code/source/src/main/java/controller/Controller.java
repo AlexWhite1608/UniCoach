@@ -15,6 +15,14 @@ import java.sql.SQLException;
 
 public class Controller {
 
+    public Controller(Professor professor) {
+        this.user = professor;
+    }
+
+    public Controller(Student student) {
+        this.user = student;
+    }
+
     public void addUser(User user) throws SQLException {
         loginManager.addUser(user);
     }
@@ -27,98 +35,95 @@ public class Controller {
         loginManager.logout(user);
     }
 
-    public void displayActivities(Professor professor) throws SQLException {
-        professor.displayActivities();
+    public void displayActivities() throws SQLException {
+        user.displayActivities();
     }
 
-    public void addExamDate(Professor professor, String examDate, int start, int end) throws MessagingException, SQLException {
-        professor.addExamDate(examDate, start, end);
+    public void addExamDate(String examDate, int start, int end) throws MessagingException, SQLException {
+        ((Professor)user).addExamDate(examDate, start, end);
     }
 
-    public void scheduleLessons(Professor professor, int day, int month, int year, int start, int end) throws SQLException, MessagingException, InvalidAttributesException {
-        professor.scheduleLessons(day, month, year, start, end);
+    public void scheduleLessons(int day, int month, int year, int start, int end) throws SQLException, MessagingException, InvalidAttributesException {
+        ((Professor) user).scheduleLessons(day, month, year, start, end);
     }
 
-    public void addLectureNotes(Professor professor, String date, String msg) throws MessagingException, SQLException {
-        professor.addLectureNotes(date, msg);
+    public void addLectureNotes(String date, String msg) throws MessagingException, SQLException {
+        ((Professor) user).addLectureNotes(date, msg);
     }
 
-    public void setGrade(Professor professor, String studentId, String date, int grade) throws SQLException, MessagingException {
-        professor.setGrade(professor.getStudentFromId(studentId), grade, date, true);
+    public void setGrade(String studentId, String date, int grade) throws SQLException, MessagingException {
+        ((Professor) user).setGrade(((Professor) user).getStudentFromId(studentId), grade, date, true);
     }
 
-    public int getGrade(Professor professor, String studentId) throws SQLException {
-        return professor.getGrade(professor.getStudentFromId(studentId));
+    public int getGradeFromProfessor(String studentId) throws SQLException {
+        return ((Professor) user).getGrade(((Professor) user).getStudentFromId(studentId));
     }
 
-    public float getAverageStudent(Professor professor, String studentId) throws SQLException {
-        return professor.getAverage(professor.getStudentFromId(studentId));
+    public float getAverageStudent(String studentId) throws SQLException {
+        return ((Professor) user).getAverage(((Professor) user).getStudentFromId(studentId));
     }
 
-    public float getAverageCourse(Professor professor) throws SQLException {
-        return professor.getAverage();
+    public float getAverageCourse() throws SQLException {
+        return ((Professor) user).getAverage();
     }
 
-    public void displayStudentExamsGraph(Professor professor, String studentId) throws SQLException {
-        professor.displayExamsGraph(professor.getStudentFromId(studentId));
+    public void displayStudentExamsGraph(String studentId) throws SQLException {
+        ((Professor) user).displayExamsGraph(((Professor) user).getStudentFromId(studentId));
     }
 
-    public void displayCourseExamsGraph(Professor professor) throws SQLException {
-        professor.displayExamsGraph(professor.getCourse());
+    public void displayCourseExamsGraph() throws SQLException {
+        ((Professor) user).displayExamsGraph(((Professor) user).getCourse());
     }
 
-    public void displayAllCoursesGraph(Professor professor) throws SQLException {
-        professor.displayExamsGraph();
+    public void displayAllCoursesGraph() throws SQLException {
+        ((Professor) user).displayExamsGraph();
     }
 
-    public void displayStudentStudyTime(Professor professor, String studentId) throws SQLException {
-        professor.getStudentStudyInfo(professor.getStudentFromId(studentId));
+    public void displayStudentStudyTime(String studentId) throws SQLException {
+        ((Professor) user).getStudentStudyInfo(((Professor) user).getStudentFromId(studentId));
     }
 
-    public void displayCourseStudyInfo(Professor professor) throws SQLException {
-        professor.getCourseStudyInfo(professor.getCourse());
+    public void displayCourseStudyInfo() throws SQLException {
+        ((Professor) user).getCourseStudyInfo(((Professor) user).getCourse());
     }
 
-    public void chooseCourses(Student student) {
-        student.chooseCourses();
+    public void chooseCourses() {
+        ((Student) user).chooseCourses();
     }
 
-    public void displayStudentTranscript(Student student) throws SQLException {
-        student.displayUniTranscript();
+    public void displayStudentTranscript() throws SQLException {
+        ((Student) user).displayUniTranscript();
     }
 
-    public void displayActivities(Student student) throws SQLException {
-        student.displayActivities();
+    public Activity addActivity(String name, String date, int startTime, int endTime) throws SQLException {
+        return ((Student) user).addActivity(name, date, startTime, endTime);
     }
 
-    public Activity addActivity(Student student, String name, String date, int startTime, int endTime) throws SQLException {
-        return student.addActivity(name, date, startTime, endTime);
-    }
-
-    public int getGrade(Student student, String courseName) throws SQLException {
+    public int getGradeFromStudent(String courseName) throws SQLException {
         Course course = CoursesManager.findCourseByName(courseName);
 
         if(course != null)
-            return student.getGrade(course);
+            return ((Student) user).getGrade(course);
         else
             return -1;
     }
 
-    public float getStudentAvg(Student student) throws SQLException {
-        return student.getAverage();
+    public float getStudentAvg() throws SQLException {
+        return ((Student) user).getAverage();
     }
 
-    public void displayExamsGraph(Student student) throws SQLException {
-        student.displayExamsGraph();
+    public void displayExamsGraph() throws SQLException {
+        ((Student) user).displayExamsGraph();
     }
 
-    public void insertStudyTime(Student student) throws SQLException {
-        StudyTimeManager.compileForm(student);
+    public void insertStudyTime() throws SQLException {
+        StudyTimeManager.compileForm(((Student) user));
     }
 
-    public void getStudyInfo(Student student) throws SQLException {
-        student.getStudyInfo();
+    public void getStudyInfo() throws SQLException {
+        ((Student) user).getStudyInfo();
     }
 
-    final LoginManager loginManager = new LoginManager();
+    private User user;
+    private final LoginManager loginManager = new LoginManager();
 }

@@ -44,11 +44,13 @@ public class FacadeMenu {
 
                     if(userType == 1){
                         user = new Professor(RandomStringGenerator.generateRandomString(6), name, surname, mail);
+                        controller = new Controller((Professor) user);
                         controller.addUser(user);
 
                         professorMenu.displayMenu((Professor) user);
                     } else if (userType == 2) {
                         user = new Student(RandomStringGenerator.generateRandomString(6), name, surname, mail);
+                        controller = new Controller((Student) user);
                         controller.addUser(user);
 
                         //TODO: se è la prima volta che entra deve scegliere i corsi!!
@@ -92,5 +94,5 @@ public class FacadeMenu {
 
     private StudentMenu studentMenu;
     private ProfessorMenu professorMenu;
-    private final Controller controller = new Controller();
+    private Controller controller = null;
 }

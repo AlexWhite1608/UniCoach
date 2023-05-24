@@ -13,6 +13,7 @@ public class StudentMenu {
         Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
         int choice;
+        controller = new Controller(student);
 
         while (!terminate){
             System.out.println("Scegli l'azione da compiere tra: \n" + actionList);
@@ -20,15 +21,15 @@ public class StudentMenu {
 
             switch (choice) {
                 case 1:     //Scegli i nuovi corsi da seguire
-                    controller.chooseCourses(student);
+                    controller.chooseCourses();
                     break;
 
                 case 2:     //Visualizza libretto
-                    controller.displayStudentTranscript(student);
+                    controller.displayStudentTranscript();
                     break;
 
                 case 3:     //Visualizza attività
-                    controller.displayActivities(student);
+                    controller.displayActivities();
                     break;
 
                 case 4:     //Aggiungi attività
@@ -44,7 +45,7 @@ public class StudentMenu {
                     System.out.println("Inserire la data: ");
                     int activityEnd = scanner.nextInt();
 
-                    Activity activity = controller.addActivity(student, activityInfo, activityDate, activityStart, activityEnd);
+                    Activity activity = controller.addActivity(activityInfo, activityDate, activityStart, activityEnd);
 
                     System.out.println("E' stata inserità l'attività " + activity.getName());
                     break;
@@ -53,7 +54,7 @@ public class StudentMenu {
                     System.out.println("Inserire il nome del corso: ");
                     String courseName = scanner.nextLine();
 
-                    int grade = controller.getGrade(student, courseName);
+                    int grade = controller.getGradeFromStudent(courseName);
 
                     if(grade != -1){
                         System.out.println("Voto all'esame di " + courseName + ": " + grade);
@@ -64,21 +65,21 @@ public class StudentMenu {
                     break;
 
                 case 6:     //Visualizza la media
-                    float studentAvg = controller.getStudentAvg(student);
+                    float studentAvg = controller.getStudentAvg();
 
                     System.out.println("La tua media è" + studentAvg);
                     break;
 
                 case 7:     //Visualizza grafico voti esame
-                    controller.displayExamsGraph(student);
+                    controller.displayExamsGraph();
                     break;
 
                 case 8:     //Inserisci study-time
-                    controller.insertStudyTime(student);
+                    controller.insertStudyTime();
                     break;
 
                 case 9:     //Visualizza study-time
-                    controller.getStudyInfo(student);
+                    controller.getStudyInfo();
                     break;
             }
         }
@@ -96,5 +97,5 @@ public class StudentMenu {
             9: Visualizza study-time
             """;
 
-    private final Controller controller = new Controller();
+    private Controller controller = null;
 }
