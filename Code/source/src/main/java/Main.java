@@ -1,4 +1,4 @@
-import menu.FacadeMenu;
+import view.FacadeMenu;
 
 public class Main {
     public static void main(String[] args) {

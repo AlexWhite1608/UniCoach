@@ -71,7 +71,6 @@ public class StudyTimeManagerTest {
         }
     }
 
-    //TODO tastare lato studente, altrimenti togliere il secondo corso
     @Test
     public void testSetDailyStudyTime() throws SQLException, InterruptedException, MessagingException {
         Student student = new Student("12345", "TestNome", "TestCognome");
@@ -82,7 +81,6 @@ public class StudyTimeManagerTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
-        //TODO Magari farlo anche in altri test invece di richiamare choose course
         List<Course> selectedCourses = new ArrayList<>();
         selectedCourses.add(courseTest1);
         selectedCourses.add(courseTest2);
@@ -114,7 +112,6 @@ public class StudyTimeManagerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        //FIXME: si dovrebbe testare il metodo setDailyStudyTime() e non compileForm()!
         //StudyTimeManager.setDailyStudyTime(true);
         StudyTimeManager.compileForm(student);
 

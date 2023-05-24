@@ -197,7 +197,6 @@ public class StudentGateway extends Gateway {
         resultSet.close();
     }
 
-    //FIXME: dal debug di testAverageAndDisplayTranscipt si vede che a fine di questo metodo la tabella Esami viene svuotata
     public void linkStudentToCourse(List<Course> courses, Student studente) throws SQLException{
         connection = DBConnection.connect("../database/unicoachdb.db");
         String sqlInsert = "INSERT INTO IscrizioneCorso(IdStudente, IdCorso) VALUES (?, ?)";

@@ -33,7 +33,6 @@ public class StudyTimeManager {
                 List<Map<StudyType, Integer>> dedicatedStudyList = new ArrayList<>();
 
                 while(!studyTypeString.equals("0")){
-                    //TODO: fai controllo che abbia scritto per bene lo study type e le ore di studio!
 
                     StudyType studyType = StudyType.getStudyTypeFromString(studyTypeString);
 

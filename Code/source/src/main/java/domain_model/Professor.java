@@ -112,7 +112,7 @@ public class Professor extends User implements Subject{
         Activity addLectureNotesActivity = new Activity();
         addLectureNotesActivity.setName("Resoconto lezione di " + course.getName());
         addLectureNotesActivity.setDate(date);
-        addLectureNotesActivity.setStartTime(0);    // FIXME: negli orari ci possiamo mettere gli orari della lezione svolta
+        addLectureNotesActivity.setStartTime(0);
         addLectureNotesActivity.setEndTime(0);
 
         this.addActivity(addLectureNotesActivity);
@@ -193,15 +193,13 @@ public class Professor extends User implements Subject{
 
         }
 
-        for(Observer obs : observers){
-            MailNotifier.sendEmail(obs, "Inserite le date delle lezioni per la sessione", "Date lezioni di" + course.getName(), this);
-        }
+        notifyObservers( "Inserite le date delle lezioni per la sessione", "Date lezioni di" + course.getName());
 
         return activityList;
     }
 
     //Rimuove la lezione del giorno fornito
-    public void removeLesson(int giorno, int mese, int anno) throws SQLException {    //TODO: deve rimuovere la lezione anche dal calendario dello studente!!
+    public void removeLesson(int giorno, int mese, int anno) throws SQLException, MessagingException {
         professorGateway.removeLesson(giorno, mese, anno, this);
     }
 
@@ -212,7 +210,6 @@ public class Professor extends User implements Subject{
 
     @Override
     public void notifyObservers(String msg, String subject, Activity activity) throws MessagingException, SQLException {
-
         for(Observer observer : observers){
             MailNotifier.sendEmail(observer, msg, subject, this);
             observer.update(activity);
@@ -223,6 +220,12 @@ public class Professor extends User implements Subject{
     public void notifyObservers(Activity activity) throws SQLException {
         for(Observer observer : observers) {
             observer.update(activity);
+        }
+    }
+    @Override
+    public  void notifyObservers(String msg, String subject) throws MessagingException{
+        for(Observer observer : observers){
+            MailNotifier.sendEmail(observer, msg, subject, this);
         }
     }
 
