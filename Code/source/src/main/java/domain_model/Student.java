@@ -52,12 +52,12 @@ public class Student extends User implements Observer {
 
     }
 
-    public int getGrade(Course course, Student student) throws SQLException {
-        return studentGateway.getGrade(course, student);
+    public int getGrade(Course course) throws SQLException {
+        return studentGateway.getGrade(course, this);
     }
 
-    public float getAverage(Student student) throws SQLException {
-        return studentGateway.getAverage(student);
+    public float getAverage() throws SQLException {
+        return studentGateway.getAverage(this);
     }
 
     //Mostra il grafico dei voti ottenuti dallo studente

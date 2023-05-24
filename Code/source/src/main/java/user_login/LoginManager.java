@@ -21,9 +21,9 @@ public class LoginManager {
     // Viene chiamato per la registrazione dell'utente
     public void addUser(User user) throws SQLException{
 
-        // Registrazione utente -> inserimento password (email generata automaticamente con dominio unifi)
+        // Registrazione utente -> inserimento password
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Benvenuto " + user.getName() + ", registra la tua password: ");
+        System.out.print("Benvenuto, registra la tua password: ");
         String userPassword = scanner.nextLine();
         user.setPassword(userPassword);
 

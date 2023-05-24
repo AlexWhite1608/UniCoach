@@ -139,7 +139,7 @@ public class StudentTest {
         studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorTest.setGrade(studentTest, 22, "dataTest", false);
-        int grade = studentTest.getGrade(courseTest, studentTest);
+        int grade = studentTest.getGrade(courseTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -184,7 +184,7 @@ public class StudentTest {
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
-        assertEquals(average, student.getAverage(student), 0.0001f);
+        assertEquals(average, student.getAverage(), 0.0001f);
 
         student.displayUniTranscript();
 
