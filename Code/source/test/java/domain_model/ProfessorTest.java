@@ -5,7 +5,7 @@ import manager_implementation.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import user_login.LoginManager;
+import manager_implementation.LoginManager;
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
 import java.io.ByteArrayInputStream;

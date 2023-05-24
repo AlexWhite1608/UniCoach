@@ -4,6 +4,7 @@ import data_access.DBConnection;
 import domain_model.Professor;
 import domain_model.Student;
 import junit.framework.TestCase;
+import manager_implementation.LoginManager;
 import org.junit.After;
 import org.junit.Before;
 

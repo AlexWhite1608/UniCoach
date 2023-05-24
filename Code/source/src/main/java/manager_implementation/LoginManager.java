@@ -1,4 +1,4 @@
-package user_login;
+package manager_implementation;
 
 import data_access.DBConnection;
 import domain_model.Professor;
