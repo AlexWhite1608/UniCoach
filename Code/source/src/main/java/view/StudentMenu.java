@@ -1,4 +1,4 @@
-package menu;
+package view;
 
 import controller.Controller;
 import domain_model.Student;

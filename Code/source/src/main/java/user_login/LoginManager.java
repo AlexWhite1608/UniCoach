@@ -66,7 +66,7 @@ public class LoginManager {
     }
 
     public void logout(User user) {
-        //FIXME: da implementare meglio
+        //ktmlaaaaaaaaaaaaaFIXME: da implementare meglio
         System.out.println(user.getName() + " " + user.getSurname() + " log out");
     }
 }
