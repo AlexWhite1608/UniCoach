@@ -1,4 +1,4 @@
-package manager_interface;
+package manager;
 
 //FIXME: è da togliere?
 public interface Manager {

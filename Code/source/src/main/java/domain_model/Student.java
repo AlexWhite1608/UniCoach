@@ -1,10 +1,10 @@
 package domain_model;
 
 import data_access.StudentGateway;
-import manager_implementation.Activity;
-import manager_implementation.ChartManager;
-import manager_implementation.CoursesManager;
-import manager_implementation.StudyTimeManager;
+import manager.Activity;
+import manager.ChartManager;
+import manager.CoursesManager;
+import manager.StudyTimeManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

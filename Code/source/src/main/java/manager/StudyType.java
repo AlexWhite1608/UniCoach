@@ -1,4 +1,4 @@
-package manager_implementation;
+package manager;
 
 public enum StudyType {
     LECTURE("Lezione"),

@@ -1,4 +1,4 @@
-package manager_implementation;
+package manager;
 
 import domain_model.Course;
 import domain_model.Student;

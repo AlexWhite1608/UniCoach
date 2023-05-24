@@ -1,9 +1,9 @@
 package domain_model;
 
 import data_access.ProfessorGateway;
-import manager_implementation.Activity;
-import manager_implementation.ChartManager;
-import manager_implementation.StudyTimeManager;
+import manager.Activity;
+import manager.ChartManager;
+import manager.StudyTimeManager;
 import utility.MailNotifier;
 
 import java.sql.SQLException;

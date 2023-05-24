@@ -1,8 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
-import manager_implementation.Activity;
-import manager_implementation.CoursesManager;
+import manager.Activity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

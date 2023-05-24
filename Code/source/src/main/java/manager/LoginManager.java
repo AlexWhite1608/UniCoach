@@ -1,4 +1,4 @@
-package manager_implementation;
+package manager;
 
 import data_access.DBConnection;
 import domain_model.Professor;

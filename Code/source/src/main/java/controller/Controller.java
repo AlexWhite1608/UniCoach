@@ -4,10 +4,10 @@ import domain_model.Course;
 import domain_model.Professor;
 import domain_model.Student;
 import domain_model.User;
-import manager_implementation.Activity;
-import manager_implementation.CoursesManager;
-import manager_implementation.StudyTimeManager;
-import manager_implementation.LoginManager;
+import manager.Activity;
+import manager.CoursesManager;
+import manager.StudyTimeManager;
+import manager.LoginManager;
 
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;

@@ -1,7 +1,7 @@
 package domain_model;
 
 import data_access.DBConnection;
-import manager_implementation.CoursesManager;
+import manager.CoursesManager;
 import utility.RandomStringGenerator;
 
 import java.sql.Connection;

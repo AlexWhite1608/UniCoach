@@ -1,7 +1,7 @@
 package data_access;
 
 import domain_model.*;
-import manager_implementation.Activity;
+import manager.Activity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentGateway implements Gateway {
+public class StudentGateway extends Gateway {
 
     public StudentGateway() {
         connection = DBConnection.connect("../database/unicoachdb.db");
@@ -293,6 +293,4 @@ public class StudentGateway implements Gateway {
         resultSet.close();
         resultSet1.close();
     }
-
-    private Connection connection = null;
 }

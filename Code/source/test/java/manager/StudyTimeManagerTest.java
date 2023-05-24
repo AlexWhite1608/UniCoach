@@ -1,4 +1,4 @@
-package manager_implementation;
+package manager;
 
 import data_access.DBConnection;
 import domain_model.Course;
@@ -13,7 +13,6 @@ import javax.mail.MessagingException;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 

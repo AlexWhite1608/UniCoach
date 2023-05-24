@@ -2,7 +2,7 @@ package menu;
 
 import controller.Controller;
 import domain_model.Student;
-import manager_implementation.Activity;
+import manager.Activity;
 
 import java.sql.SQLException;
 import java.util.Scanner;

@@ -1,6 +1,6 @@
 package domain_model;
 
-import manager_implementation.Activity;
+import manager.Activity;
 
 import javax.mail.MessagingException;
 import java.sql.SQLException;

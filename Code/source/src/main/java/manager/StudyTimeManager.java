@@ -1,16 +1,12 @@
-package manager_implementation;
+package manager;
 
-import data_access.DBConnection;
 import data_access.ManagerGateway;
 import domain_model.Course;
 import domain_model.Exam;
 import domain_model.Student;
-import domain_model.UniTranscript;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.*;
 

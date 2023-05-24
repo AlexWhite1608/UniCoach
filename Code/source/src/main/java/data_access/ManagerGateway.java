@@ -1,10 +1,8 @@
 package data_access;
 
-import domain_model.Course;
-import domain_model.Exam;
-import domain_model.Student;
-import domain_model.UniTranscript;
-import manager_implementation.StudyType;
+import domain_model.*;
+import manager.Activity;
+import manager.StudyType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,14 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManagerGateway {
+public class ManagerGateway extends Gateway {
 
     public static void insertInfoInDb(Map<Exam, List<Map<StudyType, Integer>>> studyInfo) throws SQLException {
         String sql = "INSERT OR IGNORE INTO OreStudio (Codice, TipoStudio, Ore)" +
                 "VALUES (?, ?, ?)" +
                 "ON CONFLICT (Codice, TipoStudio) DO UPDATE SET Ore = Ore + excluded.Ore";
 
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+        connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
 
         for(Map.Entry<Exam, List<Map<StudyType, Integer>>> entry : studyInfo.entrySet()) {
@@ -50,7 +48,7 @@ public class ManagerGateway {
                                 WHERE Corso = ?)
                 GROUP BY TipoStudio""";
 
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+        connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, course.getId());
         ResultSet resultSet = statement.executeQuery();
@@ -78,7 +76,7 @@ public class ManagerGateway {
             WHERE Codice = ?""";
 
         Map<Exam, List<Map<StudyType, Integer>>> info = new HashMap<>();
-        Connection connection = DBConnection.connect("../database/unicoachdb.db");
+        connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement statement = connection.prepareStatement(sql);
         UniTranscript uniTranscript = student.getUniTranscript();
 
@@ -102,6 +100,9 @@ public class ManagerGateway {
         return info;
     }
 
-    private static Connection connection = DBConnection.connect("../database/unicoachdb.db");
+    @Override
+    public void addActivity(Activity activity, User user) throws SQLException {}
 
+    @Override
+    public void removeActivity(Activity activity, User user) throws SQLException {}
 }

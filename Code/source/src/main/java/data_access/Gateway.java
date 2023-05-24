@@ -1,14 +1,17 @@
 package data_access;
 
 import domain_model.*;
-import manager_implementation.Activity;
+import manager.Activity;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
-public interface Gateway {
+public abstract class Gateway {
 
-    void addActivity(Activity activity, User user) throws SQLException;
+    abstract void addActivity(Activity activity, User user) throws SQLException;
 
-    void removeActivity(Activity activity, User user) throws SQLException;
+    abstract void removeActivity(Activity activity, User user) throws SQLException;
+
+    static Connection connection = DBConnection.connect();
 
 }

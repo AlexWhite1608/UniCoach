@@ -1,17 +1,15 @@
 package data_access;
 
 import domain_model.*;
-import manager_implementation.Activity;
+import manager.Activity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 
-
-public class ProfessorGateway implements Gateway{
+public class ProfessorGateway extends Gateway{
 
     public ProfessorGateway(Professor professor) {
         connection = DBConnection.connect("../database/unicoachdb.db");
@@ -251,8 +249,6 @@ public class ProfessorGateway implements Gateway{
         resultSet.close();
         statement.close();
     }
-
-    private Connection connection = null;
 
     private Professor professor;
 

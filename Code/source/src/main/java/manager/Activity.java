@@ -1,4 +1,4 @@
-package manager_implementation;
+package manager;
 
 public class Activity {
 

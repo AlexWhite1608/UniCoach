@@ -1,6 +1,6 @@
 package domain_model;
 
-import manager_implementation.Activity;
+import manager.Activity;
 
 import java.sql.SQLException;
 
