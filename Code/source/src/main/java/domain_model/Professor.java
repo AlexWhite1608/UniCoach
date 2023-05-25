@@ -222,6 +222,7 @@ public class Professor extends User implements Subject{
             observer.update(activity);
         }
     }
+
     @Override
     public  void notifyObservers(String msg, String subject) throws MessagingException{
         for(Observer observer : observers){

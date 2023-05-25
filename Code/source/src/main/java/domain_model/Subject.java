@@ -10,6 +10,8 @@ public interface Subject {
 
     void notifyObservers(Activity activity) throws SQLException;
 
+    void notifyObservers(String msg, String subject) throws MessagingException;
+
     void subscribe(Observer o);
 
     void unsubscribe(Observer o);
