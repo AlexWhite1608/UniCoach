@@ -26,11 +26,11 @@ public class FacadeMenu {
             System.out.println("Benvenuto su UniCoach!\n");
             System.out.println("Digita:\n1 Se non hai ancora un account \n2 Esegui il login \n3 Esci");
             choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-
-                    System.out.println("\nInserisci il tuo nome: ");
+                    System.out.println("Inserisci il tuo nome: ");
                     String name = scanner.nextLine();
 
                     System.out.println("\nInserisci il tuo cognome: ");
