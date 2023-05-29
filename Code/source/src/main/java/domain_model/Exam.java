@@ -49,7 +49,6 @@ public class Exam{
     private String id;
     private String name;
     private int grade = 0;
-    private boolean praise = false;
     private String date = "";
     private boolean isPassed = false;
     private int CFU;
