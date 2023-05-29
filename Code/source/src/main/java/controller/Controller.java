@@ -126,4 +126,5 @@ public class Controller {
 
     private User user;
     private final LoginManager loginManager = new LoginManager();
+
 }
