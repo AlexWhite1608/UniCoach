@@ -13,8 +13,7 @@ import java.util.List;
 
 public class StudentGateway extends Gateway {
 
-    public StudentGateway(Student user) {
-        connection = DBConnection.connect("../database/unicoachdb.db");
+    public StudentGateway(Student student) {connection = DBConnection.connect("../database/unicoachdb.db");
     }
 
     public void addStudent(Student student) throws SQLException {
