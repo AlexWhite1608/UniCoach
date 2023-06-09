@@ -25,11 +25,11 @@ public class StudentMenu {
                     break;
 
                 case 2:     //Visualizza libretto
-                    controller.displayStudentTranscript();
+                    controller.displayUniTranscript();
                     break;
 
                 case 3:     //Visualizza attività
-                    controller.displayActivities();
+                    controller.displayActivities(student);
                     break;
 
                 case 4:     //Aggiungi attività
@@ -54,7 +54,7 @@ public class StudentMenu {
                     System.out.println("Inserire il nome del corso: ");
                     String courseName = scanner.nextLine();
 
-                    int grade = controller.getGradeFromStudent(courseName);
+                    int grade = controller.getGrade(courseName);
 
                     if(grade != -1){
                         System.out.println("Voto all'esame di " + courseName + ": " + grade);

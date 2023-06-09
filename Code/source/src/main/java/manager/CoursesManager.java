@@ -1,5 +1,6 @@
 package manager;
 
+import controller.Controller;
 import domain_model.Course;
 import domain_model.Student;
 import domain_model.Exam;
@@ -16,10 +17,10 @@ public class CoursesManager {
     }
 
     //Permette allo studente di scegliere i corsi da seguire tra tutti i corsi possibili
-    public static void chooseCourses(Student student) {
-        try {
+    public static void chooseCourses(Controller studentController) {
+        try{
             System.out.println("Tutti i corsi disponibili sono i seguenti: ");
-            student.getStudentGateway().displayCourses();
+            studentController.getStudentGateway().displayCourses();
             Scanner scanner = new Scanner(System.in);
             System.out.println("Digita il codice del corso che vuoi seguire (premi 0 per uscire)");
             String input = scanner.nextLine();
@@ -28,7 +29,7 @@ public class CoursesManager {
             while (!input.equals("0")) {
                 System.out.println("Digita il codice del corso successivo o premi 0 per uscire");
                 Course course = findCourseById(input);
-                Exam exam = student.getUniTranscript().findExam(course);
+                Exam exam = studentController.getStudent().getUniTranscript().findExam(course);
 
                 if (course != null) {
                     selectedCourses.add(course);

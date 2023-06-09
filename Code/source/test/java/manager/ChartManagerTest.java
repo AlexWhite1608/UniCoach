@@ -96,7 +96,8 @@ public class ChartManagerTest {
         }
     }
 
-    private static void simulateUserInput(Student student, Course course) {
+    private static void simulateUserInput(Student student, Course course) throws SQLException{
+        Controller studentController = new Controller(student);
         String input = course.getId() + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
@@ -104,10 +105,11 @@ public class ChartManagerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        student.chooseCourses();
+        studentController.chooseCourses();
     }
 
-    private static void simulateUserInput(Student student, List<Course> courseList) {
+    private static void simulateUserInput(Student student, List<Course> courseList) throws SQLException{
+        Controller studentController = new Controller(student);
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
@@ -116,7 +118,7 @@ public class ChartManagerTest {
             InputStream in = new ByteArrayInputStream(input.getBytes());
             System.setIn(in);
 
-            student.chooseCourses();
+            studentController.chooseCourses();
         }
     }
 
@@ -148,7 +150,7 @@ public class ChartManagerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        student.chooseCourses();
+        studentController.chooseCourses();
 
         professorController.setGrade(student,25, "TestData", false);
         professorController2.setGrade(student, 24, "TestData", false);
@@ -156,11 +158,11 @@ public class ChartManagerTest {
         professorController4.setGrade(student, 27, "TestData", false);
 
 
-        student.displayExamsGraph();
-        professor.displayExamsGraph(student);
+        studentController.displayExamsGraph();
+        professorController.displayExamsGraph(student);
 
         // Mostra i voti di tutti gli studenti iscritti al corso
-        professor.displayExamsGraph(courseTest1);
+        professorController.displayExamsGraph(courseTest1);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -205,7 +207,7 @@ public class ChartManagerTest {
         professorController.setGrade(student4,30, "TestData", false);
 
         // Mostra i voti di tutti gli studenti iscritti al corso
-        professor.displayExamsGraph(courseTest1);
+        professorController.displayExamsGraph(courseTest1);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -272,7 +274,7 @@ public class ChartManagerTest {
         professorController4.setGrade(student4,20, "TestData", false);
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
-        professor.displayExamsGraph();
+        professorController.displayExamsGraph();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

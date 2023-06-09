@@ -1,5 +1,6 @@
 package data_access;
 
+import controller.Controller;
 import domain_model.*;
 import manager.Activity;
 
@@ -185,7 +186,10 @@ public class ProfessorGateway extends Gateway{
     public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
         //rimuove l'attività a tutti gli studenti iscritti al corso
         for (Observer observer : professor.getObservers()) {
-            ((Student) observer).getStudentGateway().removeActivity(activity,(Student)observer);
+            if (observer instanceof Student) {
+                Student student = (Student) observer;
+                controller.getStudentGateway().removeActivity(activity, student);
+            }
         }
 
         professor.notifyObservers("La lezione del " + activity.getDate() + " è stata annullata", "Lezione annullata");

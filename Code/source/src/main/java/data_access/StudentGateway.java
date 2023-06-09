@@ -1,8 +1,10 @@
 package data_access;
 
+import controller.Controller;
 import domain_model.*;
 import manager.Activity;
 
+import javax.mail.MessagingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -136,7 +138,7 @@ public class StudentGateway extends Gateway {
     }
 
     @Override
-    public void removeActivity(Activity activity, User user) throws SQLException {
+    public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
         String deleteLesson = "DELETE FROM CalendarioStudenti WHERE Data = ? AND Attività = ? AND Matricola = ? ";
         connection = DBConnection.connect("../database/unicoachdb.db");
         PreparedStatement deleteStatement = connection.prepareStatement(deleteLesson);

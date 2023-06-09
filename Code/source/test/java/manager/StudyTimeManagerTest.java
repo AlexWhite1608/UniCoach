@@ -84,11 +84,12 @@ public class StudyTimeManagerTest {
 
         Controller professorController = new Controller(professor);
         Controller professorController2 = new Controller(professor2);
+        Controller studentContorller = new Controller(student);
 
         List<Course> selectedCourses = new ArrayList<>();
         selectedCourses.add(courseTest1);
         selectedCourses.add(courseTest2);
-        student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
+        studentContorller.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
         professorController.setGrade(student, 25, "testData", false);
         professorController2.setGrade(student, 27, "testData", false);
@@ -123,7 +124,7 @@ public class StudyTimeManagerTest {
         professorController.getCourseStudyInfo(courseTest1);
 
         //Lo studente visualizza le proprie informazioni voti esame/study type
-        student.getStudyInfo();
+        studentContorller.getStudyInfo();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

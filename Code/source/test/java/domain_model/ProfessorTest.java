@@ -133,7 +133,7 @@ public class ProfessorTest {
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest1);
         courseList.add(courseTest2);
-        student.getStudentGateway().linkStudentToCourse(courseList, student);
+        studentController.getStudentGateway().linkStudentToCourse(courseList, student);
 
         professorController.setGrade(student,25, "TestData", false);
         professorController2.setGrade(student,24, "TestData", false);
@@ -171,9 +171,9 @@ public class ProfessorTest {
 
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest1);
-        student1.getStudentGateway().linkStudentToCourse(courseList, student1);
-        student2.getStudentGateway().linkStudentToCourse(courseList, student2);
-        student3.getStudentGateway().linkStudentToCourse(courseList, student3);
+        studentController1.getStudentGateway().linkStudentToCourse(courseList, student1);
+        studentController2.getStudentGateway().linkStudentToCourse(courseList, student2);
+        studentController3.getStudentGateway().linkStudentToCourse(courseList, student3);
 
         professorController.setGrade(student1,22 , "dataTest", false);
         professorController.setGrade(student2, 28 , "dataTest", false);
@@ -216,7 +216,7 @@ public class ProfessorTest {
         //Colleghiamo il corso allo studente
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest);
-        studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
+        studentController.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorController.setGrade(studentTest, 22, "dataTest", true);
         int grade = professorController.getGrade(studentTest);
@@ -379,6 +379,8 @@ public class ProfessorTest {
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         Controller professorController = new Controller(professorTest);
+        Controller studentContoller1 = new Controller(studentTest1);
+        Controller studentContoller2 = new Controller(studentTest2);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");

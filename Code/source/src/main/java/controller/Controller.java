@@ -21,8 +21,11 @@ public class Controller {
         professorGateway.addProfessor((Professor) this.user);
     }
 
-    public Controller(Student student) {
+    public Controller(Student student) throws SQLException{
         this.user = student;
+
+        studentGateway = new StudentGateway((Student) this.user);
+        studentGateway.addStudent((Student) this.user);
     }
 
     public void addUser(User user) throws SQLException {
@@ -207,40 +210,48 @@ public class Controller {
 
     //Lo studente sceglie i corsi ai quali iscriversi
     public void chooseCourses() {
-        ((Student) user).chooseCourses();
+        CoursesManager.chooseCourses(this);
     }
 
-    public void displayStudentTranscript() throws SQLException {
-        ((Student) user).displayUniTranscript();
+    public void displayUniTranscript() throws SQLException {
+        studentGateway.displayTranscript((Student) user);
     }
 
     public Activity addActivity(String name, String date, int startTime, int endTime) throws SQLException {
-        return ((Student) user).addActivity(name, date, startTime, endTime);
+        Activity activity = new Activity(name, date, startTime, endTime);
+        studentGateway.addActivity(activity, (Student) user);
+        return activity;
     }
 
-    public int getGradeFromStudent(String courseName) throws SQLException {
+    public List<Exam> getExams(Student student) throws SQLException {
+        return studentGateway.getExams((Student) user);
+    }
+
+    public int getGrade(String courseName) throws SQLException {
         Course course = CoursesManager.findCourseByName(courseName);
 
         if(course != null)
-            return ((Student) user).getGrade(course);
+            return studentGateway.getGrade(course, (Student) user);
         else
             return -1;
     }
 
     public float getStudentAvg() throws SQLException {
-        return ((Student) user).getAverage();
+        return studentGateway.getAverage((Student) user);
     }
 
+    //Mostra il grafico dei voti ottenuti dallo studente
     public void displayExamsGraph() throws SQLException {
-        ((Student) user).displayExamsGraph();
+        ChartManager.displayExamsGraph(this);
     }
 
     public void insertStudyTime() throws SQLException {
         StudyTimeManager.compileForm(((Student) user));
     }
 
+    //Mostra le ore dedicate allo studio di uno studente
     public void getStudyInfo() throws SQLException {
-        ((Student) user).getStudyInfo();
+        StudyTimeManager.getStudentStudyInfo((Student) user);
     }
 
     public ProfessorGateway getProfessorGateway() {
@@ -249,6 +260,10 @@ public class Controller {
 
     public StudentGateway getStudentGateway() {
         return studentGateway;
+    }
+
+    public Student getStudent() {
+        return (Student) user;
     }
 
     private User user;

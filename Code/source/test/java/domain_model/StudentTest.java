@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.mail.MessagingException;
+import java.awt.*;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -106,7 +107,9 @@ public class StudentTest {
     @Test
     public void testAddActivity() throws SQLException {
         Student student =  new Student("12345", "TestNome", "TestCognome");
-        Activity activity = student.addActivity("TestEvento", "TestData", 8, 10);
+        Controller studentController = new Controller(student);
+
+        Activity activity = studentController.addActivity("TestEvento", "TestData", 8, 10);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
         String sql = "SELECT Attività, Data, OraInizio, OraFine, Matricola FROM CalendarioStudenti WHERE Id = ?";
@@ -141,7 +144,7 @@ public class StudentTest {
         //Colleghiamo il corso allo studente
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest);
-        studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
+        studentController.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
         professorController.setGrade(studentTest, 22, "dataTest", false);
         int grade = studentController.getGrade(courseTest.getName());
@@ -186,16 +189,16 @@ public class StudentTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        student.chooseCourses();
+        studentController.chooseCourses();
 
         professorController.setGrade(student, 25, "dataTest", false);
         professorController2.setGrade(student,  24, "dataTest", false);
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
-        assertEquals(average, student.getAverage(), 0.0001f);
+        assertEquals(average, studentController.getAverage(), 0.0001f);
 
-        student.displayUniTranscript();
+        studentController.displayUniTranscript();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -220,6 +223,12 @@ public void testChooseCourses() throws SQLException {
     Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
     Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
+    Controller studentController = new Controller(student);
+    Controller professorController = new Controller(professor);
+    Controller professorController2 = new Controller(professor2);
+    Controller professorController3 = new Controller(professor3);
+    Controller professorController4 = new Controller(professor4);
+
     // Simuliamo l'input utente con tutti i courseTest.getId(), l'ultimo è ripetuto così da testare anche il controllo
     String input = courseTest1.getId() + "\n" + courseTest2.getId() + "\n" + courseTest3.getId() + "\n" + courseTest3.getId() +"\n0\n";
     InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -229,7 +238,7 @@ public void testChooseCourses() throws SQLException {
     ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outContent));
 
-    student.chooseCourses();
+    studentController.chooseCourses();
 
     conn = DBConnection.connect("../database/unicoachdb.db");
 
