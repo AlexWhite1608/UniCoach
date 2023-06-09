@@ -1,5 +1,6 @@
 package manager;
 
+import controller.Controller;
 import data_access.DBConnection;
 import domain_model.Course;
 import domain_model.ExamType;
@@ -81,13 +82,16 @@ public class StudyTimeManagerTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professor);
+        Controller professorController2 = new Controller(professor2);
+
         List<Course> selectedCourses = new ArrayList<>();
         selectedCourses.add(courseTest1);
         selectedCourses.add(courseTest2);
         student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
 
-        professor.setGrade(student, 25, "testData", false);
-        professor2.setGrade(student, 27, "testData", false);
+        professorController.setGrade(student, 25, "testData", false);
+        professorController2.setGrade(student, 27, "testData", false);
 
         // Simuliamo l'input del primo corso
         String input1 = courseTest1.getName() + "\n" + "Lezione\n" + String.valueOf(1) + "\n" + "Progetto\n" + String.valueOf(2) + "\n" + "Ripasso\n" + String.valueOf(1) + "\n0\n";
@@ -116,7 +120,7 @@ public class StudyTimeManagerTest {
         StudyTimeManager.compileForm(student);
 
         //Il professore visualizza le informazioni sullo studyTime del suo corso
-        professor.getCourseStudyInfo(courseTest1);
+        professorController.getCourseStudyInfo(courseTest1);
 
         //Lo studente visualizza le proprie informazioni voti esame/study type
         student.getStudyInfo();

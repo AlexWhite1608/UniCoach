@@ -1,5 +1,6 @@
 package manager;
 
+import controller.Controller;
 import data_access.DBConnection;
 import domain_model.Course;
 import domain_model.ExamType;
@@ -127,6 +128,12 @@ public class ChartManagerTest {
         Professor professor3 = new Professor("12347", "TestNome", "TestCognome");
         Professor professor4 = new Professor("12348", "TestNome", "TestCognome");
 
+        Controller professorController = new Controller(professor);
+        Controller professorController2 = new Controller(professor2);
+        Controller professorController3 = new Controller(professor3);
+        Controller professorController4 = new Controller(professor4);
+        Controller studentController = new Controller(student);
+
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
@@ -143,10 +150,10 @@ public class ChartManagerTest {
 
         student.chooseCourses();
 
-        professor.setGrade(student,25, "TestData", false);
-        professor2.setGrade(student, 24, "TestData", false);
-        professor3.setGrade(student, 29, "TestData", false);
-        professor4.setGrade(student, 27, "TestData", false);
+        professorController.setGrade(student,25, "TestData", false);
+        professorController2.setGrade(student, 24, "TestData", false);
+        professorController3.setGrade(student, 29, "TestData", false);
+        professorController4.setGrade(student, 27, "TestData", false);
 
 
         student.displayExamsGraph();
@@ -180,16 +187,22 @@ public class ChartManagerTest {
 
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professor);
+        Controller studentController1 = new Controller(student1);
+        Controller studentController2 = new Controller(student2);
+        Controller studentController3 = new Controller(student3);
+        Controller studentController4 = new Controller(student4);
+
         // Simula l'input per tutti gli studenti
         simulateUserInput(student1, courseTest1);
         simulateUserInput(student2, courseTest1);
         simulateUserInput(student3, courseTest1);
         simulateUserInput(student4, courseTest1);
 
-        professor.setGrade(student1,25, "TestData", false);
-        professor.setGrade(student2,21, "TestData", false);
-        professor.setGrade(student3,29, "TestData", false);
-        professor.setGrade(student4,30, "TestData", false);
+        professorController.setGrade(student1,25, "TestData", false);
+        professorController.setGrade(student2,21, "TestData", false);
+        professorController.setGrade(student3,29, "TestData", false);
+        professorController.setGrade(student4,30, "TestData", false);
 
         // Mostra i voti di tutti gli studenti iscritti al corso
         professor.displayExamsGraph(courseTest1);
@@ -220,6 +233,11 @@ public class ChartManagerTest {
         Course courseTest3 = new Course("TestCorso3", 6, professor3, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest4 = new Course("TestCorso4", 6, professor4, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professor);
+        Controller professorController2 = new Controller(professor2);
+        Controller professorController3 = new Controller(professor3);
+        Controller professorController4 = new Controller(professor4);
+
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest1);
         courseList.add(courseTest2);
@@ -233,25 +251,25 @@ public class ChartManagerTest {
         simulateUserInput(student4, courseList);
 
         // Si inseriscono i voti degli esami
-        professor.setGrade(student1,25, "TestData", false);
-        professor.setGrade(student2,21, "TestData", false);
-        professor.setGrade(student3,29, "TestData", false);
-        professor.setGrade(student4,30, "TestData", false);
+        professorController.setGrade(student1,25, "TestData", false);
+        professorController.setGrade(student2,21, "TestData", false);
+        professorController.setGrade(student3,29, "TestData", false);
+        professorController.setGrade(student4,30, "TestData", false);
 
-        professor2.setGrade(student1,18, "TestData", false);
-        professor2.setGrade(student2,26, "TestData", false);
-        professor2.setGrade(student3,30, "TestData", false);
-        professor2.setGrade(student4,30, "TestData", false);
+        professorController2.setGrade(student1,18, "TestData", false);
+        professorController2.setGrade(student2,26, "TestData", false);
+        professorController2.setGrade(student3,30, "TestData", false);
+        professorController2.setGrade(student4,30, "TestData", false);
 
-        professor3.setGrade(student1,30, "TestData", false);
-        professor3.setGrade(student2,20, "TestData", false);
-        professor3.setGrade(student3,26, "TestData", false);
-        professor3.setGrade(student4,19, "TestData", false);
+        professorController3.setGrade(student1,30, "TestData", false);
+        professorController3.setGrade(student2,20, "TestData", false);
+        professorController3.setGrade(student3,26, "TestData", false);
+        professorController3.setGrade(student4,19, "TestData", false);
 
-        professor4.setGrade(student1,25, "TestData", false);
-        professor4.setGrade(student2,22, "TestData", false);
-        professor4.setGrade(student3,24, "TestData", false);
-        professor4.setGrade(student4,20, "TestData", false);
+        professorController4.setGrade(student1,25, "TestData", false);
+        professorController4.setGrade(student2,22, "TestData", false);
+        professorController4.setGrade(student3,24, "TestData", false);
+        professorController4.setGrade(student4,20, "TestData", false);
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
         professor.displayExamsGraph();

@@ -21,10 +21,6 @@ public abstract class User {
         this.email = n + "." + s + "@gmail.com";
     }
 
-
-
-    public abstract void displayActivities() throws SQLException;
-
     public String getName() {
         return name;
     }

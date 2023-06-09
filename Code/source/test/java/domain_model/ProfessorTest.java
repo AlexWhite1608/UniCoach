@@ -1,5 +1,6 @@
 package domain_model;
 
+import controller.Controller;
 import data_access.DBConnection;
 import manager.Activity;
 import org.junit.After;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import manager.LoginManager;
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
+import javax.naming.ldap.Control;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -118,6 +120,11 @@ public class ProfessorTest {
         Professor professor = new Professor("12345", "TestNome1", "TestCognome1");
         Professor professor2 = new Professor("12346", "TestNome2", "TestCognome2");
 
+        Controller professorController = new Controller(professor);
+        Controller professorController2 = new Controller(professor2);
+        Controller studentController = new Controller(student);
+
+
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
@@ -126,12 +133,12 @@ public class ProfessorTest {
         courseList.add(courseTest2);
         student.getStudentGateway().linkStudentToCourse(courseList, student);
 
-        professor.setGrade(student,25, "TestData", false);
-        professor2.setGrade(student,24, "TestData", false);
+        professorController.setGrade(student,25, "TestData", false);
+        professorController2.setGrade(student,24, "TestData", false);
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
-        assertEquals(average, professor.getAverage(student), 0.0001f);
+        assertEquals(average, professorController.getAverage(student), 0.0001f);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -154,19 +161,25 @@ public class ProfessorTest {
         Professor professor = new Professor("12345", "TestNome", "TestCognome");
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professor);
+        Controller studentController1 = new Controller(student1);
+        Controller studentController2 = new Controller(student2);
+        Controller studentController3 = new Controller(student3);
+
+
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest1);
         student1.getStudentGateway().linkStudentToCourse(courseList, student1);
         student2.getStudentGateway().linkStudentToCourse(courseList, student2);
         student3.getStudentGateway().linkStudentToCourse(courseList, student3);
 
-        professor.setGrade(student1,22 , "dataTest", false);
-        professor.setGrade(student2, 28 , "dataTest", false);
-        professor.setGrade(student3,21, "dataTast", false);
+        professorController.setGrade(student1,22 , "dataTest", false);
+        professorController.setGrade(student2, 28 , "dataTest", false);
+        professorController.setGrade(student3,21, "dataTast", false);
 
         float average = ( 22 * 6 + 28 * 6 + 21 * 6 ) / 18f;
 
-        assertEquals(average, professor.getAverage(), 0.0001f);
+        assertEquals(average, professorController.getAverage(), 0.0001f);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -184,6 +197,9 @@ public class ProfessorTest {
         Student studentTest = new Student("12345", "TestNome2", "TestCognome2", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professorTest);
+        Controller studentController = new Controller(studentTest);
+
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
         // Simuliamo l'inserimento della password dell'utente
@@ -200,8 +216,8 @@ public class ProfessorTest {
         courseList.add(courseTest);
         studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
-        professorTest.setGrade(studentTest, 22, "dataTest", true);
-        int grade = professorTest.getGrade(studentTest);
+        professorController.setGrade(studentTest, 22, "dataTest", true);
+        int grade = professorController.getGrade(studentTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -233,6 +249,8 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome3", "TestCognome3", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professorTest);
+
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -248,9 +266,9 @@ public class ProfessorTest {
         studentTest2.attach(courseTest);
 
         //Il professore aggiunge la nuova data dell'esame (e quindi richiama il notifyObservers)
-        Activity activity = professorTest.addExamDate("24/05/2023", 8, 10);
+        Activity activity = professorController.addExamDate("24/05/2023", 8, 10);
 
-        professorTest.displayActivities();
+        professorController.displayActivities(professorTest);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -290,6 +308,8 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome3", "TestCognome", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professorTest);
+
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -305,7 +325,7 @@ public class ProfessorTest {
         studentTest2.attach(courseTest);
 
         //Ritorna tutte le lezioni a partire dalla data inserita (una lezione a settimana)
-        List<Activity> activityList = professorTest.scheduleLessons(12, 4, 2023, 10, 12);
+        List<Activity> activityList = professorController.scheduleLessons(12, 4, 2023, 10, 12);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -354,6 +374,8 @@ public class ProfessorTest {
         Student studentTest2 = new Student("12346", "TestNome3", "TestCognome3", "unicoach2023@gmail.com");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professorTest);
+
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");
 
@@ -369,10 +391,10 @@ public class ProfessorTest {
         studentTest2.attach(courseTest);
 
         //Ritorna tutte le lezioni a partire dalla data inserita (una lezione a settimana)
-        List<Activity> activityList = professorTest.scheduleLessons(12, 4, 2023, 10, 12);
+        List<Activity> activityList = professorController.scheduleLessons(12, 4, 2023, 10, 12);
 
         //Rimuovo una lezione
-        professorTest.removeLesson(3, 5, 2023);
+        professorController.removeLesson(3, 5, 2023);
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

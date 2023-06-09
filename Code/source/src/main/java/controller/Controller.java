@@ -1,22 +1,24 @@
 package controller;
 
-import domain_model.Course;
-import domain_model.Professor;
-import domain_model.Student;
-import domain_model.User;
-import manager.Activity;
-import manager.CoursesManager;
-import manager.StudyTimeManager;
-import manager.LoginManager;
+import data_access.ProfessorGateway;
+import data_access.StudentGateway;
+import domain_model.*;
+import manager.*;
+import utility.MailNotifier;
 
 import javax.mail.MessagingException;
 import javax.naming.directory.InvalidAttributesException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
-    public Controller(Professor professor) {
+    public Controller(Professor professor) throws SQLException {
         this.user = professor;
+
+        professorGateway = new ProfessorGateway((Professor) this.user);
+        professorGateway.addProfessor((Professor) this.user);
     }
 
     public Controller(Student student) {
@@ -35,58 +37,175 @@ public class Controller {
         loginManager.logout(user);
     }
 
-    public void displayActivities() throws SQLException {
-        user.displayActivities();
+    //Metodi di user
+    public void displayActivities(User user) throws SQLException {
+        if(user instanceof Professor){
+            professorGateway.displayActivities((Professor) user);
+        } else if(user instanceof Student){
+            studentGateway.displayActivities((Student) user);
+        }
+
     }
 
-    public void addExamDate(String examDate, int start, int end) throws MessagingException, SQLException {
-        ((Professor)user).addExamDate(examDate, start, end);
+    //Metodi di professor
+    public Activity addExamDate(String date, int startTime, int endTime) throws MessagingException, SQLException {
+        String subject = "Nuova data esame professor " + ((Professor) user).getCourse().getName() + " " + ((Professor) user).getSurname();
+        String msg = "Di seguito la data del prossimo esame: \n" + date;
+
+        Activity addExamActivity = new Activity();
+        addExamActivity.setName("Data esame " + ((Professor) user).getCourse().getName());
+        addExamActivity.setDate(date);
+        addExamActivity.setStartTime(startTime);
+        addExamActivity.setEndTime(endTime);
+
+        professorGateway.addActivity(addExamActivity, ((Professor) user));
+
+
+        //Notifica gli studenti del nuovo esame
+        ((Professor) user).notifyObservers(msg, subject, new Activity(addExamActivity));
+
+        return addExamActivity;
     }
 
-    public void scheduleLessons(int day, int month, int year, int start, int end) throws SQLException, MessagingException, InvalidAttributesException {
-        ((Professor) user).scheduleLessons(day, month, year, start, end);
+    //Programma le lezioni del professore per il trimestre
+    public List<Activity> scheduleLessons(int giorno, int mese, int anno, int oraInizio, int oraFine) throws SQLException, InvalidAttributesException, MessagingException {
+
+        if(giorno < 1 || giorno > 31 || mese < 1 || mese > 12)
+            throw new InvalidAttributesException("Data inserita errata");
+
+        String name = "Lezione " + ((Professor) user).getCourse().getName();
+        int tmpGiorno = giorno;
+        int tmpMese = mese;
+        int tmpAnno = anno;
+
+        List<Activity> activityList= new ArrayList<>();
+
+        while(tmpMese - mese <= 3 || tmpMese - mese + 12 <= 3){
+            String date = tmpGiorno + "/" + tmpMese + "/" + tmpAnno;
+
+            Activity activity = new Activity(name, date, oraInizio, oraFine);
+            activityList.add(activity);
+
+            ((Professor) user).addActivity(activity, professorGateway);
+            ((Professor) user).notifyObservers(new Activity(activity));
+
+            tmpGiorno += 7;
+
+            if(tmpGiorno >30 && ((tmpMese == 4) || (tmpMese == 6) || (tmpMese == 9) || (tmpMese == 11))){
+                tmpGiorno -=  30;
+                tmpMese += 1;
+            }
+
+            if(tmpGiorno >31 && ((tmpMese == 1) || (tmpMese == 3) || (tmpMese == 5) || (tmpMese == 7) || (tmpMese == 8) || (tmpMese == 10) || (tmpMese ==12) )){
+                tmpGiorno -=  31;
+                tmpMese += 1;
+
+                if(tmpMese > 12) {
+                    tmpMese -= 12;
+                    tmpAnno += 1;
+                }
+            }
+
+            if(tmpGiorno >28 && (tmpMese == 2)){
+                tmpGiorno -=  28;
+                tmpMese += 1;
+            }
+
+        }
+
+        ((Professor) user).notifyObservers( "Inserite le date delle lezioni per la sessione", "Date lezioni di" + ((Professor) user).getCourse().getName());
+
+        return activityList;
     }
 
-    public void addLectureNotes(String date, String msg) throws MessagingException, SQLException {
-        ((Professor) user).addLectureNotes(date, msg);
+    //Rimuove la lezione del giorno fornito
+    public void removeLesson(int giorno, int mese, int anno) throws SQLException, MessagingException {
+        professorGateway.removeLesson(giorno, mese, anno, (Professor) user);
     }
 
-    public void setGrade(String studentId, String date, int grade) throws SQLException, MessagingException {
-        ((Professor) user).setGrade(((Professor) user).getStudentFromId(studentId), grade, date, true);
+    //Aggiunge le eventuali note/homework della lezione
+    public Activity addLectureNotes(String date, String msg) throws MessagingException, SQLException {
+        String subject = "Resoconto lezione di "+ ((Professor) user).getCourse().getName()+ " del " + date;
+
+        Activity addLectureNotesActivity = new Activity();
+        addLectureNotesActivity.setName("Resoconto lezione di " + ((Professor) user).getCourse().getName());
+        addLectureNotesActivity.setDate(date);
+        addLectureNotesActivity.setStartTime(0);
+        addLectureNotesActivity.setEndTime(0);
+
+        professorGateway.addActivity(addLectureNotesActivity, ((Professor) user));
+
+        ((Professor) user).notifyObservers(msg, subject, addLectureNotesActivity);
+
+        return addLectureNotesActivity;
     }
 
-    public int getGradeFromProfessor(String studentId) throws SQLException {
-        return ((Professor) user).getGrade(((Professor) user).getStudentFromId(studentId));
+    //Aggiunge l'esame al libretto dello studente
+    public void setGrade(Student student, int grade, String data, boolean sendEmail) throws SQLException, MessagingException {
+        Exam exam = student.getUniTranscript().findExam(((Professor) user).getCourse());
+        if (grade >= 1 && grade <= 30) {
+
+            if (exam != null) {
+                professorGateway.setGrade(exam, grade, data);
+
+                if (sendEmail) {
+                    //Manda email allo studente
+                    String msg = "Gentile " + student.getName() + " " + student.getSurname() + " ti comunichiamo che l'esito della prova" +
+                            " di esame relativa all'attività didattica " + exam.getName() + " da te sostenuta il " + data + " è " + grade + "/30";
+
+                    MailNotifier.sendEmail(student, msg, "Pubblicazione voto appello " + exam.getName(), (Professor) user);
+                }
+            } else {
+                System.out.println("Lo studente selezionato non è iscritto al corso");
+            }
+        } else {
+            System.out.println("Il voto inserito non è valido");
+        }
     }
 
-    public float getAverageStudent(String studentId) throws SQLException {
-        return ((Professor) user).getAverage(((Professor) user).getStudentFromId(studentId));
+    //Ottiene il voto dello studente fornito
+    public int getGrade(Student student) throws SQLException {
+        return professorGateway.getGrade(student);
     }
 
-    public float getAverageCourse() throws SQLException {
-        return ((Professor) user).getAverage();
+    //Ritorna la media dello studente fornito
+    public float getAverage(Student student) throws SQLException {
+        return professorGateway.getAverage(student);
     }
 
-    public void displayStudentExamsGraph(String studentId) throws SQLException {
-        ((Professor) user).displayExamsGraph(((Professor) user).getStudentFromId(studentId));
+    //Ritorna la media del corso
+    public float getAverage() throws SQLException {
+        return professorGateway.getAverage();
     }
 
-    public void displayCourseExamsGraph() throws SQLException {
-        ((Professor) user).displayExamsGraph(((Professor) user).getCourse());
+    //Grafica gli esami svolti da quello studente con la media
+    public void displayExamsGraph(Student student) throws SQLException {
+        ChartManager.displayExamsGraph(student);
     }
 
-    public void displayAllCoursesGraph() throws SQLException {
-        ((Professor) user).displayExamsGraph();
+    //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
+    public void displayExamsGraph(Course course) throws SQLException {
+        ChartManager.displayExamsGraph(course);
     }
 
-    public void displayStudentStudyTime(String studentId) throws SQLException {
-        ((Professor) user).getStudentStudyInfo(((Professor) user).getStudentFromId(studentId));
+    //Grafica la media di ogni corso presente
+    public void displayAllExamsGraph() throws SQLException {
+        ChartManager.displayExamsGraph();
     }
 
-    public void displayCourseStudyInfo() throws SQLException {
-        ((Professor) user).getCourseStudyInfo(((Professor) user).getCourse());
+    //Vede le informazioni sullo studio dello studente fornito
+    public void getStudentStudyInfo(Student student) throws SQLException {
+        StudyTimeManager.getStudentStudyInfo(student);
     }
 
+    //Visualizza le informazioni di studio degli studenti iscritti al corso; numero di ore spese confrontato con il voto ottenuto
+    public void getCourseStudyInfo(Course course) throws SQLException {
+        StudyTimeManager.getCourseStudyInfo(course);
+    }
+
+    //-----------------metodi dello studente-----------------
+
+    //Lo studente sceglie i corsi ai quali iscriversi
     public void chooseCourses() {
         ((Student) user).chooseCourses();
     }
@@ -124,7 +243,17 @@ public class Controller {
         ((Student) user).getStudyInfo();
     }
 
+    public ProfessorGateway getProfessorGateway() {
+        return professorGateway;
+    }
+
+    public StudentGateway getStudentGateway() {
+        return studentGateway;
+    }
+
     private User user;
+    private ProfessorGateway professorGateway;
+    private StudentGateway studentGateway;
     private final LoginManager loginManager = new LoginManager();
 
 }

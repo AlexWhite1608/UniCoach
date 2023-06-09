@@ -1,5 +1,6 @@
 package domain_model;
 
+import controller.Controller;
 import data_access.DBConnection;
 import manager.Activity;
 import org.junit.After;
@@ -132,13 +133,16 @@ public class StudentTest {
         Student studentTest = new Student("12345", "TestNome", "TestCognome");
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professorTest);
+        Controller studentController = new Controller(studentTest);
+
         //Colleghiamo il corso allo studente
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest);
         studentTest.getStudentGateway().linkStudentToCourse(courseList, studentTest);
 
-        professorTest.setGrade(studentTest, 22, "dataTest", false);
-        int grade = studentTest.getGrade(courseTest);
+        professorController.setGrade(studentTest, 22, "dataTest", false);
+        int grade = studentController.getGrade(courseTest.getName());
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 
@@ -167,6 +171,10 @@ public class StudentTest {
         Course courseTest1 = new Course("TestCorso1", 6, professor, ExamType.WRITTEN_AND_ORAL_TEST);
         Course courseTest2 = new Course("TestCorso2", 6, professor2, ExamType.WRITTEN_AND_ORAL_TEST);
 
+        Controller professorController = new Controller(professor);
+        Controller professorController2 = new Controller(professor2);
+        Controller studentController = new Controller(student);
+
         // Simuliamo l'input utente con tutti i courseTest.getId()
         String input = courseTest1.getId()  + "\n" + courseTest2.getId() + "\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -178,8 +186,8 @@ public class StudentTest {
 
         student.chooseCourses();
 
-        professor.setGrade(student, 25, "dataTest", false);
-        professor2.setGrade(student,  24, "dataTest", false);
+        professorController.setGrade(student, 25, "dataTest", false);
+        professorController2.setGrade(student,  24, "dataTest", false);
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
