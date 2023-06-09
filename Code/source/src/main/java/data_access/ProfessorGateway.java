@@ -4,7 +4,6 @@ import domain_model.*;
 import manager.Activity;
 
 import javax.mail.MessagingException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -178,7 +177,12 @@ public class ProfessorGateway extends Gateway{
     }
 
     @Override
-    public void removeActivity(Activity activity, User user) throws SQLException, MessagingException {
+    void removeActivity(Activity activity, User user) throws SQLException, MessagingException {
+
+    }
+
+    @Override
+    public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
         //rimuove l'attività a tutti gli studenti iscritti al corso
         for (Observer observer : professor.getObservers()) {
             ((Student) observer).getStudentGateway().removeActivity(activity,(Student)observer);
@@ -196,7 +200,7 @@ public class ProfessorGateway extends Gateway{
         deleteStatement.executeUpdate();
     }
 
-    public void removeLesson(int giorno, int mese, int anno, Professor professor) throws SQLException, MessagingException {
+    public void removeLesson(int giorno, int mese, int anno, Professor professor, Controller controller) throws SQLException, MessagingException {
 
         //Ricerco la lezione nel database
         String findCourseSql = "SELECT * FROM CalendarioDocenti WHERE Data = ? AND Matricola = ?";
@@ -216,8 +220,11 @@ public class ProfessorGateway extends Gateway{
             removeActivity(removeLesson, professor);
 
             //Elimina anche la lezione visualizzata nel calendario dello studente
-            for(Observer student : professor.getObservers()){
-                ((Student)student).getStudentGateway().removeActivity(removeLesson, (Student)student);
+            for (Observer observer : professor.getObservers()) {
+                if (observer instanceof Student) {
+                    Student student = (Student) observer;
+                    controller.getStudentGateway().removeActivity(removeLesson, student);
+                }
             }
 
         } else throw new SQLException("La lezione inserita non è presente");

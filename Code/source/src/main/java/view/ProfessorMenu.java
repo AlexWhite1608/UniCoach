@@ -82,7 +82,7 @@ public class ProfessorMenu {
                     System.out.println("Inserire la matricola dello studente: ");
                     studentId = scanner.nextLine();
 
-                    int grade = controller.getGradeFromProfessor(studentId);
+                    int grade = controller.getGrade(studentId);
 
                     System.out.println("Lo studente con matricola " + studentId + " ha preso: " + grade);
                     break;

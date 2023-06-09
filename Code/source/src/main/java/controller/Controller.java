@@ -86,7 +86,7 @@ public class Controller {
             Activity activity = new Activity(name, date, oraInizio, oraFine);
             activityList.add(activity);
 
-            ((Professor) user).addActivity(activity, professorGateway);
+            professorGateway.addActivity(activity, (Professor) user);
             ((Professor) user).notifyObservers(new Activity(activity));
 
             tmpGiorno += 7;
@@ -120,7 +120,7 @@ public class Controller {
 
     //Rimuove la lezione del giorno fornito
     public void removeLesson(int giorno, int mese, int anno) throws SQLException, MessagingException {
-        professorGateway.removeLesson(giorno, mese, anno, (Professor) user);
+        professorGateway.removeLesson(giorno, mese, anno, (Professor) user, this);
     }
 
     //Aggiunge le eventuali note/homework della lezione
@@ -180,7 +180,7 @@ public class Controller {
 
     //Grafica gli esami svolti da quello studente con la media
     public void displayExamsGraph(Student student) throws SQLException {
-        ChartManager.displayExamsGraph(student);
+        ChartManager.displayExamsGraph(this);
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)

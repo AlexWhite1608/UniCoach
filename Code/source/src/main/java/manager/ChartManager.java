@@ -1,5 +1,6 @@
 package manager;
 
+import controller.Controller;
 import data_access.DBConnection;
 import domain_model.Course;
 import domain_model.Exam;
@@ -33,17 +34,17 @@ import java.util.Map;
 public class ChartManager {
 
     //Grafica gli esami svolti da quello studente con la media
-    public static void displayExamsGraph(Student student) throws SQLException {
+    public static void displayExamsGraph(Controller controller) throws SQLException {
 
         chart = ChartFactory.createBarChart(
-                "Esami di " + student.getName() + " " + student.getSurname(),
+                "Esami di " + controller.getStudent().getName() + " " + controller.getStudent().getSurname(),
                 "Esame",           // Etichetta asse x
                 "Voti",                               // Etichetta asse y
-                getStudentDataset(student)            // Dataset
+                getStudentDataset(controller)            // Dataset
         );
 
         // Crea una finestra per mostrare il grafico
-        frame = new JFrame("Grafico voti " + student.getName() + " " + student.getSurname());
+        frame = new JFrame("Grafico voti " + controller.getStudent().getName() + " " + controller.getStudent().getSurname());
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
         frame.setVisible(true);
@@ -52,7 +53,7 @@ public class ChartManager {
         chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d3557"));
 
         // Specifica il percorso e il nome del file di output
-        String outputPath = "../graph/"+ "grafico" + student.getId() + ".png";
+        String outputPath = "../graph/"+ "grafico" + controller.getStudent().getId() + ".png";
 
         // Specifica le dimensioni per l'immagine del grafico
         int width = 800;
@@ -240,14 +241,14 @@ public class ChartManager {
     }
 
     //Ritorna il dataset per il grafico che mostra gli esami svolti dallo studente
-    private static DefaultCategoryDataset getStudentDataset(Student student) throws SQLException {
+    private static DefaultCategoryDataset getStudentDataset(Controller controller) throws SQLException {
         DefaultCategoryDataset studentDataset = new DefaultCategoryDataset();
-        List<Exam> examListStudent = student.getExams(student);
+        List<Exam> examListStudent = controller.getStudentGateway().getExams(controller.getStudent());
 
         for (Exam exam : examListStudent) {
             String examName = exam.getName();
             int grade = exam.getGrade();
-            studentDataset.addValue(grade, "Studente " + student.getId(), examName);
+            studentDataset.addValue(grade, "Studente " + controller.getStudent().getId(), examName);
         }
 
         return studentDataset;

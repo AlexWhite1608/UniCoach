@@ -86,6 +86,8 @@ public class StudentTest {
     public void testAddStudent() throws SQLException {
         Student student = new Student("12345", "TestNome", "TestCognome");
 
+        Controller controllerStudent = new Controller(student);
+
         // Verifica che lo studente sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Studente WHERE Matricola = ?";
         PreparedStatement statement = conn.prepareStatement(sql);

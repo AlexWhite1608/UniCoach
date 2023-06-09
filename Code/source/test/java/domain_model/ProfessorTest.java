@@ -100,6 +100,8 @@ public class ProfessorTest {
     public void testAddProfessor() throws SQLException {
         Professor professor = new Professor("12345", "TestNome1", "TestCognome1");
 
+        Controller professorController = new Controller(professor);
+
         // Verifica che lo professore sia stato effettivamente aggiunto al database
         String sql = "SELECT * FROM Docente WHERE Matricola = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
@@ -250,6 +252,8 @@ public class ProfessorTest {
         Course courseTest = new Course("TestCorso", 6, professorTest, ExamType.WRITTEN_AND_ORAL_TEST);
 
         Controller professorController = new Controller(professorTest);
+        Controller studentController = new Controller(studentTest1);
+        Controller studentController2 = new Controller(studentTest2);
 
         //Eseguo registrazione professore per la mandare la mail
         LoginManager loginManager = new LoginManager("../database/unicoachdb.db");

@@ -37,11 +37,12 @@ public class CoursesManager {
                 }
                 input = scanner.nextLine();
             }
-            student.getStudentGateway().linkStudentToCourse(selectedCourses, student);
+            studentController.getStudentGateway().linkStudentToCourse(selectedCourses, studentController.getStudent());
 
         } catch (SQLException e) {
             System.err.println("Errore durante l'accesso al database: " + e.getMessage());
         }
+
     }
 
     //Restituisce l'oggetto corso a partire dal suo id

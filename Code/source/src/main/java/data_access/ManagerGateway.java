@@ -1,9 +1,11 @@
 package data_access;
 
+import controller.Controller;
 import domain_model.*;
 import manager.Activity;
 import manager.StudyType;
 
+import javax.mail.MessagingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -105,4 +107,9 @@ public class ManagerGateway extends Gateway {
 
     @Override
     public void removeActivity(Activity activity, User user) throws SQLException {}
+
+    @Override
+    public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
+
+    }
 }

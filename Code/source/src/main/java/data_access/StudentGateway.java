@@ -131,6 +131,11 @@ public class StudentGateway extends Gateway {
     }
 
     @Override
+    void removeActivity(Activity activity, User user) throws SQLException, MessagingException {
+
+    }
+
+    @Override
     public void removeActivity(Activity activity, User user) throws SQLException {
         String deleteLesson = "DELETE FROM CalendarioStudenti WHERE Data = ? AND Attività = ? AND Matricola = ? ";
         connection = DBConnection.connect("../database/unicoachdb.db");

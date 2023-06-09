@@ -1,9 +1,7 @@
 package domain_model;
 
-import data_access.ProfessorGateway;
+import data_access.StudentGateway;
 import manager.Activity;
-import manager.ChartManager;
-import manager.StudyTimeManager;
 import utility.MailNotifier;
 
 import java.sql.SQLException;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.mail.*;
-import javax.naming.directory.InvalidAttributesException;
 
 public class Professor extends User implements Subject{
 
@@ -30,8 +27,6 @@ public class Professor extends User implements Subject{
         course = null;
     }
 
-
-
     //Imposta il corso al professore
     public void setCourse(Course course) {
         this.course = course;
@@ -39,16 +34,26 @@ public class Professor extends User implements Subject{
 
     @Override
     public void notifyObservers(String msg, String subject, Activity activity) throws MessagingException, SQLException {
-        for(Observer observer : observers){
-            MailNotifier.sendEmail(observer, msg, subject, this);
-            observer.update(activity);
-        }
+        
     }
 
     @Override
     public void notifyObservers(Activity activity) throws SQLException {
+
+    }
+
+    @Override
+    public void notifyObservers(String msg, String subject, Activity activity, StudentGateway studentGateway) throws MessagingException, SQLException {
+        for(Observer observer : observers){
+            MailNotifier.sendEmail(observer, msg, subject, this);
+            observer.update(activity, studentGateway);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Activity activity, StudentGateway studentGateway) throws SQLException {
         for(Observer observer : observers) {
-            observer.update(activity);
+            observer.update(activity, studentGateway);
         }
     }
 
