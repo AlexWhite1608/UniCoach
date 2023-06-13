@@ -217,16 +217,19 @@ public class Controller {
         studentGateway.displayTranscript((Student) user);
     }
 
+    // Aggiunge l'attività al calendario dello studente
     public Activity addActivity(String name, String date, int startTime, int endTime) throws SQLException {
         Activity activity = new Activity(name, date, startTime, endTime);
         studentGateway.addActivity(activity, (Student) user);
         return activity;
     }
 
+    // Ritorna la lista degli esami dello studente
     public List<Exam> getExams(Student student) throws SQLException {
         return studentGateway.getExams((Student) user);
     }
 
+    // Ritorna il voto in base al nome dell'esame fornito
     public int getGrade(String courseName) throws SQLException {
         Course course = CoursesManager.findCourseByName(courseName);
 
@@ -236,6 +239,7 @@ public class Controller {
             return -1;
     }
 
+    // RItorna la media dello studente
     public float getStudentAvg() throws SQLException {
         return studentGateway.getAverage((Student) user);
     }
@@ -245,6 +249,7 @@ public class Controller {
         ChartManager.displayExamsGraph(this);
     }
 
+    // Inserimento informazioni sullo study time
     public void insertStudyTime() throws SQLException {
         StudyTimeManager.compileForm(((Student) user));
     }
