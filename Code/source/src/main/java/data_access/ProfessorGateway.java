@@ -224,6 +224,8 @@ public class ProfessorGateway extends Gateway{
             removeActivity(removeLesson, professor);
 
             //Elimina anche la lezione visualizzata nel calendario dello studente
+
+            //FIXME: il controller è del professore, non può avere il gateway dello studente! --> si potrebbe spostare questa roba nell'update dello studente
             for (Observer observer : professor.getObservers()) {
                 if (observer instanceof Student) {
                     Student student = (Student) observer;
@@ -240,7 +242,7 @@ public class ProfessorGateway extends Gateway{
     public void displayActivities(Professor professor) throws SQLException {
         String sql = """
                 SELECT Attività, Data, OraInizio, OraFine
-                FROM CalendarioStudenti
+                FROM CalendarioDocenti
                 WHERE Matricola = ?
                 ORDER BY CAST(Data as date) ASC""";
 
