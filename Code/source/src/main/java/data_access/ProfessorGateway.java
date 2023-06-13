@@ -179,16 +179,11 @@ public class ProfessorGateway extends Gateway{
 
     @Override
     void removeActivity(Activity activity, User user) throws SQLException, MessagingException {
-
-    }
-
-    @Override
-    public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
         //rimuove l'attività a tutti gli studenti iscritti al corso
         for (Observer observer : professor.getObservers()) {
             if (observer instanceof Student) {
-                Student student = (Student) observer;
-                controller.getStudentGateway().removeActivity(activity, student);
+                Controller studentController = new Controller((Student) observer);
+                studentController.getStudentGateway().removeActivity(activity, (Student) observer);
             }
         }
 
@@ -228,8 +223,8 @@ public class ProfessorGateway extends Gateway{
             //FIXME: il controller è del professore, non può avere il gateway dello studente! --> si potrebbe spostare questa roba nell'update dello studente
             for (Observer observer : professor.getObservers()) {
                 if (observer instanceof Student) {
-                    Student student = (Student) observer;
-                    controller.getStudentGateway().removeActivity(removeLesson, student);
+                    Controller studentController = new Controller((Student) observer);
+                    studentController.getStudentGateway().removeActivity(removeLesson, (Student) observer);
                 }
             }
 

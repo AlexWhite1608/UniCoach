@@ -108,8 +108,4 @@ public class ManagerGateway extends Gateway {
     @Override
     public void removeActivity(Activity activity, User user) throws SQLException {}
 
-    @Override
-    public void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException {
-
-    }
 }

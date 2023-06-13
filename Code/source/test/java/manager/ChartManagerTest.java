@@ -276,7 +276,7 @@ public class ChartManagerTest {
         professorController4.setGrade(student4,20, "TestData", false);
 
         // Un qualsiasi professore può vedere la situazione di tutti i corsi
-        professorController.displayExamsGraph();
+        professorController.displayAllExamsGraph();
 
         conn = DBConnection.connect("../database/unicoachdb.db");
 

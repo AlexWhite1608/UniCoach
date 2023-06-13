@@ -16,5 +16,4 @@ public abstract class Gateway {
 
     static Connection connection = DBConnection.connect();
 
-    public abstract void removeActivity(Activity activity, User user, Controller controller) throws SQLException, MessagingException;
 }
