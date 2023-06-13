@@ -196,7 +196,7 @@ public class StudentTest {
 
         float average = ( 25 * 6 + 24 * 6 ) / 12f;
 
-        assertEquals(average, studentController.getAverage(), 0.0001f);
+        assertEquals(average, studentController.getStudentAvg(), 0.0001f);
 
         studentController.displayUniTranscript();
 
