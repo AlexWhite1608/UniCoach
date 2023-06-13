@@ -17,7 +17,7 @@ public class StudentGateway extends Gateway {
     }
 
     public void addStudent(Student student) throws SQLException {
-        String sql = "INSERT INTO Studente (Matricola, Nome, Cognome, Email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO Studente (Matricola, Nome, Cognome, Email) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, student.getId());

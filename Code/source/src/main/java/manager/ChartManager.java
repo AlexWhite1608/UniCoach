@@ -34,17 +34,17 @@ import java.util.Map;
 public class ChartManager {
 
     //Grafica gli esami svolti da quello studente con la media
-    public static void displayExamsGraph(Controller controller) throws SQLException {
+    public static void displayExamsGraph(Controller studentController) throws SQLException {
 
         chart = ChartFactory.createBarChart(
-                "Esami di " + controller.getStudent().getName() + " " + controller.getStudent().getSurname(),
+                "Esami di " + studentController.getStudent().getName() + " " + studentController.getStudent().getSurname(),
                 "Esame",           // Etichetta asse x
                 "Voti",                               // Etichetta asse y
-                getStudentDataset(controller)            // Dataset
+                getStudentDataset(studentController)            // Dataset
         );
 
         // Crea una finestra per mostrare il grafico
-        frame = new JFrame("Grafico voti " + controller.getStudent().getName() + " " + controller.getStudent().getSurname());
+        frame = new JFrame("Grafico voti " + studentController.getStudent().getName() + " " + studentController.getStudent().getSurname());
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
         frame.setVisible(true);
@@ -53,7 +53,7 @@ public class ChartManager {
         chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d3557"));
 
         // Specifica il percorso e il nome del file di output
-        String outputPath = "../graph/"+ "grafico" + controller.getStudent().getId() + ".png";
+        String outputPath = "../graph/"+ "grafico" + studentController.getStudent().getId() + ".png";
 
         // Specifica le dimensioni per l'immagine del grafico
         int width = 800;

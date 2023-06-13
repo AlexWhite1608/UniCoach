@@ -157,7 +157,6 @@ public class ChartManagerTest {
         professorController3.setGrade(student, 29, "TestData", false);
         professorController4.setGrade(student, 27, "TestData", false);
 
-
         studentController.displayExamsGraph();
         professorController.displayExamsGraph(student);
 

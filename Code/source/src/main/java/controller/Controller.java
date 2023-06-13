@@ -183,7 +183,7 @@ public class Controller {
 
     //Grafica gli esami svolti da quello studente con la media
     public void displayExamsGraph(Student student) throws SQLException {
-        ChartManager.displayExamsGraph(this);
+        ChartManager.displayExamsGraph(new Controller(student));
     }
 
     //Grafica i voti di tutti gli studenti iscritti a quel corso (specifico per il professore)
