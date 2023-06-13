@@ -96,8 +96,7 @@ public class ChartManagerTest {
         }
     }
 
-    private static void simulateUserInput(Student student, Course course) throws SQLException{
-        Controller studentController = new Controller(student);
+    private static void simulateUserInput(Controller studentController, Course course) {
         String input = course.getId() + "\n0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
@@ -108,8 +107,7 @@ public class ChartManagerTest {
         studentController.chooseCourses();
     }
 
-    private static void simulateUserInput(Student student, List<Course> courseList) throws SQLException{
-        Controller studentController = new Controller(student);
+    private static void simulateUserInput(Controller studentController, List<Course> courseList) throws SQLException{
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
@@ -195,10 +193,10 @@ public class ChartManagerTest {
         Controller studentController4 = new Controller(student4);
 
         // Simula l'input per tutti gli studenti
-        simulateUserInput(student1, courseTest1);
-        simulateUserInput(student2, courseTest1);
-        simulateUserInput(student3, courseTest1);
-        simulateUserInput(student4, courseTest1);
+        simulateUserInput(studentController1, courseTest1);
+        simulateUserInput(studentController2, courseTest1);
+        simulateUserInput(studentController3, courseTest1);
+        simulateUserInput(studentController4, courseTest1);
 
         professorController.setGrade(student1,25, "TestData", false);
         professorController.setGrade(student2,21, "TestData", false);
@@ -239,6 +237,11 @@ public class ChartManagerTest {
         Controller professorController3 = new Controller(professor3);
         Controller professorController4 = new Controller(professor4);
 
+        Controller studentController1 = new Controller(student1);
+        Controller studentController2 = new Controller(student2);
+        Controller studentController3 = new Controller(student3);
+        Controller studentController4 = new Controller(student4);
+
         List<Course> courseList = new ArrayList<>();
         courseList.add(courseTest1);
         courseList.add(courseTest2);
@@ -246,10 +249,10 @@ public class ChartManagerTest {
         courseList.add(courseTest4);
 
         // Si iscrivono gli studenti ai corsi
-        simulateUserInput(student1, courseList);
-        simulateUserInput(student2, courseList);
-        simulateUserInput(student3, courseList);
-        simulateUserInput(student4, courseList);
+        simulateUserInput(studentController1, courseList);
+        simulateUserInput(studentController2, courseList);
+        simulateUserInput(studentController3, courseList);
+        simulateUserInput(studentController4, courseList);
 
         // Si inseriscono i voti degli esami
         professorController.setGrade(student1,25, "TestData", false);
